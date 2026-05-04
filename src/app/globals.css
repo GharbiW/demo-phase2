@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Finance cockpit tokens + Parnass accent */
+:root {
+  color-scheme: light;
+
+  --color-parnass-red: #e80912;
+  --color-parnass-red-hover: #c7080f;
+
+  --finance-positive: #047857;
+  --finance-positive-soft: #ecfdf5;
+  --finance-negative: #b91c1c;
+  --finance-negative-soft: #fef2f2;
+  --finance-warn: #b45309;
+  --finance-warn-soft: #fffbeb;
+
+  --surface-base: #f8fafc;
+  --surface-elevated: #ffffff;
+  --surface-mesh-a: rgba(232, 9, 18, 0.04);
+  --surface-mesh-b: rgba(15, 23, 42, 0.03);
+  --chart-grid: rgba(15, 23, 42, 0.08);
+  --chart-axis: rgba(15, 23, 42, 0.45);
+
+  --staging-banner-height: 0px;
+
+  /* Cockpit — couleurs sémantiques (prompt) */
+  --cockpit-semantic-success: #059669;
+  --cockpit-semantic-success-soft: #ecfdf5;
+  --cockpit-semantic-warn: #ea580c;
+  --cockpit-semantic-warn-soft: #fff7ed;
+  --cockpit-semantic-danger: #dc2626;
+  --cockpit-semantic-danger-soft: #fef2f2;
+  --cockpit-semantic-info: #2563eb;
+  --cockpit-semantic-info-soft: #eff6ff;
+  --cockpit-semantic-neutral-strong: #64748b;
+  --cockpit-chart-ca: #2563eb;
+  --cockpit-chart-marge: #059669;
+}
+
+@theme inline {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--surface-base);
+  background-image:
+    radial-gradient(1200px 600px at 10% -10%, var(--surface-mesh-a), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, var(--surface-mesh-b), transparent 50%),
+    linear-gradient(180deg, var(--surface-elevated) 0%, var(--surface-base) 220px);
+  background-attachment: fixed;
+}
+
+/* Staggered section reveals (tw-animate-css) */
+.finance-reveal {
+  animation: fade-in-up 0.55s ease-out both;
+}
+.finance-reveal-delay-1 {
+  animation-delay: 80ms;
+}
+.finance-reveal-delay-2 {
+  animation-delay: 160ms;
+}
+.finance-reveal-delay-3 {
+  animation-delay: 240ms;
+}
+.finance-reveal-delay-4 {
+  animation-delay: 320ms;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.font-money {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Small quality-of-life defaults */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}
