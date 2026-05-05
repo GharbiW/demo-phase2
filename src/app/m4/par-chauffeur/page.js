@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronRight, CheckCircle2 } from "lucide-react";
 import { PageShell, KpiGrid, KpiTile } from "@/components/ui/PageShell";
 import { Toolbar } from "@/components/ui/Toolbar";
@@ -8,19 +8,47 @@ import { SearchInput } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui/Table";
-import { DrilldownDrawer, DrawerSection, DrawerRow } from "@/components/ui/DrilldownDrawer";
+import { DrilldownDrawer, DrawerSection, DrawerRow, DrawerChart } from "@/components/ui/DrilldownDrawer";
 import { useToast } from "@/components/ui/Toast";
 import { useDemoStore } from "@/stores/demoStore";
-import { m4Chauffeurs } from "@/lib/demo-data";
+import { m4Chauffeurs, m4Tournees } from "@/lib/demo-data";
 import { HealthChip, HealthChipRow } from "@/components/ui/HealthChip";
 import { Sparkline, demoSparkFromSeed } from "@/components/finance/Sparkline";
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  Bar,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const CHAUFFEURS = m4Chauffeurs;
-
 const statutVariant = { ok: "emerald", warn: "amber", deficit: "red" };
 
 function fmt(n, sign = false) {
   return `${sign && n >= 0 ? "+" : ""}${(n / 1000).toFixed(0)} k€`;
+}
+
+function buildTourneeChartData(chauffeurNom, seed) {
+  const tournees = m4Tournees.filter((t) => t.chauffeur === chauffeurNom).slice(-6);
+  if (tournees.length >= 3) {
+    return tournees.map((t) => ({
+      ref: t.id,
+      ca: Math.round(t.ca / 100) * 100,
+      marge: t.marge,
+    }));
+  }
+  // Synthetic fallback seeded from driver name
+  const base = seed % 4000 + 2000;
+  return ["T-01", "T-02", "T-03", "T-04", "T-05", "T-06"].map((ref, i) => {
+    const ca = base + ((seed * (i + 2) * 13) % 1200);
+    const marge = Math.round(ca * (0.05 + ((seed * (i + 1) * 7) % 100) / 1000));
+    return { ref, ca: Math.round(ca), marge };
+  });
 }
 
 export default function ParChauffeurPage() {
@@ -36,6 +64,12 @@ export default function ParChauffeurPage() {
     return matchSearch && matchChip;
   });
   const totalMarge = CHAUFFEURS.reduce((s, c) => s + c.marge, 0);
+
+  const tourneeData = useMemo(() => {
+    if (!drawer) return [];
+    const seed = drawer.nom.charCodeAt(0) * 97 + drawer.id.charCodeAt(drawer.id.length - 1) * 13;
+    return buildTourneeChartData(drawer.nom, seed);
+  }, [drawer]);
 
   return (
     <PageShell
@@ -126,14 +160,45 @@ export default function ParChauffeurPage() {
       >
         {drawer && (
           <>
-            <DrawerSection title="Performance">
+            <DrawerSection title="Performance globale">
+              <div className="grid grid-cols-2 gap-2 mb-1">
+                <div className="rounded-lg bg-neutral-50 border border-neutral-100 p-2.5 text-center">
+                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">CA généré</p>
+                  <p className="text-base font-bold text-neutral-900 tabular-nums">{fmt(drawer.caGenere)}</p>
+                </div>
+                <div className={`rounded-lg border p-2.5 text-center ${drawer.marge < 0 ? "bg-red-50 border-red-200" : "bg-emerald-50 border-emerald-200"}`}>
+                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Marge brute</p>
+                  <p className={`text-base font-bold tabular-nums ${drawer.marge < 0 ? "text-red-600" : "text-emerald-700"}`}>{fmt(drawer.marge, true)}</p>
+                </div>
+              </div>
               <DrawerRow label="Tournées" value={drawer.tournees} />
               <DrawerRow label="Km parcourus" value={`${drawer.km.toLocaleString("fr-FR")} km`} />
-              <DrawerRow label="CA généré" value={fmt(drawer.caGenere)} />
               <DrawerRow label="Coût réel" value={fmt(drawer.coutReel)} />
-              <DrawerRow label="Marge brute" value={fmt(drawer.marge, true)} highlight={drawer.marge < 0} />
               <DrawerRow label="Taux de marge" value={`${drawer.txMarge}%`} highlight={drawer.txMarge < 5} />
             </DrawerSection>
+
+            <DrawerSection title="CA & marge — 6 dernières tournées">
+              <DrawerChart title="CA (barres) · Marge (ligne)" height={180}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={tourneeData} margin={{ top: 8, right: 16, bottom: 0, left: -10 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="ref" tick={{ fontSize: 9, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                    <YAxis yAxisId="ca" tick={{ fontSize: 9, fill: "#9ca3af" }} width={32} axisLine={false} tickLine={false}
+                      tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                    <YAxis yAxisId="marge" orientation="right" tick={{ fontSize: 9, fill: "#9ca3af" }} width={32}
+                      axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                    <Bar yAxisId="ca" dataKey="ca" fill="#3b82f6" opacity={0.7} radius={[3, 3, 0, 0]} name="CA" />
+                    <Line yAxisId="marge" type="monotone" dataKey="marge" stroke="#059669" strokeWidth={2}
+                      dot={{ r: 3, fill: "#059669", strokeWidth: 0 }} activeDot={{ r: 5 }} name="Marge" />
+                    <Tooltip
+                      formatter={(v, name) => [`${v.toLocaleString("fr-FR")} €`, name]}
+                      contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e5e7eb" }}
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </DrawerChart>
+            </DrawerSection>
+
             <DrawerSection title="Temps de service">
               <DrawerRow label="Amplitude moyenne" value={`${drawer.ampMoyH} h`} highlight={drawer.ampMoyH > 12} />
               <DrawerRow label="Réglementaire max" value="13 h" />

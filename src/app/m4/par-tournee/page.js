@@ -5,14 +5,24 @@ import { PageShell, SectionCard, KpiGrid, KpiTile } from "@/components/ui/PageSh
 import { HealthChip, HealthChipRow } from "@/components/ui/HealthChip";
 import { AiInsightBanner } from "@/components/ui/AiInsightBanner";
 import { Badge } from "@/components/ui/Badge";
-import { DrilldownDrawer, DrawerSection, DrawerRow } from "@/components/ui/DrilldownDrawer";
+import { DrilldownDrawer, DrawerSection, DrawerRow, DrawerChart } from "@/components/ui/DrilldownDrawer";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui/Table";
 import Toast from "@/components/ui/Toast";
 import { m4Tournees } from "@/lib/demo-data";
 import { TourneeWaterfallRecharts } from "@/components/cockpit/TourneeWaterfallRecharts";
 import { computeTourneeCostBreakdown, getFuelJustification } from "@/lib/cockpit-mock-data";
-import { LayoutGrid, List, Truck, TrendingUp, TrendingDown, AlertTriangle, ChevronRight, Fuel, Users, MapPin, Wrench } from "lucide-react";
+import { LayoutGrid, List, Truck, TrendingDown, AlertTriangle, ChevronRight, Fuel, Users, MapPin, Wrench } from "lucide-react";
 import Link from "next/link";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const STATUS_CONFIG = {
   ok: { border: "border-emerald-200", bg: "bg-white", barColor: "bg-emerald-500", dot: "bg-emerald-500", label: "Rentable", chip: "emerald" },
@@ -299,6 +309,37 @@ export default function ParTourneePage() {
           <DrawerSection title="Waterfall marge (k€)">
             <TourneeWaterfallRecharts tournee={selectedTournee} />
           </DrawerSection>
+
+          {breakdown && (
+            <DrawerSection title="Théorique vs Réel par poste (€)">
+              <DrawerChart title="Comparaison coûts par catégorie" height={200}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={[
+                      { poste: "Carburant", théo: Math.round(breakdown.theorique.fuel), réel: Math.round(breakdown.reel.fuel) },
+                      { poste: "Salaires", théo: Math.round(breakdown.theorique.rh), réel: Math.round(breakdown.reel.rh) },
+                      { poste: "Matériel", théo: Math.round(breakdown.theorique.materiel), réel: Math.round(breakdown.reel.materiel) },
+                      { poste: "Péages", théo: Math.round(breakdown.theorique.peages), réel: Math.round(breakdown.reel.peages) },
+                    ]}
+                    margin={{ top: 4, right: 16, bottom: 0, left: 48 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0f0f0" />
+                    <XAxis type="number" tick={{ fontSize: 9, fill: "#9ca3af" }} axisLine={false} tickLine={false}
+                      tickFormatter={(v) => `${v.toLocaleString("fr-FR")}`} />
+                    <YAxis type="category" dataKey="poste" tick={{ fontSize: 10, fill: "#374151" }} width={50} axisLine={false} tickLine={false} />
+                    <Bar dataKey="théo" fill="#93c5fd" radius={[0, 3, 3, 0]} name="Théorique" />
+                    <Bar dataKey="réel" fill="#dc2626" opacity={0.75} radius={[0, 3, 3, 0]} name="Réel" />
+                    <Legend wrapperStyle={{ fontSize: 10 }} />
+                    <Tooltip
+                      formatter={(v, name) => [`${v.toLocaleString("fr-FR")} €`, name]}
+                      contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e5e7eb" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </DrawerChart>
+            </DrawerSection>
+          )}
           <DrawerSection title="Justification carburant (démo)">
             <p className="text-xs text-neutral-700 leading-relaxed px-1">
               {getFuelJustification(selectedTournee.id)}

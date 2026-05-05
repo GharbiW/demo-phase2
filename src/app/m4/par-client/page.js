@@ -9,23 +9,49 @@ import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui/Table";
-import { DrilldownDrawer, DrawerSection, DrawerRow } from "@/components/ui/DrilldownDrawer";
+import { DrilldownDrawer, DrawerSection, DrawerRow, DrawerChart } from "@/components/ui/DrilldownDrawer";
 import { useToast } from "@/components/ui/Toast";
 import { useDemoStore } from "@/stores/demoStore";
 import { m4Clients } from "@/lib/demo-data";
 import { HealthChip, HealthChipRow } from "@/components/ui/HealthChip";
 import { Sparkline, demoSparkFromSeed } from "@/components/finance/Sparkline";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip as ReTooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 const CLIENTS = m4Clients;
-
 const statutVariant = { ok: "emerald", warn: "amber", deficit: "red" };
+
+const COST_SLICES = [
+  { name: "Salaires", pct: 0.42, color: "#3b82f6" },
+  { name: "Carburant", pct: 0.38, color: "#f97316" },
+  { name: "Péages", pct: 0.08, color: "#8b5cf6" },
+  { name: "Divers", pct: 0.12, color: "#6b7280" },
+];
+const CA_MONTHS = ["Nov", "Déc", "Jan", "Fév", "Mar", "Avr"];
 
 function fmt(n, sign = false) {
   const s = sign && n >= 0 ? "+" : "";
-  if (Math.abs(n) >= 1_000_000) {
-    return `${s}${(n / 1_000_000).toFixed(1)} M€`;
-  }
+  if (Math.abs(n) >= 1_000_000) return `${s}${(n / 1_000_000).toFixed(1)} M€`;
   return `${s}${(n / 1000).toFixed(0)} k€`;
+}
+
+function buildCaData(client) {
+  const seed = client.name.split("").reduce((s, c) => s + c.charCodeAt(0), 0);
+  const base = client.ca / 6;
+  return CA_MONTHS.map((month, i) => ({
+    month,
+    ca: Math.round(base + ((seed * (i + 2) * 17) % (base * 0.3)) - base * 0.15),
+  }));
 }
 
 export default function ParClientPage() {
@@ -44,6 +70,12 @@ export default function ParClientPage() {
   const totalCA = CLIENTS.reduce((s, c) => s + c.ca, 0);
   const totalMarge = CLIENTS.reduce((s, c) => s + c.marge, 0);
   const avgTxMarge = (totalMarge / totalCA * 100).toFixed(1);
+
+  const costPieData = useMemo(() => drawer
+    ? COST_SLICES.map((s) => ({ name: s.name, value: Math.round(drawer.coutReel * s.pct), color: s.color }))
+    : [], [drawer]);
+
+  const caData = useMemo(() => drawer ? buildCaData(drawer) : [], [drawer]);
 
   return (
     <PageShell
@@ -73,12 +105,7 @@ export default function ParClientPage() {
           <Toolbar
             left={
               <>
-                <SearchInput
-                  placeholder="Rechercher un client…"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-64"
-                />
+                <SearchInput placeholder="Rechercher un client…" value={search} onChange={(e) => setSearch(e.target.value)} className="w-64" />
                 <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                   <option value="Tous">Tous statuts</option>
                   <option value="ok">Rentable</option>
@@ -154,6 +181,7 @@ export default function ParClientPage() {
         title={drawer?.name ?? ""}
         subtitle={drawer?.type}
         onClose={() => setDrawer(null)}
+        width="lg"
         footer={
           <>
             <Button
@@ -185,18 +213,81 @@ export default function ParClientPage() {
         {drawer && (
           <>
             <DrawerSection title="P&L Synthétique">
-              <DrawerRow label="CA période" value={fmt(drawer.ca)} />
-              <DrawerRow label="Coût réel" value={fmt(drawer.coutReel)} />
-              <DrawerRow label="Marge brute" value={fmt(drawer.marge, true)} highlight={drawer.marge < 0} />
+              <div className="grid grid-cols-3 gap-2 mb-2">
+                <div className="rounded-lg bg-neutral-50 border border-neutral-100 p-2.5 text-center">
+                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">CA</p>
+                  <p className="text-sm font-bold text-neutral-900 tabular-nums">{fmt(drawer.ca)}</p>
+                </div>
+                <div className="rounded-lg bg-neutral-50 border border-neutral-100 p-2.5 text-center">
+                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Coût réel</p>
+                  <p className="text-sm font-bold text-neutral-900 tabular-nums">{fmt(drawer.coutReel)}</p>
+                </div>
+                <div className={`rounded-lg border p-2.5 text-center ${drawer.marge < 0 ? "bg-red-50 border-red-200" : "bg-emerald-50 border-emerald-200"}`}>
+                  <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Marge</p>
+                  <p className={`text-sm font-bold tabular-nums ${drawer.marge < 0 ? "text-red-600" : "text-emerald-700"}`}>{fmt(drawer.marge, true)}</p>
+                </div>
+              </div>
               <DrawerRow label="Taux de marge" value={`${drawer.txMarge}%`} highlight={drawer.txMarge < 5} />
               <DrawerRow label="Nb tournées" value={drawer.tournees} />
             </DrawerSection>
 
+            <DrawerSection title="CA mensuel — 6 mois">
+              <DrawerChart title="Évolution CA (€)" height={160}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={caData} margin={{ top: 6, right: 10, bottom: 0, left: -10 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} width={38} axisLine={false} tickLine={false}
+                      tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                    <Bar dataKey="ca" fill="#3b82f6" radius={[4, 4, 0, 0]} name="CA mensuel" />
+                    <ReTooltip
+                      formatter={(v) => [`${v.toLocaleString("fr-FR")} €`, "CA mensuel"]}
+                      contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e5e7eb" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </DrawerChart>
+            </DrawerSection>
+
             <DrawerSection title="Décomposition coûts">
-              <DrawerRow label="Carburant (~38%)" value={`${(drawer.coutReel * 0.38 / 1000).toFixed(0)} k€`} />
-              <DrawerRow label="Salaires (~42%)" value={`${(drawer.coutReel * 0.42 / 1000).toFixed(0)} k€`} />
-              <DrawerRow label="Péages (~8%)" value={`${(drawer.coutReel * 0.08 / 1000).toFixed(0)} k€`} />
-              <DrawerRow label="Amort. & divers (~12%)" value={`${(drawer.coutReel * 0.12 / 1000).toFixed(0)} k€`} />
+              <div className="flex gap-3 items-center">
+                <div style={{ width: 140, height: 130 }} className="shrink-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={costPieData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={38}
+                        outerRadius={60}
+                        dataKey="value"
+                        paddingAngle={2}
+                      >
+                        {costPieData.map((entry, i) => (
+                          <Cell key={i} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <ReTooltip
+                        formatter={(v) => [`${(v / 1000).toFixed(0)} k€`]}
+                        contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e5e7eb" }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex-1 space-y-1.5">
+                  {costPieData.map((s) => (
+                    <div key={s.name} className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
+                        <span className="text-xs text-neutral-600">{s.name}</span>
+                      </div>
+                      <span className="text-xs font-medium tabular-nums text-neutral-800">
+                        {(s.value / 1000).toFixed(0)} k€
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </DrawerSection>
 
             <DrawerSection title="Liens">

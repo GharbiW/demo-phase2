@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { FileText, Plus, Download, Search, ChevronRight, Building2, CheckCircle2, Clock } from "lucide-react";
+import { useState, useMemo } from "react";
+import { FileText, Plus, Download, ChevronRight, CheckCircle2 } from "lucide-react";
 import { PageShell } from "@/components/ui/PageShell";
 import { Toolbar } from "@/components/ui/Toolbar";
 import { Button } from "@/components/ui/Button";
@@ -9,11 +9,23 @@ import { SearchInput } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui/Table";
-import { DrilldownDrawer, DrawerSection, DrawerRow } from "@/components/ui/DrilldownDrawer";
+import { DrilldownDrawer, DrawerSection, DrawerRow, DrawerChart } from "@/components/ui/DrilldownDrawer";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useToast } from "@/components/ui/Toast";
 import { useDemoStore } from "@/stores/demoStore";
 import { m1Contracts } from "@/lib/demo-data";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ReferenceLine,
+  Tooltip,
+  Area,
+  AreaChart,
+} from "recharts";
 
 const ALL_CONTRACTS = [
   { id: "C-001", client: "FedEx", type: "National express", statut: "Actif", dateDebut: "01/01/2024", dateFin: "31/12/2026", caAnnuel: "1 250 000 €", indexation: "CNR GO PRO M-1", complexite: "Élevée", particularite: "Indexation par prestation — nombreuses lignes (import CSV prévu)" },
@@ -27,12 +39,27 @@ const ALL_CONTRACTS = [
 const complexiteVariant = { Élevée: "red", Modérée: "amber", Faible: "emerald" };
 const statutVariant = { Actif: "emerald", "En révision": "amber" };
 
+const INDEX_MONTHS = ["Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc", "Jan", "Fév", "Mar", "Avr"];
+
+function buildIndexData(contract) {
+  const seed = contract.id.split("").reduce((s, c) => s + c.charCodeAt(0), 0);
+  const base = 100;
+  let idx = base;
+  return INDEX_MONTHS.map((month, i) => {
+    const delta = ((seed * (i + 3) * 11) % 180 - 90) / 100;
+    idx = parseFloat(Math.max(95, Math.min(112, idx + delta)).toFixed(2));
+    return { month, index: idx };
+  });
+}
+
 export default function AdvContratsPage() {
   const { state, actions } = useDemoStore();
   const { showToast } = useToast();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Tous");
   const [selectedContract, setSelectedContract] = useState(null);
+
+  const indexData = useMemo(() => selectedContract ? buildIndexData(selectedContract) : [], [selectedContract]);
 
   const filtered = ALL_CONTRACTS.filter((c) => {
     const matchSearch = search === "" || c.client.toLowerCase().includes(search.toLowerCase()) || c.id.toLowerCase().includes(search.toLowerCase());
@@ -193,6 +220,48 @@ export default function AdvContratsPage() {
               <DrawerRow label="CA annuel" value={selectedContract.caAnnuel} highlight />
               <DrawerRow label="Base indexation" value={selectedContract.indexation} />
               <DrawerRow label="Complexité" value={selectedContract.complexite} />
+            </DrawerSection>
+
+            <DrawerSection title="Évolution indice CNR — 12 mois">
+              <DrawerChart title={`Base 100 · ${selectedContract.indexation}`} height={170}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={indexData} margin={{ top: 8, right: 12, bottom: 0, left: -10 }}>
+                    <defs>
+                      <linearGradient id="cnrGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="month" tick={{ fontSize: 9, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                    <YAxis domain={[95, 114]} tick={{ fontSize: 9, fill: "#9ca3af" }} width={32} axisLine={false} tickLine={false} />
+                    <ReferenceLine
+                      y={100}
+                      stroke="#9ca3af"
+                      strokeDasharray="4 3"
+                      strokeWidth={1}
+                      label={{ value: "Base 100", position: "right", fontSize: 9, fill: "#9ca3af" }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="index"
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                      fill="url(#cnrGrad)"
+                      dot={{ r: 2.5, fill: "#3b82f6", strokeWidth: 0 }}
+                      activeDot={{ r: 5 }}
+                      name="Indice CNR"
+                    />
+                    <Tooltip
+                      formatter={(v) => [`${v}`, "Indice CNR"]}
+                      contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e5e7eb" }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </DrawerChart>
+              <p className="text-[11px] text-neutral-400 mt-1 px-0.5">
+                Simulation de l&apos;impact indexation sur 12 mois glissants (base 100 = signature contrat).
+              </p>
             </DrawerSection>
 
             <DrawerSection title="Particularités">

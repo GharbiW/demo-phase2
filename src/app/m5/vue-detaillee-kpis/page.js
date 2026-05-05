@@ -115,7 +115,7 @@ export default function VueDetaillee() {
               <DrawerRow label="Statut" value={drawer.color === "ok" ? "✓ Normal" : "⚠ Attention"} highlight={drawer.color === "warn"} />
             </DrawerSection>
             <DrawerSection title="Liens">
-              <a href="/m3/grille-couts" className="text-sm text-blue-600 hover:underline">→ Grille 14 postes (théo vs réel)</a>
+              <a href="/m3/grille-couts" className="text-sm text-blue-600 hover:underline">→ Grille 13 postes (théo vs réel)</a>
             </DrawerSection>
           </>
         )}

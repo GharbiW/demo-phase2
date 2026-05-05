@@ -160,7 +160,7 @@ export default function M6Page() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { title: "M2 — Hub données stable", desc: "Onze flux branchés, pipeline fiable, exceptions traitées au fil de l’eau.", status: "M2" },
-              { title: "M3 — Grille coûts validée", desc: "14 postes paramétrés, hypothèses H1–H11 arbitrées, track réel alimenté.", status: "M3" },
+              { title: "M3 — Grille coûts validée", desc: "13 postes paramétrés, hypothèses H1–H11 arbitrées, track réel alimenté.", status: "M3" },
               { title: "M5 — Historique 3 mois", desc: "Au moins 3 mois de données rentabilité pour entraîner les modèles.", status: "M5" },
             ].map((p) => (
               <div key={p.title} className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">

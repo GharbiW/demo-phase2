@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronRight, CheckCircle2, Wrench } from "lucide-react";
 import { PageShell, KpiGrid, KpiTile } from "@/components/ui/PageShell";
 import { Toolbar } from "@/components/ui/Toolbar";
@@ -8,17 +8,39 @@ import { SearchInput } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui/Table";
-import { DrilldownDrawer, DrawerSection, DrawerRow } from "@/components/ui/DrilldownDrawer";
+import { DrilldownDrawer, DrawerSection, DrawerRow, DrawerChart } from "@/components/ui/DrilldownDrawer";
 import { useToast } from "@/components/ui/Toast";
 import { useDemoStore } from "@/stores/demoStore";
 import { m4Vehicules } from "@/lib/demo-data";
 import { HealthChip, HealthChipRow } from "@/components/ui/HealthChip";
 import { Sparkline, demoSparkFromSeed } from "@/components/finance/Sparkline";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ReferenceLine,
+  Tooltip,
+} from "recharts";
 
 const VEHICULES = m4Vehicules;
+const MONTHS = ["Nov", "Déc", "Jan", "Fév", "Mar", "Avr"];
+const REVISION_THRESHOLD = 150_000;
 
 function fmt(n, sign = false) {
   return `${sign && n >= 0 ? "+" : ""}${(n / 1000).toFixed(0)} k€`;
+}
+
+function buildConsoData(v) {
+  const seed = v.immat.split("").reduce((s, c) => s + c.charCodeAt(0), 0);
+  return MONTHS.map((month, i) => ({
+    month,
+    conso: parseFloat(
+      Math.max(24, Math.min(38, v.conso + ((seed * (i + 3) % 280) - 140) / 100)).toFixed(1)
+    ),
+  }));
 }
 
 export default function ParVehiculePage() {
@@ -38,6 +60,10 @@ export default function ParVehiculePage() {
     return true;
   });
   const revisionAlert = VEHICULES.filter((v) => v.km > state.assumptions.revisionThresholdKm).length;
+
+  const consoData = useMemo(() => drawer ? buildConsoData(drawer) : [], [drawer]);
+  const kmRatio = drawer ? Math.min(100, Math.round((drawer.km / state.assumptions.revisionThresholdKm) * 100)) : 0;
+  const kmColor = kmRatio >= 90 ? "#dc2626" : kmRatio >= 70 ? "#d97706" : "#059669";
 
   return (
     <PageShell
@@ -130,14 +156,67 @@ export default function ParVehiculePage() {
               <DrawerRow label="Immatriculation" value={drawer.immat} />
               <DrawerRow label="Type" value={drawer.type} />
             </DrawerSection>
-            <DrawerSection title="Utilisation">
+
+            <DrawerSection title="Utilisation km & révision">
               <DrawerRow label="Km cumulés" value={`${drawer.km.toLocaleString("fr-FR")} km`} />
               <DrawerRow label="Seuil révision" value={`${state.assumptions.revisionThresholdKm.toLocaleString("fr-FR")} km`} highlight={drawer.km > state.assumptions.revisionThresholdKm} />
               <DrawerRow label="Taux utilisation" value={`${drawer.txUtilisation}%`} />
+
+              {/* km progress gauge */}
+              <div className="mt-2 space-y-1.5">
+                <div className="flex justify-between text-[10px] text-neutral-500">
+                  <span>Avancement vers seuil révision</span>
+                  <span style={{ color: kmColor }} className="font-bold">{kmRatio}%</span>
+                </div>
+                <div className="h-2.5 rounded-full bg-neutral-100 overflow-hidden border border-neutral-200">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{ width: `${kmRatio}%`, backgroundColor: kmColor }}
+                  />
+                </div>
+                <p className="text-[10px] text-neutral-400">
+                  {drawer.km > state.assumptions.revisionThresholdKm
+                    ? "⚠ Seuil dépassé — révision urgente requise"
+                    : `${(state.assumptions.revisionThresholdKm - drawer.km).toLocaleString("fr-FR")} km restants avant révision`}
+                </p>
+              </div>
             </DrawerSection>
-            <DrawerSection title="Performance">
-              <DrawerRow label="Conso. réelle" value={`${drawer.conso} L/100km`} highlight={drawer.conso > 30} />
+
+            <DrawerSection title="Performance — Consommation 6 mois">
+              <DrawerChart title="Conso réelle vs théorique (L/100 km)" height={170}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={consoData} margin={{ top: 8, right: 12, bottom: 0, left: -10 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                    <YAxis domain={[24, 38]} tick={{ fontSize: 10, fill: "#9ca3af" }} width={30} axisLine={false} tickLine={false} />
+                    <ReferenceLine
+                      y={28}
+                      stroke="#059669"
+                      strokeDasharray="5 3"
+                      strokeWidth={1.5}
+                      label={{ value: "Théo 28", position: "right", fontSize: 9, fill: "#059669" }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="conso"
+                      stroke="#dc2626"
+                      strokeWidth={2}
+                      dot={{ r: 3, fill: "#dc2626", strokeWidth: 0 }}
+                      activeDot={{ r: 5 }}
+                    />
+                    <Tooltip
+                      formatter={(v) => [`${v} L/100`, "Conso réelle"]}
+                      contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e5e7eb" }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </DrawerChart>
+              <DrawerRow label="Conso réelle moy." value={`${drawer.conso} L/100km`} highlight={drawer.conso > 30} />
               <DrawerRow label="Référence théorique" value="28,0 L/100km" />
+              <DrawerRow label="Dérive vs théorique" value={`+${(drawer.conso - 28).toFixed(1)} L/100`} highlight={drawer.conso > 28} />
+            </DrawerSection>
+
+            <DrawerSection title="Marge">
               <DrawerRow label="Marge imputable" value={fmt(drawer.marge, true)} highlight={drawer.marge < 0} />
             </DrawerSection>
           </>

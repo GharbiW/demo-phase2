@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
@@ -53,8 +53,8 @@ export default function M2GrilleHubPage() {
     <div className="px-4 sm:px-6 py-6 max-w-[1680px] mx-auto space-y-5">
       <M2ZoneHeader
         eyebrow="M2 — Hub données & coûts"
-        title="Grille 14 postes — données par onglet"
-        subtitle="Un seul écran : chaque poste de la grille M3 affiche sa provenance (Factorial pour la paie, plateforme Parnass Phase 1 pour les 13 autres) et un extrait de lignes prêt pour l’API / le backoffice."
+        title="Grille 13 postes — données par onglet"
+        subtitle="Un seul écran : chaque poste de la grille M3 affiche sa provenance (et un extrait de lignes prêt pour l’API / le backoffice."
       >
         <Link
           href="/m3/grille-couts"
@@ -65,7 +65,7 @@ export default function M2GrilleHubPage() {
         </Link>
         <span className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-neutral-200 bg-white text-sm font-semibold text-neutral-800">
           <Sparkles className="w-4 h-4 text-[color:var(--color-parnass-red)]" />
-          14 postes
+          13 postes
         </span>
       </M2ZoneHeader>
 
@@ -289,3 +289,5 @@ export default function M2GrilleHubPage() {
     </div>
   );
 }
+
+

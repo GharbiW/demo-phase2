@@ -568,7 +568,7 @@ export const specDemoCoverageMatrix = [
 export const m5TheoriqueVsReelSpecRows = [
   { id: "def", critere: "Définition", theorique: "Performance attendue avant exécution", reel: "Performance observée après exécution", ecart: "—", responsable: "—" },
   { id: "ca", critere: "CA", theorique: "Somme prestations contrat (ADV)", reel: "Somme prestations réalisées (Exploitation) + indexation", ecart: "Δ volume / prix / indexation (M4)", responsable: "Commerce / Exploitation" },
-  { id: "chg", critere: "Charges", theorique: "Grille 14 postes + hypothèses M3", reel: "Paie, carburant AS24/Engie, péages, télématique, garage", ecart: "Voir grille coûts & analyse écarts", responsable: "Raphaela / Mathieu" },
+  { id: "chg", critere: "Charges", theorique: "Grille 13 postes + hypothèses M3", reel: "Paie, carburant AS24/Engie, péages, télématique, garage", ecart: "Voir grille coûts & analyse écarts", responsable: "Raphaela / Mathieu" },
   { id: "idx", critere: "Indexation carburant", theorique: "Vue hors indexation possible (conception)", reel: "Intégrée obligatoirement au réel", ecart: "CNR → Dirham · FedEx par prestation", responsable: "Raphaela" },
   { id: "aff", critere: "Affichage vues", theorique: "Colonne « Théorique » + indicateurs conception", reel: "Colonne « Réel » + ligne d'écart + unités d'œuvre", ecart: "Module Rentabilité (onglets)", responsable: "Finance" },
 ];
@@ -607,20 +607,19 @@ export const m2Governance = [
 // ─── M3 — COST GRID (dual-track) ──────────────────────────────────
 
 export const m3CostGrid = [
-  { type: "Fixe", poste: "Loyers tracteurs", methode: "Facture globale ÷ nb véhicules", source: "Avia Location", frequence: "Annuel + vérif. mensuelle", coutTheoMensuel: 48000, coutReelMensuel: 50200, dateEffet: "01/01/2026" },
-  { type: "Fixe", poste: "Loyers semi-remorques", methode: "Forfait par semi (~700€/u)", source: "Facture locateur", frequence: "Annuel", coutTheoMensuel: 14000, coutReelMensuel: 14700, dateEffet: "01/01/2026" },
-  { type: "Semi-var.", poste: "Entretien & maintenance", methode: "Forfait annuel ÷ 12", source: "Factures garage", frequence: "Mensuel", coutTheoMensuel: 22000, coutReelMensuel: 24800, dateEffet: "01/01/2026" },
-  { type: "Variable", poste: "Pneumatiques", methode: "Coût/km × km théoriques", source: "Factures garage", frequence: "Mensuel", coutTheoMensuel: 8500, coutReelMensuel: 9100, dateEffet: "01/02/2026" },
-  { type: "Fixe", poste: "Assurances", methode: "Prime annuelle ÷ 12", source: "Facture assureur", frequence: "Annuel", coutTheoMensuel: 12000, coutReelMensuel: 12000, dateEffet: "01/01/2026" },
-  { type: "Variable", poste: "Carburant tracteur", methode: "Conso standard × km × prix €/L", source: "AS24 / Engie par immat.", frequence: "Mensuel (M-1)", coutTheoMensuel: 142000, coutReelMensuel: 157200, dateEffet: "01/04/2026" },
-  { type: "Variable", poste: "Carburant frigo", methode: "2 L/h × heures fonctionnement", source: "Engie CSV", frequence: "Mensuel (M-1)", coutTheoMensuel: 18000, coutReelMensuel: 19400, dateEffet: "01/04/2026" },
-  { type: "Variable", poste: "Péages", methode: "Tarif théorique / trajet (PTV)", source: "AS24 / portail péage", frequence: "Mensuel", coutTheoMensuel: 11800, coutReelMensuel: 12600, dateEffet: "01/01/2026" },
-  { type: "Variable", poste: "Salaires & charges RH", methode: "Forfait jour (~165€/j) × jours travaillés", source: "Factorial / Silae", frequence: "Mensuel (M-1)", coutTheoMensuel: 174000, coutReelMensuel: 181600, dateEffet: "01/03/2026" },
-  { type: "Fixe", poste: "Équipements GPS / ADR / tire-palettes", methode: "Loyer / abonnement mensuel", source: "Factures fournisseurs", frequence: "Annuel", coutTheoMensuel: 4200, coutReelMensuel: 4200, dateEffet: "01/01/2026" },
-  { type: "Var. lissé", poste: "Casse / sinistres non assurés", methode: "% du CA (1,7%)", source: "Données Raphaela (5-10 M-1)", frequence: "Mensuel / Trim.", coutTheoMensuel: 24400, coutReelMensuel: 31800, dateEffet: "01/01/2026" },
-  { type: "Exceptionnel", poste: "Immobilisation véhicules", methode: "N/A théorique", source: "Exploitation", frequence: "Mensuel", coutTheoMensuel: 0, coutReelMensuel: 6500, dateEffet: "—" },
-  { type: "Variable", poste: "Sous-traitance (achat)", methode: "Prix d'achat unitaire", source: "Factures sous-traitants", frequence: "Au fil des prestations", coutTheoMensuel: 17500, coutReelMensuel: 17900, dateEffet: "01/01/2026" },
-  { type: "Variable", poste: "Repositionnements / pieds", methode: "km × coût/km + temps × coût horaire", source: "Masternaut / Solides", frequence: "Mensuel", coutTheoMensuel: 28000, coutReelMensuel: 34800, dateEffet: "01/01/2026" },
+  { type: "Fixe",       poste: "Loyers tracteurs",               methode: "Facture globale ÷ nb véhicules",                              source: "MyRentCar",                  frequence: "Annuel + vérif. mensuelle", coutTheoMensuel: 48000,  coutReelMensuel: 50200,  dateEffet: "01/01/2026" },
+  { type: "Fixe",       poste: "Loyers semi-remorques",           methode: "Forfait par semi (~700€/u)",                                  source: "MyRentCar",                  frequence: "Annuel",                   coutTheoMensuel: 14000,  coutReelMensuel: 14700,  dateEffet: "01/01/2026" },
+  { type: "Variable",   poste: "Carburant tracteur",              methode: "Conso standard × km × prix €/L",                             source: "AS24 / Michelin (télématique)", frequence: "Mensuel (M-1)",          coutTheoMensuel: 142000, coutReelMensuel: 157200, dateEffet: "01/04/2026" },
+  { type: "Variable",   poste: "Carburant frigo",                 methode: "Prix fioul × heures fonctionnement — Réel = Théorique",       source: "Engie CSV",                  frequence: "Mensuel (M-1)",            coutTheoMensuel: 18000,  coutReelMensuel: 18000,  dateEffet: "01/04/2026" },
+  { type: "Variable",   poste: "AdBlue",                          methode: "Prix €/L × km × conso théorique (1,9 L/100km) — Réel = Théo", source: "AS24 / fournisseur",          frequence: "Mensuel",                  coutTheoMensuel: 3200,   coutReelMensuel: 3200,   dateEffet: "01/01/2026" },
+  { type: "Variable",   poste: "Salaires & charges RH",           methode: "Forfait jour (~165€/j SPL) × jours travaillés (base 21 j)",   source: "Factorial / Silae",           frequence: "Mensuel (M-1)",            coutTheoMensuel: 174000, coutReelMensuel: 181600, dateEffet: "01/03/2026" },
+  { type: "Variable",   poste: "Primes & variables RH",           methode: "Forfait moyen par profil (nuit / dimanche / découcher / panier)", source: "Silae + Solid",            frequence: "Mensuel (M-1)",            coutTheoMensuel: 18200,  coutReelMensuel: 21400,  dateEffet: "01/03/2026" },
+  { type: "Variable",   poste: "Péages",                          methode: "Trajets avec péages validés × coût théorique PTV",            source: "AS24 / portail péage",        frequence: "Mensuel",                  coutTheoMensuel: 11800,  coutReelMensuel: 12600,  dateEffet: "01/01/2026" },
+  { type: "Semi-var.",  poste: "Entretien & maintenance",          methode: "Budget standard €/km par typologie véhicule",                 source: "WinCPL + factures garage",    frequence: "Mensuel",                  coutTheoMensuel: 22000,  coutReelMensuel: 24800,  dateEffet: "01/01/2026" },
+  { type: "Variable",   poste: "Pneumatiques",                     methode: "Budget €/km par typologie (ratio Michelin)",                  source: "Factures pneumaticien",       frequence: "Trimestriel",              coutTheoMensuel: 8500,   coutReelMensuel: 9100,   dateEffet: "01/02/2026" },
+  { type: "Fixe",       poste: "Assurance flotte",                 methode: "Prime annuelle ventilée par véhicule ÷ 12",                  source: "Facture assureur (comptabilité)", frequence: "Annuel",              coutTheoMensuel: 12000,  coutReelMensuel: 12000,  dateEffet: "01/01/2026" },
+  { type: "Var. lissé", poste: "Casse / sinistres non assurés",    methode: "% du CA (1,7%)",                                             source: "Suivi sinistres exploitation (5-10 M-1)", frequence: "Mensuel / Trim.", coutTheoMensuel: 24400, coutReelMensuel: 31800,  dateEffet: "01/01/2026" },
+  { type: "Variable",   poste: "Sous-traitance & repositionnements", methode: "Prix d'achat ST · repositionnements : km × coût/km + temps × coût horaire", source: "Factures ST + Masternaut / Solides", frequence: "Au fil de l'eau / Mensuel", coutTheoMensuel: 45500, coutReelMensuel: 52700, dateEffet: "01/01/2026" },
 ];
 
 export const m3TheoreticalInputs = {

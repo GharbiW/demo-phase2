@@ -25,19 +25,22 @@ export function DrilldownDrawer({ open, title, subtitle, children, onClose, widt
 
   return (
     <div className="fixed inset-0 z-[80] flex">
+      {/* Backdrop — covers full viewport including topbar */}
       <div
-        className="absolute inset-0 bg-black/40"
+        className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
         onClick={onClose}
         aria-hidden
       />
+      {/* Panel — starts below the topbar (3.5rem = 56px) */}
       <aside
         className={cn(
-          "absolute right-0 top-0 h-full w-full bg-white border-l border-neutral-200 shadow-2xl flex flex-col",
+          "absolute right-0 w-full bg-white border-l border-neutral-200 shadow-2xl flex flex-col",
+          "top-14 h-[calc(100vh-3.5rem)]",
           widthClass[width] ?? widthClass.md,
         )}
       >
         {/* Header */}
-        <div className="h-14 px-5 border-b border-neutral-200 flex items-center justify-between gap-4 shrink-0">
+        <div className="h-14 px-5 border-b border-neutral-200 flex items-center justify-between gap-4 shrink-0 bg-white">
           <div className="min-w-0">
             <div className="text-sm font-semibold text-neutral-900 truncate">{title}</div>
             {subtitle ? (
@@ -46,7 +49,7 @@ export function DrilldownDrawer({ open, title, subtitle, children, onClose, widt
           </div>
           <button
             type="button"
-            className="h-8 px-3 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-white text-sm text-neutral-700 transition-colors"
+            className="h-8 w-8 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-white text-neutral-500 hover:text-neutral-900 transition-colors flex items-center justify-center text-sm font-medium"
             onClick={onClose}
           >
             ✕
@@ -74,7 +77,7 @@ export function DrawerSection({ title, children, className }) {
   return (
     <div className={cn("space-y-2", className)}>
       {title ? (
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 pb-1">
           {title}
         </div>
       ) : null}
@@ -93,6 +96,25 @@ export function DrawerRow({ label, value, highlight }) {
       <span className={cn("text-xs font-medium text-right", highlight ? "text-[#E80912]" : "text-neutral-800")}>
         {value}
       </span>
+    </div>
+  );
+}
+
+/**
+ * DrawerChart — standardised chart container inside a drawer.
+ * Adds label, consistent height, background and border.
+ */
+export function DrawerChart({ title, children, height = 180 }) {
+  return (
+    <div className="rounded-xl border border-neutral-100 bg-neutral-50/80 overflow-hidden">
+      {title && (
+        <div className="px-3 pt-3 pb-1">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{title}</p>
+        </div>
+      )}
+      <div style={{ height }} className="w-full px-1 pb-2">
+        {children}
+      </div>
     </div>
   );
 }

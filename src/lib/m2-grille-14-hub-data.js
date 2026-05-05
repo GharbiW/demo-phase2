@@ -1,5 +1,5 @@
 /**
- * M2 — Hub unique « grille 14 postes » : métadonnées par onglet + lignes détail (démo).
+ * M2 — Hub unique « grille 13 postes » : métadonnées par onglet + lignes détail (démo).
  * Aligné sur `m3CostGrid` (ordre identique).
  */
 import {

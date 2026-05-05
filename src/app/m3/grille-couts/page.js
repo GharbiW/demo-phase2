@@ -9,22 +9,15 @@ import { AiInsightBanner } from "@/components/ui/AiInsightBanner";
 import { m3CostGrid, m3TheoreticalInputs } from "@/lib/demo-data";
 import { cockpitCostStandardsDefaults } from "@/lib/cockpit-mock-data";
 import {
-  Save,
-  ArrowRight,
-  Flame,
-  TrendingUp,
-  TrendingDown,
-  ChevronDown,
-  Filter,
-  ArrowDownAZ,
-  Settings2,
-  Info,
+  Save, ArrowRight, Flame, TrendingUp, TrendingDown,
+  ChevronDown, Filter, ArrowDownAZ, Settings2, Info,
+  BarChart2, AlertTriangle, CheckCircle2,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 const TYPE_FILTERS = [
-  { key: "all", label: "Tous", color: "bg-neutral-100 text-neutral-700 border-neutral-300" },
-  { key: "Fixe", label: "Fixe", color: "bg-slate-50 text-slate-700 border-slate-200" },
+  { key: "all", label: "Tous", color: "bg-neutral-100 text-neutral-700 border-neutral-200" },
+  { key: "Fixe", label: "Fixe", color: "bg-slate-100 text-slate-700 border-slate-200" },
   { key: "Variable", label: "Variable", color: "bg-amber-50 text-amber-800 border-amber-200" },
   { key: "Semi-var.", label: "Semi-var.", color: "bg-sky-50 text-sky-700 border-sky-200" },
   { key: "Var. lissé", label: "Var. lissé", color: "bg-violet-50 text-violet-700 border-violet-200" },
@@ -43,10 +36,16 @@ const fmtKEur = (v, signed = false) => {
   return `${sign}${(Math.abs(v) / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} k€`;
 };
 
-const fmtEur = (v) => `${v.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €`;
-
 const POSTE_HINTS = {
   "Salaires & charges RH": "H1 — diviseur jours à arbitrer",
+};
+
+const TYPE_DOT_COLORS = {
+  Fixe: "bg-slate-400",
+  Variable: "bg-amber-500",
+  "Semi-var.": "bg-sky-500",
+  "Var. lissé": "bg-violet-500",
+  Exceptionnel: "bg-rose-500",
 };
 
 export default function GrilleCoutsPage() {
@@ -88,16 +87,11 @@ export default function GrilleCoutsPage() {
       const aA = Math.abs(a.coutReelMensuel - a.coutTheoMensuel);
       const aB = Math.abs(b.coutReelMensuel - b.coutTheoMensuel);
       switch (sortKey) {
-        case "drift-desc":
-          return Math.abs(dB) - Math.abs(dA);
-        case "drift-abs":
-          return aB - aA;
-        case "size":
-          return b.coutReelMensuel - a.coutReelMensuel;
-        case "alpha":
-          return a.poste.localeCompare(b.poste, "fr");
-        default:
-          return 0;
+        case "drift-desc": return Math.abs(dB) - Math.abs(dA);
+        case "drift-abs": return aB - aA;
+        case "size": return b.coutReelMensuel - a.coutReelMensuel;
+        case "alpha": return a.poste.localeCompare(b.poste, "fr");
+        default: return 0;
       }
     });
     return arr;
@@ -112,8 +106,7 @@ export default function GrilleCoutsPage() {
   const topDerives = useMemo(() => {
     return [...grid]
       .map((row, idx) => ({
-        ...row,
-        idx,
+        ...row, idx,
         delta: row.coutReelMensuel - row.coutTheoMensuel,
         pct: row.coutTheoMensuel ? ((row.coutReelMensuel - row.coutTheoMensuel) / row.coutTheoMensuel) * 100 : 0,
       }))
@@ -121,6 +114,24 @@ export default function GrilleCoutsPage() {
       .sort((a, b) => b.delta - a.delta)
       .slice(0, 3);
   }, [grid]);
+
+  const driftSegments = useMemo(() => {
+    const denom = Math.max(totalDeltaAbs, 1);
+    const groups = {};
+    for (const r of grid) {
+      const d = Math.abs(r.coutReelMensuel - r.coutTheoMensuel);
+      groups[r.type] = (groups[r.type] || 0) + d;
+    }
+    return Object.entries(groups)
+      .filter(([, v]) => v > 0)
+      .map(([type, v]) => ({
+        type,
+        share: (v / denom) * 100,
+        color: TYPE_DOT_COLORS[type] || "bg-neutral-400",
+        amount: v,
+      }))
+      .sort((a, b) => b.share - a.share);
+  }, [grid, totalDeltaAbs]);
 
   const handleSave = (idx, field, val) => {
     const numVal = parseFloat(String(val).replace(",", ".")) || 0;
@@ -133,41 +144,17 @@ export default function GrilleCoutsPage() {
     showToast(`✓ ${grid[idx].poste} — ${lbl} mis à jour`);
   };
 
-  // Composition for hero stack bar
-  const driftSegments = useMemo(() => {
-    const denom = Math.max(totalDeltaAbs, 1);
-    const groups = {};
-    for (const r of grid) {
-      const d = Math.abs(r.coutReelMensuel - r.coutTheoMensuel);
-      groups[r.type] = (groups[r.type] || 0) + d;
-    }
-    const colorByType = {
-      Fixe: "bg-slate-400",
-      Variable: "bg-amber-500",
-      "Semi-var.": "bg-sky-500",
-      "Var. lissé": "bg-violet-500",
-      Exceptionnel: "bg-rose-500",
-    };
-    return Object.entries(groups)
-      .filter(([, v]) => v > 0)
-      .map(([type, v]) => ({
-        type,
-        share: (v / denom) * 100,
-        color: colorByType[type] || "bg-neutral-400",
-        amount: v,
-      }))
-      .sort((a, b) => b.share - a.share);
-  }, [grid, totalDeltaAbs]);
+  const isOver = totals.delta > 0;
 
   return (
     <PageShell
       moduleLabel="Module 3 · Cost Engine"
-      title="Cost Atlas — Grille 14 postes"
+      title="Cost Atlas — Grille 13 postes"
       description="Réconciliation théorique vs réel. Chaque poste est une carte explorable — pas une ligne d'Excel."
       bare
       actions={
         <>
-          <span className="hidden md:inline-flex items-center gap-1.5 h-9 px-3 rounded-full border border-neutral-200 bg-white text-xs font-semibold text-neutral-700">
+          <span className="hidden md:inline-flex items-center gap-1.5 h-9 px-3 rounded-full border border-neutral-200 bg-white text-xs font-semibold text-neutral-600 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
             Mars 2026 · M-1
           </span>
@@ -183,114 +170,180 @@ export default function GrilleCoutsPage() {
     >
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
 
-      <div className="space-y-6">
-        {/* ── Hero — La réconciliation du mois ───────────────────── */}
-        <section className="relative overflow-hidden rounded-3xl border border-neutral-900 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-xl">
-          <div
-            className="absolute inset-0 opacity-60 pointer-events-none"
-            style={{
-              backgroundImage:
-                "radial-gradient(800px 400px at 0% 0%, rgba(232,9,18,0.18), transparent 60%), radial-gradient(700px 500px at 100% 100%, rgba(59,130,246,0.12), transparent 55%)",
-            }}
-          />
-          <div className="relative px-6 sm:px-10 py-8 sm:py-10">
-            <div className="flex items-center gap-2 mb-6">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-700 bg-neutral-900/60 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300">
-                Réconciliation du mois
-              </span>
-              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">
-                14 postes · base mensuelle
+      <div className="space-y-5">
+
+        {/* ── Reconciliation Panel ─────────────────────────────────── */}
+        <section className="rounded-2xl border border-neutral-200 bg-white shadow-sm overflow-hidden">
+          {/* Top bar */}
+          <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-neutral-100">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+                <BarChart2 className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Réconciliation du mois</p>
+                <p className="text-sm font-semibold text-neutral-900">13 postes · base mensuelle</p>
+              </div>
+            </div>
+            <div className={cn(
+              "inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border",
+              isOver
+                ? "bg-red-50 text-red-700 border-red-200"
+                : "bg-emerald-50 text-emerald-700 border-emerald-200"
+            )}>
+              {isOver ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
+              {isOver ? "Surcoût constaté" : "Sous le budget"}
+            </div>
+          </div>
+
+          {/* Three KPI blocks */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-neutral-100">
+            {/* Théorique */}
+            <div className="px-6 py-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">Théorique</span>
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-4xl font-bold text-neutral-900 tabular-nums font-mono">
+                  {(totals.theo / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 0 })}
+                </span>
+                <span className="text-lg font-semibold text-neutral-400">k€</span>
+              </div>
+              <p className="mt-2 text-xs text-neutral-500 leading-relaxed">
+                Coût attendu si le mois s&apos;était passé comme la grille.
+              </p>
+              <div className="mt-3 h-1.5 rounded-full bg-blue-100 overflow-hidden">
+                <div className="h-full bg-blue-500 rounded-full" style={{ width: "100%" }} />
+              </div>
+            </div>
+
+            {/* Delta */}
+            <div className={cn(
+              "px-6 py-5 flex flex-col items-center justify-center text-center",
+              isOver ? "bg-red-50/60" : "bg-emerald-50/60"
+            )}>
+              <p className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-3">
+                Écart à expliquer
+              </p>
+              <div className="flex items-center gap-2 mb-1">
+                {isOver
+                  ? <TrendingUp className="w-5 h-5 text-red-500" />
+                  : <TrendingDown className="w-5 h-5 text-emerald-600" />
+                }
+                <span className={cn(
+                  "text-4xl font-bold tabular-nums font-mono",
+                  isOver ? "text-red-600" : "text-emerald-700"
+                )}>
+                  {totals.delta > 0 ? "+" : "−"}{(Math.abs(totals.delta) / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} k€
+                </span>
+              </div>
+              <span className={cn(
+                "mt-1 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border",
+                isOver ? "bg-red-100 text-red-700 border-red-200" : "bg-emerald-100 text-emerald-700 border-emerald-200"
+              )}>
+                {totals.pct > 0 ? "+" : ""}{totals.pct.toFixed(1)}% vs théorique
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6 md:gap-10">
-              <HeroNumber
-                eyebrow="Théorique"
-                value={totals.theo}
-                accent="text-blue-300"
-                tagline="Coût attendu si le mois s'était passé exactement comme la grille."
-              />
-              <HeroDelta delta={totals.delta} pct={totals.pct} />
-              <HeroNumber
-                eyebrow="Réel constaté"
-                value={totals.reel}
-                accent="text-emerald-300"
-                tagline="Coût mesuré à partir des flux M2 — AS24, paie, garage, télématique."
-                align="right"
-              />
+            {/* Réel */}
+            <div className="px-6 py-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">Réel constaté</span>
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-4xl font-bold text-neutral-900 tabular-nums font-mono">
+                  {(totals.reel / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 0 })}
+                </span>
+                <span className="text-lg font-semibold text-neutral-400">k€</span>
+              </div>
+              <p className="mt-2 text-xs text-neutral-500 leading-relaxed">
+                Mesuré à partir des flux M2 — AS24, paie, garage, télématique.
+              </p>
+              <div className="mt-3 h-1.5 rounded-full bg-emerald-100 overflow-hidden">
+                <div
+                  className={cn("h-full rounded-full", isOver ? "bg-red-400" : "bg-emerald-500")}
+                  style={{ width: `${Math.min(100, (totals.reel / totals.theo) * 100)}%` }}
+                />
+              </div>
             </div>
+          </div>
 
-            <div className="mt-8">
-              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.16em] font-bold text-neutral-400 mb-2">
-                <span>Composition de la dérive (par type)</span>
-                <span>{fmtKEur(totalDeltaAbs)} cumulés</span>
-              </div>
-              <div className="h-3 rounded-full bg-neutral-800 overflow-hidden flex">
-                {driftSegments.map((s) => (
-                  <span
-                    key={s.type}
-                    className={cn("h-full first:rounded-l-full last:rounded-r-full", s.color)}
-                    style={{ width: `${s.share}%` }}
-                    title={`${s.type} · ${fmtKEur(s.amount)} (${s.share.toFixed(0)}%)`}
-                  />
-                ))}
-              </div>
-              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-neutral-300">
-                {driftSegments.map((s) => (
-                  <span key={s.type} className="inline-flex items-center gap-1.5">
-                    <span className={cn("inline-block w-2 h-2 rounded-sm", s.color)} />
-                    <span className="font-semibold text-neutral-200">{s.type}</span>
-                    <span className="text-neutral-500 tabular-nums">{s.share.toFixed(0)}%</span>
-                  </span>
-                ))}
-              </div>
+          {/* Composition bar */}
+          <div className="px-6 py-4 border-t border-neutral-100 bg-neutral-50/60">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-neutral-500">Composition de la dérive par type</span>
+              <span className="text-xs font-semibold text-neutral-700 tabular-nums">{fmtKEur(totalDeltaAbs)} cumulés</span>
+            </div>
+            <div className="h-2.5 rounded-full bg-neutral-200 overflow-hidden flex gap-px">
+              {driftSegments.map((s) => (
+                <span
+                  key={s.type}
+                  className={cn("h-full first:rounded-l-full last:rounded-r-full", s.color)}
+                  style={{ width: `${s.share}%` }}
+                  title={`${s.type} · ${fmtKEur(s.amount)} (${s.share.toFixed(0)}%)`}
+                />
+              ))}
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1.5">
+              {driftSegments.map((s) => (
+                <span key={s.type} className="inline-flex items-center gap-1.5 text-xs text-neutral-600">
+                  <span className={cn("inline-block w-2 h-2 rounded-full shrink-0", s.color)} />
+                  <span className="font-medium">{s.type}</span>
+                  <span className="text-neutral-400 tabular-nums">{s.share.toFixed(0)}%</span>
+                </span>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* ── Top 3 dérives ────────────────────────────────────── */}
+        {/* ── Top 3 dérives ──────────────────────────────────────── */}
         {topDerives.length > 0 && (
           <section>
-            <SectionHeader
-              eyebrow="Hot list"
-              title="Les 3 postes qui dérapent le plus"
-              subtitle="Cliquer pour ouvrir la carte correspondante."
-              icon={<Flame className="w-4 h-4 text-rose-500" />}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-7 h-7 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-center">
+                <Flame className="w-3.5 h-3.5 text-orange-500" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-neutral-900">Les 3 postes qui dérapent le plus</p>
+                <p className="text-xs text-neutral-500">Cliquer pour ouvrir la carte correspondante</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {topDerives.map((row, rank) => (
                 <button
                   key={row.poste}
                   type="button"
                   onClick={() => {
                     setExpanded(row.idx);
-                    document.getElementById(`cost-${row.idx}`)?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "center",
-                    });
+                    document.getElementById(`cost-${row.idx}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
                   }}
-                  className="group relative overflow-hidden rounded-2xl border border-rose-200 bg-gradient-to-br from-rose-50/80 via-white to-white p-4 text-left hover:shadow-md transition-all"
+                  className="group rounded-xl border border-neutral-200 bg-white p-4 text-left hover:border-red-200 hover:shadow-md transition-all"
                 >
-                  <span className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-rose-200/50 blur-2xl" />
-                  <div className="relative flex items-start justify-between gap-2 mb-2">
-                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-600 text-white text-[11px] font-bold">
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#E80912] text-white text-[11px] font-bold shrink-0">
                       {rank + 1}
                     </span>
-                    <span className="font-mono font-bold text-rose-700 tabular-nums text-sm">
-                      {row.pct > 0 ? "+" : ""}
-                      {row.pct.toFixed(1)}%
+                    <span className="text-xs font-bold text-red-600 tabular-nums bg-red-50 border border-red-100 px-2 py-0.5 rounded-full">
+                      {row.pct > 0 ? "+" : ""}{row.pct.toFixed(1)}%
                     </span>
                   </div>
-                  <h3 className="relative text-sm font-semibold text-neutral-950 leading-snug mb-2">
-                    {row.poste}
-                  </h3>
-                  <div className="relative flex items-baseline gap-2">
-                    <span className="font-mono text-xl font-bold text-rose-700 tabular-nums">
+                  <p className="text-sm font-semibold text-neutral-900 leading-snug mb-1">{row.poste}</p>
+                  <div className="flex items-baseline gap-1.5 mb-2">
+                    <span className="text-xl font-bold text-red-600 tabular-nums font-mono">
                       {fmtKEur(row.delta, true)}
                     </span>
-                    <span className="text-[10px] text-neutral-500">vs théo</span>
+                    <span className="text-xs text-neutral-400">vs théo</span>
                   </div>
-                  <div className="relative mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-rose-600 group-hover:gap-2 transition-all">
+                  {/* Mini progress */}
+                  <div className="h-1 rounded-full bg-red-100 overflow-hidden">
+                    <div
+                      className="h-full bg-red-400 rounded-full transition-all"
+                      style={{ width: `${Math.min(100, Math.abs(row.pct) * 3)}%` }}
+                    />
+                  </div>
+                  <div className="mt-2.5 flex items-center gap-1 text-xs text-[#E80912] font-semibold group-hover:gap-2 transition-all">
                     Inspecter <ArrowRight className="w-3 h-3" />
                   </div>
                 </button>
@@ -299,22 +352,17 @@ export default function GrilleCoutsPage() {
           </section>
         )}
 
-        {/* ── Heatmap ──────────────────────────────────────────── */}
+        {/* ── Heatmap ─────────────────────────────────────────────── */}
         <DriftHeatmap
           rows={grid}
           activeId={expanded}
           onSelect={(idx) => {
             setExpanded((v) => (v === idx ? null : idx));
-            if (typeof document !== "undefined") {
-              document.getElementById(`cost-${idx}`)?.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
-            }
+            document.getElementById(`cost-${idx}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
           }}
         />
 
-        {/* ── AI insight + hypothesis ──────────────────────────── */}
+        {/* ── AI insight ──────────────────────────────────────────── */}
         <AiInsightBanner
           label="IA — Carburant +10.7% vs théorique · révision recommandée"
           insight="Le poste « Carburant tracteur » dépasse de 10.7% le théorique (157 k€ vs 142 k€). Pattern de surconsommation cohérent avec deux véhicules au-delà du seuil km. Action suggérée : revoir le standard GO et planifier les révisions AB-421-PL et IJ-556-PL."
@@ -322,30 +370,29 @@ export default function GrilleCoutsPage() {
           action={{ label: "Voir recommandations IA", href: "/m6/recommandations" }}
         />
 
-        <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50/70 px-4 py-3">
+        {/* ── Hypothesis note ─────────────────────────────────────── */}
+        <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3.5">
           <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-          <p className="text-[13px] text-blue-800 leading-relaxed">
+          <p className="text-sm text-blue-800 leading-relaxed">
             <strong>H1 — Hypothèse en attente :</strong> diviseur jours ouvrés (21 ou 26) à arbitrer pour le calcul RH. La carte « Salaires &amp; charges RH » sera réajustée après validation.
           </p>
         </div>
 
-        {/* ── Atlas — filters + cards ──────────────────────────── */}
+        {/* ── Atlas — filters + cards ─────────────────────────────── */}
         <section>
-          <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-4 mb-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4 p-4 rounded-xl border border-neutral-200 bg-white shadow-sm">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-1">
-                Atlas des coûts
+              <p className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-0.5">Atlas des coûts</p>
+              <p className="text-sm font-semibold text-neutral-900">
+                {visibleRows.length} poste{visibleRows.length > 1 ? "s" : ""}
+                <span className="text-neutral-400 font-normal"> · cliquez pour éditer théo / réel</span>
               </p>
-              <h2 className="text-lg font-semibold text-neutral-950 tracking-tight">
-                {visibleRows.length} carte{visibleRows.length > 1 ? "s" : ""} ·{" "}
-                <span className="text-neutral-500 font-normal">cliquez pour éditer théo / réel</span>
-              </h2>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1 text-[10px] text-neutral-500">
-                <Filter className="w-3 h-3" />
-                <span className="uppercase font-bold tracking-wider">Type</span>
+              <div className="inline-flex items-center gap-1 text-xs text-neutral-500 mr-1">
+                <Filter className="w-3.5 h-3.5" />
+                <span className="font-semibold">Type</span>
               </div>
               {TYPE_FILTERS.map((f) => {
                 const active = typeFilter === f.key;
@@ -360,33 +407,29 @@ export default function GrilleCoutsPage() {
                       "inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full border text-[11px] font-semibold transition-all",
                       active
                         ? "border-neutral-900 bg-neutral-900 text-white shadow-sm"
-                        : f.color + " hover:bg-neutral-50",
+                        : f.color + " hover:border-neutral-300",
                     )}
                   >
                     <span>{f.label}</span>
-                    <span
-                      className={cn(
-                        "rounded-full px-1.5 text-[10px] font-bold tabular-nums",
-                        active ? "bg-white/20 text-white" : "bg-white/70 text-neutral-700",
-                      )}
-                    >
+                    <span className={cn(
+                      "rounded-full px-1.5 text-[10px] font-bold tabular-nums",
+                      active ? "bg-white/20 text-white" : "bg-white/80 text-neutral-600",
+                    )}>
                       {c}
                     </span>
                   </button>
                 );
               })}
 
-              <div className="ml-2 inline-flex items-center gap-1.5 h-7 pl-2 pr-1 rounded-full border border-neutral-200 bg-white text-[11px] font-semibold text-neutral-700">
-                <ArrowDownAZ className="w-3 h-3 text-neutral-400" />
+              <div className="ml-1 inline-flex items-center gap-1.5 h-7 pl-2.5 pr-2 rounded-full border border-neutral-200 bg-white text-[11px] font-semibold text-neutral-700">
+                <ArrowDownAZ className="w-3.5 h-3.5 text-neutral-400" />
                 <select
                   value={sortKey}
                   onChange={(e) => setSortKey(e.target.value)}
                   className="bg-transparent text-[11px] font-semibold focus:outline-none cursor-pointer"
                 >
                   {SORTS.map((s) => (
-                    <option key={s.key} value={s.key}>
-                      {s.label}
-                    </option>
+                    <option key={s.key} value={s.key}>{s.label}</option>
                   ))}
                 </select>
               </div>
@@ -409,74 +452,50 @@ export default function GrilleCoutsPage() {
           </div>
         </section>
 
-        {/* ── Standards éditables (collapsed accordion) ────────── */}
-        <section className="rounded-2xl border border-neutral-200 bg-white">
+        {/* ── Standards (collapsible) ─────────────────────────────── */}
+        <section className="rounded-xl border border-neutral-200 bg-white overflow-hidden">
           <button
             type="button"
             onClick={() => setShowStandards((v) => !v)}
-            className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left"
+            className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-neutral-50 transition-colors"
           >
-            <div className="flex items-center gap-3 min-w-0">
-              <span className="inline-flex w-8 h-8 rounded-lg bg-neutral-900 text-white items-center justify-center shrink-0">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex w-8 h-8 rounded-lg bg-neutral-100 border border-neutral-200 text-neutral-600 items-center justify-center shrink-0">
                 <Settings2 className="w-4 h-4" />
               </span>
-              <div className="min-w-0">
-                <div className="text-sm font-semibold text-neutral-950">
-                  Standards de calcul (RH · Matériel · Carburant)
-                </div>
-                <p className="text-[12px] text-neutral-500 mt-0.5">
-                  Hypothèses qui alimentent les coûts théoriques. À éditer en arbitrage finance.
-                </p>
+              <div>
+                <p className="text-sm font-semibold text-neutral-900">Standards de calcul (RH · Matériel · Carburant)</p>
+                <p className="text-xs text-neutral-500 mt-0.5">Hypothèses qui alimentent les coûts théoriques.</p>
               </div>
             </div>
-            <span className="flex items-center gap-1 text-[11px] font-semibold text-neutral-500">
+            <span className="flex items-center gap-1 text-xs font-semibold text-neutral-500 shrink-0">
               {showStandards ? "Replier" : "Déplier"}
-              <ChevronDown
-                className={cn("w-4 h-4 transition-transform", showStandards && "rotate-180")}
-              />
+              <ChevronDown className={cn("w-4 h-4 transition-transform", showStandards && "rotate-180")} />
             </span>
           </button>
 
           {showStandards && (
             <div className="border-t border-neutral-100 px-5 py-5 space-y-6">
-              <StandardsBlock
-                title="RH — forfait journalier"
-                desc="Coût employeur par jour (salaire + charges + congés)."
-              >
+              <StandardsBlock title="RH — forfait journalier" desc="Coût employeur par jour (salaire + charges + congés).">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {stdRh.map((row) => (
                     <StandardInput
-                      key={row.id}
-                      label={row.role}
-                      value={row.dailyEUR}
-                      suffix="€/j"
-                      onChange={(v) =>
-                        setStdRh((s) => s.map((x) => (x.id === row.id ? { ...x, dailyEUR: v } : x)))
-                      }
+                      key={row.id} label={row.role} value={row.dailyEUR} suffix="€/j"
+                      onChange={(v) => setStdRh((s) => s.map((x) => (x.id === row.id ? { ...x, dailyEUR: v } : x)))}
                     />
                   ))}
                 </div>
               </StandardsBlock>
 
-              <StandardsBlock
-                title="Matériel — loyer / 26 j"
-                desc="Loyers d'équipement répartis sur 26 jours ouvrés."
-              >
+              <StandardsBlock title="Matériel — loyer / 26 j" desc="Loyers d'équipement répartis sur 26 jours ouvrés.">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {stdMat.map((row) => (
                     <StandardInput
-                      key={row.id}
-                      label={row.label}
-                      value={row.monthlyRent}
-                      suffix="€/mois"
+                      key={row.id} label={row.label} value={row.monthlyRent} suffix="€/mois"
                       hint={`${row.dailyEUR.toFixed(0)} €/j`}
                       onChange={(v) =>
                         setStdMat((s) =>
-                          s.map((x) =>
-                            x.id === row.id
-                              ? { ...x, monthlyRent: v, dailyEUR: Math.round((v / 26) * 100) / 100 }
-                              : x,
-                          ),
+                          s.map((x) => x.id === row.id ? { ...x, monthlyRent: v, dailyEUR: Math.round((v / 26) * 100) / 100 } : x)
                         )
                       }
                     />
@@ -484,15 +503,11 @@ export default function GrilleCoutsPage() {
                 </div>
               </StandardsBlock>
 
-              <StandardsBlock
-                title="Carburant théorique"
-                desc="Consommations standards utilisées pour le calcul du coût théorique."
-              >
+              <StandardsBlock title="Carburant théorique" desc="Consommations standards pour le calcul du coût théorique.">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {stdFuel.map((row) => (
                     <StandardInput
-                      key={row.id}
-                      label={row.label}
+                      key={row.id} label={row.label}
                       value={row.lPer100 ?? row.kgPer100}
                       suffix={row.lPer100 !== undefined ? "L/100" : "kg/100"}
                       step={0.1}
@@ -500,11 +515,9 @@ export default function GrilleCoutsPage() {
                         setStdFuel((s) =>
                           s.map((x) =>
                             x.id === row.id
-                              ? row.lPer100 !== undefined
-                                ? { ...x, lPer100: v }
-                                : { ...x, kgPer100: v }
-                              : x,
-                          ),
+                              ? row.lPer100 !== undefined ? { ...x, lPer100: v } : { ...x, kgPer100: v }
+                              : x
+                          )
                         )
                       }
                     />
@@ -512,11 +525,11 @@ export default function GrilleCoutsPage() {
                 </div>
               </StandardsBlock>
 
-              <div className="flex justify-end">
+              <div className="flex justify-end pt-1">
                 <button
                   type="button"
                   onClick={() => showToast("✓ Standards enregistrés — recalcul théorique en cours…")}
-                  className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-800"
+                  className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-800 transition-colors"
                 >
                   Mettre à jour les standards
                 </button>
@@ -525,122 +538,34 @@ export default function GrilleCoutsPage() {
           )}
         </section>
 
-        {/* ── Inputs théoriques de référence ─────────────────────── */}
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-3">
+        {/* ── Theoretical inputs ─────────────────────────────────── */}
+        <section className="rounded-xl border border-neutral-200 bg-white p-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-3">
             Inputs théoriques de référence
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
             {Object.entries(m3TheoreticalInputs).map(([k, v]) => (
-              <div key={k} className="rounded-lg border border-neutral-100 bg-neutral-50 px-3 py-2">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                  {k}
-                </div>
-                <div className="text-[12px] text-neutral-700 mt-0.5 leading-snug">{v}</div>
+              <div key={k} className="rounded-lg border border-neutral-100 bg-neutral-50 px-3 py-2.5">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{k}</div>
+                <div className="text-xs text-neutral-700 mt-0.5 leading-snug font-medium">{v}</div>
               </div>
             ))}
           </div>
         </section>
+
       </div>
     </PageShell>
   );
 }
 
-// ── Hero subcomponents ──────────────────────────────────────────────
-
-function HeroNumber({ eyebrow, value, accent = "text-white", tagline, align = "left" }) {
-  return (
-    <div className={cn(align === "right" && "md:text-right")}>
-      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400 mb-2">
-        {eyebrow}
-      </p>
-      <div className="flex items-baseline gap-1.5 leading-none">
-        {align === "right" ? (
-          <>
-            <span className={cn("font-mono font-bold tabular-nums text-[44px] md:text-[52px]", accent)}>
-              {(value / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 0 })}
-            </span>
-            <span className="font-mono text-xl text-neutral-500 font-medium">k€</span>
-          </>
-        ) : (
-          <>
-            <span className={cn("font-mono font-bold tabular-nums text-[44px] md:text-[52px]", accent)}>
-              {(value / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 0 })}
-            </span>
-            <span className="font-mono text-xl text-neutral-500 font-medium">k€</span>
-          </>
-        )}
-      </div>
-      {tagline && (
-        <p className="mt-2 text-[12px] text-neutral-400 max-w-xs leading-relaxed">{tagline}</p>
-      )}
-    </div>
-  );
-}
-
-function HeroDelta({ delta, pct }) {
-  const isOver = delta > 0;
-  const isUnder = delta < 0;
-  const tone = isOver ? "text-rose-300" : isUnder ? "text-emerald-300" : "text-neutral-300";
-  const TrendIcon = isOver ? TrendingUp : isUnder ? TrendingDown : ArrowRight;
-  return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <div className="hidden md:flex items-center gap-2 text-neutral-600 mb-2">
-        <span className="block w-10 h-px bg-neutral-700" />
-        <ArrowRight className="w-3 h-3" />
-        <span className="block w-10 h-px bg-neutral-700" />
-      </div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400 mb-2">
-        Écart à expliquer
-      </p>
-      <div className={cn("flex items-center gap-2", tone)}>
-        <TrendIcon className="w-5 h-5" />
-        <span className="font-mono font-bold tabular-nums text-3xl md:text-4xl">
-          {delta > 0 ? "+" : delta < 0 ? "−" : ""}
-          {(Math.abs(delta) / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} k€
-        </span>
-      </div>
-      <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-900/60 px-2 py-0.5 text-[10px] font-semibold text-neutral-300 tabular-nums">
-        {pct > 0 ? "+" : ""}
-        {pct.toFixed(1)}% vs théo
-      </span>
-    </div>
-  );
-}
-
-// ── Section header ──────────────────────────────────────────────
-
-function SectionHeader({ eyebrow, title, subtitle, icon }) {
-  return (
-    <div className="flex items-end justify-between gap-3 mb-3">
-      <div className="flex items-center gap-3">
-        {icon && (
-          <span className="inline-flex w-8 h-8 rounded-lg bg-rose-50 border border-rose-100 items-center justify-center shrink-0">
-            {icon}
-          </span>
-        )}
-        <div>
-          {eyebrow && (
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-0.5">
-              {eyebrow}
-            </p>
-          )}
-          <h2 className="text-[15px] font-semibold text-neutral-950 tracking-tight">{title}</h2>
-          {subtitle && <p className="text-[11px] text-neutral-500 mt-0.5">{subtitle}</p>}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Standards subcomponents ──────────────────────────────────────────────
+// ── Standards subcomponents ─────────────────────────────────────────
 
 function StandardsBlock({ title, desc, children }) {
   return (
     <div>
-      <div className="mb-2">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-700">{title}</p>
-        <p className="text-[11px] text-neutral-500">{desc}</p>
+      <div className="mb-3">
+        <p className="text-xs font-bold uppercase tracking-wider text-neutral-700">{title}</p>
+        <p className="text-xs text-neutral-500 mt-0.5">{desc}</p>
       </div>
       {children}
     </div>
@@ -649,18 +574,18 @@ function StandardsBlock({ title, desc, children }) {
 
 function StandardInput({ label, value, suffix, hint, step = 1, onChange }) {
   return (
-    <label className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-3 py-2">
+    <label className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-3 py-2.5 hover:border-neutral-300 transition-colors cursor-pointer">
       <span className="flex-1 min-w-0">
-        <span className="block text-[12px] font-medium text-neutral-800 truncate">{label}</span>
-        {hint && <span className="block text-[10px] text-neutral-400">{hint}</span>}
+        <span className="block text-xs font-medium text-neutral-800 truncate">{label}</span>
+        {hint && <span className="block text-[10px] text-neutral-400 mt-0.5">{hint}</span>}
       </span>
-      <span className="flex items-center gap-1 shrink-0">
+      <span className="flex items-center gap-1.5 shrink-0">
         <input
           type="number"
           step={step}
           value={value}
           onChange={(e) => onChange?.(Number(e.target.value))}
-          className="w-24 h-8 rounded-md border border-neutral-200 bg-neutral-50 px-2 font-mono text-right text-sm focus:outline-none focus:ring-2 focus:ring-neutral-200"
+          className="w-24 h-8 rounded-md border border-neutral-200 bg-neutral-50 px-2 font-mono text-right text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-colors"
         />
         <span className="text-[10px] text-neutral-500 font-semibold w-12">{suffix}</span>
       </span>
