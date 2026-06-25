@@ -82,7 +82,7 @@ export default function AlertesPage() {
           label="IA — 2 patterns récurrents détectés automatiquement"
           insight="Moteur d'analyse : surconsommation carburant GO détectée sur 4 tournées Dupont A. et Bernard P. (+18% et +15% vs théorique). Pattern cohérent avec diagnostic moteur. Recommandation préventive : maintenance GO avant prochain cycle (Phase 3 — IA non activée)."
           confidence={84}
-          action={{ label: "Voir les recommandations IA détaillées", href: "/m6/recommandations" }}
+          action={{ label: "Voir l'analyse des écarts", href: "/rentabilite/analyse-ecarts" }}
           defaultOpen
         />
 
@@ -141,7 +141,7 @@ export default function AlertesPage() {
                     <div className="flex items-center gap-3 mt-3 flex-wrap">
                       {hasM4Link && (
                         <Link
-                          href="/m6/analyse-ecarts"
+                          href="/rentabilite/analyse-ecarts"
                           className="flex items-center gap-1 text-xs text-[#E80912] hover:underline font-medium"
                         >
                           Voir dans M4 <ChevronRight className="w-3 h-3" />

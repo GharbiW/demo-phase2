@@ -80,7 +80,7 @@ export default function VueSynthetiquePage() {
       description={`Cockpit rentabilité · 30 tournées · ${m4Clients.length} clients · période ${state.period}`}
       actions={
         <Link
-          href="/m6/analyse-ecarts"
+          href="/rentabilite/analyse-ecarts"
           className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-semibold transition-colors"
         >
           Analyse écarts <ArrowRight className="w-4 h-4" />
@@ -133,7 +133,7 @@ export default function VueSynthetiquePage() {
           label="IA — Chronopost marge structurellement négative — renégociation recommandée"
           insight="Analyse sur 4 mois consécutifs : Chronopost affiche un taux de marge négatif sur 3 mois (-2.3%, -1.8%, -3.1%). Pattern détecté : sous-estimation du coût GO nocturne. Recommandation IA Phase 3 : simuler une revalorisation tarifaire de +4.2% pour retrouver l'équilibre économique."
           confidence={82}
-          action={{ label: "Simuler la renégociation", href: "/m6/simulations" }}
+          action={{ label: "Voir l'analyse des écarts", href: "/rentabilite/analyse-ecarts" }}
         />
 
         {/* ── 3. Finance KPI strip ─────────────────────────────────── */}
@@ -281,7 +281,7 @@ export default function VueSynthetiquePage() {
           title="Alertes actives"
           description={`${m5Alerts.length} alertes — ${m5Alerts.filter((a) => a.severity === "high").length} élevées`}
           actions={
-            <Link href="/m6/alertes" className="text-xs text-[#E80912] flex items-center gap-1 hover:gap-2 transition-all font-semibold">
+            <Link href="/rentabilite/alertes" className="text-xs text-[#E80912] flex items-center gap-1 hover:gap-2 transition-all font-semibold">
               Toutes <ArrowRight className="w-3 h-3" />
             </Link>
           }

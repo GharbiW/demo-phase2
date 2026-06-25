@@ -75,7 +75,7 @@ export default function AnalyseEcartsPage() {
         label="IA — Impact carburant représente 62% des écarts — cause principale identifiée"
         insight="Sur les 30 tournées analysées, le poste carburant génère 62% du delta négatif total (−3 840€ sur −6 200€ d'écarts cumulés). Pattern de surconsommation détecté sur 5 tournées avec le même véhicule AB-421-PL. Recommandation IA Phase 3 : alerte préventive 7 jours avant seuil de révision kilométrique."
         confidence={89}
-        action={{ label: "Voir les recommandations IA", href: "/m6/recommandations" }}
+        action={{ label: "Voir le détail par tournée", href: "/rentabilite/par-tournee" }}
       />
 
       <FinanceSection

@@ -48,7 +48,7 @@ export function AiInsightBanner({ insight, confidence = 85, label = "IA — Anal
           {action && (
             <div className="mt-2">
               <Link
-                href={action.href || "/m6"}
+                href={action.href || "/rentabilite/analyse-ecarts"}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-[color:var(--color-parnass-red)] hover:underline"
               >
                 {action.label}

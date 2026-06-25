@@ -77,7 +77,7 @@ export default function ParTourneePage() {
           label="IA — Pattern déficit détecté sur chauffeur Dupont A."
           insight="3 tournées consécutives déficitaires détectées pour Dupont A. (T-0422, T-0427, T-0450). Surconsommation GO systématique +18% vs théorique. Amplitude moyenne 11.4h. Recommandation : révision route + diagnostic moteur AB-421-PL."
           confidence={87}
-          action={{ label: "Voir les recommandations IA", href: "/m6/recommandations" }}
+          action={{ label: "Voir l'analyse des écarts", href: "/rentabilite/analyse-ecarts" }}
         />
 
         {/* Health chips + view toggle */}
@@ -372,7 +372,7 @@ export default function ParTourneePage() {
           )}
           <DrawerSection title="Navigation">
             <div className="flex flex-col gap-2">
-              <Link href="/m6/analyse-ecarts" className="flex items-center gap-2 text-xs text-[#E80912] hover:underline">
+              <Link href="/rentabilite/analyse-ecarts" className="flex items-center gap-2 text-xs text-[#E80912] hover:underline">
                 <TrendingDown className="w-3 h-3" /> Analyse complète des écarts
               </Link>
               <Link href="/rentabilite/par-chauffeur" className="flex items-center gap-2 text-xs text-neutral-600 hover:text-neutral-900">

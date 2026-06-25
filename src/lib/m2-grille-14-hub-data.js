@@ -23,7 +23,6 @@ const SLUGS = [
   "casse-sinistres",
   "immobilisation",
   "sous-traitance",
-  "repositionnements",
 ];
 
 const TAB_SHORT = [
@@ -40,7 +39,6 @@ const TAB_SHORT = [
   "Casse",
   "Immo.",
   "Sous-trait.",
-  "Pieds",
 ];
 
 function garageRows() {

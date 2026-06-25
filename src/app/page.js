@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {
   ArrowRight, BarChart3, Truck, Database, Calculator,
-  TrendingUp, Brain, Sparkles, ChevronRight, Lock, Layers, LineChart,
+  TrendingUp, Sparkles, ChevronRight, Layers, Sigma,
 } from "lucide-react";
 import { HomeCockpitStrip } from "@/components/finance/HomeCockpitStrip";
 
@@ -63,7 +63,7 @@ const MODULES = [
     textColor: "text-emerald-700",
     links: [
       { label: "Par tournée", href: "/rentabilite/par-tournee" },
-      { label: "Par client", href: "/rentabilite/par-client" },
+      { label: "Par véhicule", href: "/rentabilite/par-vehicule" },
       { label: "Par chauffeur", href: "/rentabilite/par-chauffeur" },
       { label: "Analyse des écarts", href: "/rentabilite/analyse-ecarts" },
     ],
@@ -79,24 +79,7 @@ const MODULES = [
     links: [
       { label: "Synthèse cockpit", href: "/rentabilite/synthese" },
       { label: "KPIs détaillés", href: "/rentabilite/kpis" },
-      { label: "Théorique vs Réel", href: "/rentabilite/theorique-reel" },
       { label: "Alertes", href: "/rentabilite/alertes" },
-    ],
-  },
-  {
-    num: "M6",
-    title: "Decision Support",
-    subtitle: "L'assistant stratégique",
-    href: "/m6",
-    icon: Brain,
-    color: "bg-neutral-400",
-    textColor: "text-neutral-500",
-    locked: true,
-    links: [
-      { label: "Recommandations IA", href: "/m6/recommandations" },
-      { label: "Simulations what-if", href: "/m6/simulations" },
-      { label: "Analyse écarts", href: "/m6/analyse-ecarts" },
-      { label: "Alertes", href: "/m6/alertes" },
     ],
   },
 ];
@@ -105,22 +88,16 @@ const QUICK_ACTIONS = [
   { label: "Cockpit Rentabilité", href: "/rentabilite/synthese", icon: BarChart3, badge: "Live" },
   { label: "Tournées", href: "/rentabilite/par-tournee", icon: Truck, badge: null },
   { label: "Grille Coûts", href: "/m3/grille-couts", icon: Calculator, badge: null },
-  { label: "Recommandations IA", href: "/m6/recommandations", icon: Brain, badge: "IA" },
+  { label: "Analyse des écarts", href: "/rentabilite/analyse-ecarts", icon: Sigma, badge: null },
 ];
 
 function ModuleCard({ module }) {
   const Icon = module.icon;
 
   return (
-    <div className={`group rounded-2xl border bg-white shadow-sm overflow-hidden flex flex-col transition-all ${module.locked ? "opacity-80 border-neutral-200" : "border-neutral-200 hover:shadow-md hover:border-neutral-300"}`}>
+    <div className="group rounded-2xl border bg-white shadow-sm overflow-hidden flex flex-col transition-all border-neutral-200 hover:shadow-md hover:border-neutral-300">
       {/* Header */}
       <Link href={module.href} className="block p-5 pb-4 relative">
-        {module.locked && (
-          <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-neutral-100 border border-neutral-200 px-2 py-0.5 text-[10px] font-semibold text-neutral-500">
-            <Lock className="w-2.5 h-2.5" />
-            Phase 3
-          </div>
-        )}
         <div className="flex items-start gap-3">
           <div className={`w-10 h-10 rounded-xl ${module.color} text-white flex items-center justify-center shrink-0 shadow-sm`}>
             <Icon className="w-5 h-5" />
@@ -177,7 +154,7 @@ export default function HomePage() {
 
               {/* Quick stats */}
               <div className="flex gap-6 md:gap-8 shrink-0">
-                {[["1,94 M€", "CA agrégé"], ["13", "postes de coûts"], ["6", "dimensions analyse"]].map(([v, l]) => (
+                {[["1,94 M€", "CA agrégé"], ["13", "postes de coûts"], ["3", "dimensions analyse"]].map(([v, l]) => (
                   <div key={l} className="text-center">
                     <div className="text-xl font-bold text-white tabular-nums">{v}</div>
                     <div className="text-[11px] text-neutral-500 mt-0.5">{l}</div>
@@ -221,7 +198,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Navigation</div>
-              <div className="text-base font-semibold text-neutral-900 mt-0.5">6 modules</div>
+              <div className="text-base font-semibold text-neutral-900 mt-0.5">5 modules</div>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -252,7 +229,7 @@ export default function HomePage() {
                 { step: "02", label: "MR", title: "Drill-down tournées", sub: "CA · coût réel · marge · variance", href: "/rentabilite/par-tournee", badge: "Δ −600 k€", badgeCls: "bg-red-50 text-red-700" },
                 { step: "03", label: "M3", title: "Grille coûts dual-track", sub: "13 postes — théorique / réel", href: "/m3/grille-couts", badge: "+152 k€ GO", badgeCls: "bg-amber-50 text-amber-800" },
                 { step: "04", label: "M2", title: "Data hub + ETL", sub: "11 sources financières connectées", href: "/m2", badge: "11 flux", badgeCls: "bg-neutral-100 text-neutral-700" },
-                { step: "05", label: "M1", title: "Contrats & Indexation", sub: "CA théorique + CNR / Dirham", href: "/m1/adv-contrats", badge: "+385 k€", badgeCls: "bg-blue-50 text-blue-800" },
+                { step: "05", label: "M1", title: "Contrats & Indexation", sub: "CA théorique + CNR / DIREM", href: "/m1/adv-contrats", badge: "+385 k€", badgeCls: "bg-blue-50 text-blue-800" },
               ].map((s) => (
                 <Link
                   key={s.step}

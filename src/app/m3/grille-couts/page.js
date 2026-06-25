@@ -367,7 +367,7 @@ export default function GrilleCoutsPage() {
           label="IA — Carburant +10.7% vs théorique · révision recommandée"
           insight="Le poste « Carburant tracteur » dépasse de 10.7% le théorique (157 k€ vs 142 k€). Pattern de surconsommation cohérent avec deux véhicules au-delà du seuil km. Action suggérée : revoir le standard GO et planifier les révisions AB-421-PL et IJ-556-PL."
           confidence={91}
-          action={{ label: "Voir recommandations IA", href: "/m6/recommandations" }}
+          action={{ label: "Voir l'analyse des écarts", href: "/rentabilite/analyse-ecarts" }}
         />
 
         {/* ── Hypothesis note ─────────────────────────────────────── */}

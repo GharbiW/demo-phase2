@@ -65,11 +65,9 @@ export const demoSidebarModules = [
     icon: TrendingUp,
     sections: [
       { name: "P4.1 Par tournée", href: "/rentabilite/par-tournee", icon: Truck },
-      { name: "P4.2 Par client", href: "/rentabilite/par-client", icon: ClipboardList },
+      { name: "P4.2 Par véhicule", href: "/rentabilite/par-vehicule", icon: Car },
       { name: "P4.3 Par chauffeur", href: "/rentabilite/par-chauffeur", icon: Users },
-      { name: "P4.4 Par véhicule", href: "/rentabilite/par-vehicule", icon: Car },
-      { name: "P4.5 Sous-traitance", href: "/rentabilite/sous-traitance", icon: Package },
-      { name: "P4.6 Analyse des écarts", href: "/rentabilite/analyse-ecarts", icon: Sigma },
+      { name: "P4.4 Analyse des écarts", href: "/rentabilite/analyse-ecarts", icon: Sigma },
     ],
   },
 
@@ -80,22 +78,7 @@ export const demoSidebarModules = [
     sections: [
       { name: "P5.1 Synthèse cockpit", href: "/rentabilite/synthese", icon: PieChart },
       { name: "P5.2 KPIs détaillés", href: "/rentabilite/kpis", icon: BarChart3 },
-      { name: "P5.3 Théorique vs Réel", href: "/rentabilite/theorique-reel", icon: ArrowUpDown },
-      { name: "P5.4 Indexation", href: "/rentabilite/indexation", icon: Fuel },
-      { name: "P5.5 Planning", href: "/rentabilite/planning", icon: LineChart },
-      { name: "P5.6 Alertes", href: "/rentabilite/alertes", icon: AlertTriangle },
-    ],
-  },
-
-  {
-    name: "M6 · Decision Support",
-    href: "/m6",
-    icon: Brain,
-    sections: [
-      { name: "Alertes opérationnelles", href: "/m6/alertes", icon: AlertTriangle },
-      { name: "Analyse des écarts", href: "/m6/analyse-ecarts", icon: Sigma },
-      { name: "Recommandations IA", href: "/m6/recommandations", icon: Brain },
-      { name: "Simulations économiques", href: "/m6/simulations", icon: Activity },
+      { name: "P5.3 Alertes", href: "/rentabilite/alertes", icon: AlertTriangle },
     ],
   },
 ];
