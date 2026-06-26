@@ -9,6 +9,4 @@ export const RENTABILITE_TABS = [
   { slug: "par-tournee", label: "Par tournée", short: "Tournées", href: "/rentabilite/par-tournee" },
   { slug: "par-vehicule", label: "Par véhicule", short: "Véhic.", href: "/rentabilite/par-vehicule" },
   { slug: "par-chauffeur", label: "Par chauffeur", short: "Chauff.", href: "/rentabilite/par-chauffeur" },
-  { slug: "analyse-ecarts", label: "Analyse écarts", short: "Écarts", href: "/rentabilite/analyse-ecarts" },
-  { slug: "alertes", label: "Alertes", short: "Alertes", href: "/rentabilite/alertes" },
 ];
