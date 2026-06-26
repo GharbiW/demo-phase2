@@ -3,13 +3,12 @@
 import { useState } from "react";
 import { PageShell, SectionCard, KpiGrid, KpiTile } from "@/components/ui/PageShell";
 import { Badge } from "@/components/ui/Badge";
-import { DrilldownDrawer, DrawerSection, DrawerRow } from "@/components/ui/DrilldownDrawer";
-import { m5KPIs, m5Alerts, m4Tournees, m4Clients, financeMonthlySeries, financeBudgetKpis, computeFinanceTourneeAggregate } from "@/lib/demo-data";
+import { m5KPIs, m4Tournees, m4Clients, financeMonthlySeries, financeBudgetKpis, computeFinanceTourneeAggregate } from "@/lib/demo-data";
 import { FinanceKpiStrip } from "@/components/finance/FinanceKpiStrip";
 import { BridgeWaterfall, buildTourneeBridgeSteps } from "@/components/finance/BridgeWaterfall";
 import { ForecastVsActual } from "@/components/finance/ForecastVsActual";
 import { SensitivityPanel } from "@/components/finance/SensitivityPanel";
-import { TrendingUp, TrendingDown, AlertTriangle, ArrowRight, ChevronDown } from "lucide-react";
+import { TrendingUp, TrendingDown, ArrowRight, ChevronDown } from "lucide-react";
 import { AiInsightBanner } from "@/components/ui/AiInsightBanner";
 import Link from "next/link";
 import { formatEuro } from "@/components/finance/money";
@@ -22,12 +21,8 @@ import {
 import { ExecutiveComboChart } from "@/components/cockpit/ExecutiveComboChart";
 import { KmVideSparkline } from "@/components/cockpit/KmVideSparkline";
 
-const MAX_ALERTS_VISIBLE = 4;
-
 export default function VueSynthetiquePage() {
   const { state } = useDemoStore();
-  const [selectedAlert, setSelectedAlert] = useState(null);
-  const [showAllAlerts, setShowAllAlerts] = useState(false);
   const [showSensitivity, setShowSensitivity] = useState(false);
 
   const ex = cockpitExecutiveKpis;
@@ -70,22 +65,13 @@ export default function VueSynthetiquePage() {
     },
   ];
 
-  const visibleAlerts = showAllAlerts ? m5Alerts : m5Alerts.slice(0, MAX_ALERTS_VISIBLE);
   const sortedClients = [...m4Clients].sort((a, b) => b.txMarge - a.txMarge);
 
   return (
     <PageShell
-      moduleLabel="M5 — Dashboard Rentabilité"
+      moduleLabel="Rentabilité"
       title="Vue synthétique"
       description={`Cockpit rentabilité · 30 tournées · ${m4Clients.length} clients · période ${state.period}`}
-      actions={
-        <Link
-          href="/rentabilite/analyse-ecarts"
-          className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-semibold transition-colors"
-        >
-          Analyse écarts <ArrowRight className="w-4 h-4" />
-        </Link>
-      }
       bare
     >
       <div className="space-y-8">
@@ -133,7 +119,6 @@ export default function VueSynthetiquePage() {
           label="IA — Chronopost marge structurellement négative — renégociation recommandée"
           insight="Analyse sur 4 mois consécutifs : Chronopost affiche un taux de marge négatif sur 3 mois (-2.3%, -1.8%, -3.1%). Pattern détecté : sous-estimation du coût GO nocturne. Recommandation IA Phase 3 : simuler une revalorisation tarifaire de +4.2% pour retrouver l'équilibre économique."
           confidence={82}
-          action={{ label: "Voir l'analyse des écarts", href: "/rentabilite/analyse-ecarts" }}
         />
 
         {/* ── 3. Finance KPI strip ─────────────────────────────────── */}
@@ -276,53 +261,7 @@ export default function VueSynthetiquePage() {
           </SectionCard>
         </div>
 
-        {/* ── 7. Alerts ────────────────────────────────────────────── */}
-        <SectionCard
-          title="Alertes actives"
-          description={`${m5Alerts.length} alertes — ${m5Alerts.filter((a) => a.severity === "high").length} élevées`}
-          actions={
-            <Link href="/rentabilite/alertes" className="text-xs text-[#E80912] flex items-center gap-1 hover:gap-2 transition-all font-semibold">
-              Toutes <ArrowRight className="w-3 h-3" />
-            </Link>
-          }
-        >
-          <div className="space-y-2">
-            {visibleAlerts.map((a, idx) => (
-              <div
-                key={idx}
-                className={`flex items-start gap-3 rounded-lg border px-3 py-2.5 cursor-pointer hover:shadow-sm transition-all ${
-                  a.severity === "high"
-                    ? "border-red-200 bg-red-50/60"
-                    : a.severity === "medium"
-                    ? "border-amber-200 bg-amber-50/60"
-                    : "border-neutral-200 bg-neutral-50"
-                }`}
-                onClick={() => setSelectedAlert(idx)}
-              >
-                <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${a.severity === "high" ? "text-red-500" : a.severity === "medium" ? "text-amber-500" : "text-neutral-400"}`} />
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs font-semibold text-neutral-900">{a.type}</div>
-                  <div className="text-[11px] text-neutral-500 leading-relaxed mt-0.5 line-clamp-1">{a.detail}</div>
-                </div>
-                <Badge variant={a.severity === "high" ? "red" : a.severity === "medium" ? "amber" : "neutral"} size="sm">
-                  {a.severity === "high" ? "Élevé" : a.severity === "medium" ? "Moyen" : "Bas"}
-                </Badge>
-              </div>
-            ))}
-          </div>
-          {m5Alerts.length > MAX_ALERTS_VISIBLE && (
-            <button
-              type="button"
-              onClick={() => setShowAllAlerts((v) => !v)}
-              className="mt-3 flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-700 font-medium transition-colors"
-            >
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showAllAlerts ? "rotate-180" : ""}`} />
-              {showAllAlerts ? "Réduire" : `Voir les ${m5Alerts.length - MAX_ALERTS_VISIBLE} autres alertes`}
-            </button>
-          )}
-        </SectionCard>
-
-        {/* ── 8. Sensitivity (collapsible) ─────────────────────────── */}
+        {/* ── 7. Sensitivity (collapsible) ─────────────────────────── */}
         <div className="rounded-xl border border-neutral-200 bg-white overflow-hidden">
           <button
             type="button"
@@ -343,22 +282,6 @@ export default function VueSynthetiquePage() {
         </div>
 
       </div>
-
-      {/* Alert detail drawer */}
-      {selectedAlert !== null && (
-        <DrilldownDrawer
-          open={selectedAlert !== null}
-          onClose={() => setSelectedAlert(null)}
-          title={m5Alerts[selectedAlert]?.type}
-          subtitle="Détail de l'alerte"
-        >
-          <DrawerSection title="Alerte">
-            <DrawerRow label="Type" value={m5Alerts[selectedAlert]?.type} />
-            <DrawerRow label="Sévérité" value={m5Alerts[selectedAlert]?.severity} />
-            <DrawerRow label="Détail" value={m5Alerts[selectedAlert]?.detail} />
-          </DrawerSection>
-        </DrilldownDrawer>
-      )}
     </PageShell>
   );
 }

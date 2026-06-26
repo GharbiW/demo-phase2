@@ -3,8 +3,8 @@
 import Link from "next/link";
 import {
   ArrowRight, BarChart3, Truck, Database, Calculator,
-  TrendingUp, Sparkles, ChevronRight, Layers, Sigma,
-  Users, Car, AlertTriangle, PieChart, Settings2,
+  Sparkles, ChevronRight, Layers,
+  Users, Car, PieChart, Settings2,
 } from "lucide-react";
 import { HomeCockpitStrip } from "@/components/finance/HomeCockpitStrip";
 
@@ -20,8 +20,7 @@ const RENTABILITE = {
     { label: "Par tournée", href: "/rentabilite/par-tournee", icon: Truck },
     { label: "Par véhicule", href: "/rentabilite/par-vehicule", icon: Car },
     { label: "Par chauffeur", href: "/rentabilite/par-chauffeur", icon: Users },
-    { label: "Alertes", href: "/rentabilite/alertes", icon: AlertTriangle },
-    { label: "Analyse des écarts", href: "/rentabilite/analyse-ecarts", icon: Sigma },
+    { label: "KPIs détaillés", href: "/rentabilite/kpis", icon: BarChart3 },
   ],
 };
 
