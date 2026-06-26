@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restitution Discovery — Phase 2 · Parnass × Ailéane · 11 mai 2026</title>
+
+<!-- =====================================================================
+     STYLE — Page autonome, sans framework, palette premium consulting
+     Palette : indigo / violet / émeraude / ambre + accents
+     ===================================================================== -->
+<style>
+
+/* ---------- Variables design system ---------- */
+:root {
+  /* Couleurs primaires */
+  --indigo-950: #1e1b4b;
+  --indigo-900: #312e81;
+  --indigo-700: #4338ca;
+  --indigo-600: #4f46e5;
+  --indigo-500: #6366f1;
+  --indigo-100: #e0e7ff;
+  --indigo-50:  #eef2ff;
+
+  --violet-700: #6d28d9;
+  --violet-600: #7c3aed;
+  --violet-100: #ede9fe;
+  --violet-50:  #f5f3ff;
+
+  /* Accents fonctionnels */
+  --emerald-600: #059669;
+  --emerald-500: #10b981;
+  --emerald-100: #d1fae5;
+  --emerald-50:  #ecfdf5;
+
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --rose-600: #e11d48;
+  --rose-500: #f43f5e;
+  --rose-100: #ffe4e6;
+  --rose-50:  #fff1f2;
+
+  /* Neutres */
+  --slate-950: #020617;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --white:     #ffffff;
+
+  /* Système de spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Typographie */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow:    0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.05);
+  --shadow-violet: 0 10px 30px -10px rgb(124 58 237 / 0.25);
+
+  /* Rayons */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ---------- Reset léger ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--slate-800);
+  background: var(--slate-50);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Container ---------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* ---------- Navigation sticky ---------- */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--slate-200);
+}
+.topnav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+.topnav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--indigo-950);
+  letter-spacing: -0.01em;
+}
+.topnav__brand .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  box-shadow: 0 0 0 4px var(--indigo-50);
+}
+.topnav__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  font-size: 0.85rem;
+}
+.topnav__menu a {
+  color: var(--slate-600);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__menu a:hover {
+  color: var(--indigo-700);
+  background: var(--indigo-50);
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  padding: var(--space-24) 0 var(--space-20);
+  background: linear-gradient(135deg, #fafbff 0%, #f5f3ff 100%);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -300px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08), transparent 70%);
+  border-radius: 50%;
+}
+.hero__inner { position: relative; z-index: 1; }
+.hero__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--white);
+  border: 1px solid var(--indigo-100);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo-700);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+.hero__kicker .pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--violet-600);
+  box-shadow: 0 0 0 0 rgb(124 58 237 / 0.6);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0.5); }
+  70% { box-shadow: 0 0 0 12px rgb(124 58 237 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0); }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-5);
+  max-width: 900px;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(120deg, var(--indigo-600), var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero__lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--slate-600);
+  max-width: 720px;
+  margin-bottom: var(--space-10);
+}
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-6);
+  max-width: 800px;
+  padding: var(--space-6);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--slate-200);
+}
+.hero__meta-item .label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  margin-bottom: var(--space-1);
+}
+.hero__meta-item .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--indigo-950);
+}
+
+/* ---------- Section générique ---------- */
+section.block {
+  padding: var(--space-20) 0;
+}
+section.block.alt {
+  background: var(--white);
+}
+.section__head {
+  margin-bottom: var(--space-12);
+  max-width: 820px;
+}
+.section__num {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-3);
+}
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-4);
+}
+.section__lead {
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--slate-600);
+}
+
+/* ---------- AMBITION (section 2) ---------- */
+.ambition__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: stretch;
+}
+.ambition__card {
+  padding: var(--space-8);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.ambition__card.before {
+  border-left: 4px solid var(--slate-400);
+}
+.ambition__card.after {
+  border-left: 4px solid var(--violet-600);
+  background: linear-gradient(135deg, var(--white) 0%, var(--violet-50) 100%);
+}
+.ambition__label {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--slate-100);
+  color: var(--slate-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  margin-bottom: var(--space-4);
+}
+.ambition__card.after .ambition__label {
+  background: var(--violet-100);
+  color: var(--violet-700);
+}
+.ambition__card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-3);
+  line-height: 1.3;
+}
+.ambition__card p {
+  color: var(--slate-600);
+  line-height: 1.65;
+}
+.ambition__arrow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-8) 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+}
+.ambition__arrow::before, .ambition__arrow::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--violet-200, #ddd6fe), transparent);
+  margin: 0 var(--space-4);
+}
+
+/* ---------- 6 MODULES (section 3) ---------- */
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.module-card {
+  position: relative;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-violet);
+  border-color: var(--violet-200, #ddd6fe);
+}
+.module-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.4);
+}
+.module-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.module-card .role {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-600);
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+.module-card p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--slate-600);
+  flex: 1;
+}
+
+/* ---------- TIMELINE PARCOURS (section 4) ---------- */
+.timeline {
+  position: relative;
+  padding: var(--space-6) 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--indigo-200, #c7d2fe), var(--violet-200, #ddd6fe));
+  transform: translateY(-50%);
+}
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+.timeline-step {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.timeline-step__date {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--indigo-50);
+  color: var(--indigo-700);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  margin-bottom: var(--space-3);
+}
+.timeline-step__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.timeline-step__desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--slate-600);
+}
+.timeline-step__num {
+  position: absolute;
+  top: -14px;
+  right: var(--space-5);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--violet-600), var(--indigo-600));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px -2px rgb(124 58 237 / 0.5);
+}
+
+/* ---------- DÉCISIONS PIVOT (section 5) ---------- */
+.decisions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.decision-card {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.decision-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+}
+.decision-card.pivot::before {
+  background: linear-gradient(180deg, var(--violet-600), var(--indigo-600));
+}
+.decision-card.standard::before {
+  background: var(--indigo-500);
+}
+.decision-card__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--indigo-50), var(--violet-50));
+  color: var(--violet-700);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+}
+.decision-card.pivot .decision-card__num {
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  box-shadow: 0 8px 20px -4px rgb(124 58 237 / 0.4);
+}
+.decision-card__body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.decision-card__tag {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  background: var(--violet-100);
+  color: var(--violet-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-left: var(--space-2);
+  vertical-align: middle;
+}
+.decision-card__desc {
+  color: var(--slate-700);
+  margin-bottom: var(--space-4);
+  line-height: 1.65;
+}
+.decision-quote {
+  padding: var(--space-4) var(--space-5);
+  background: linear-gradient(135deg, var(--indigo-50), var(--violet-50));
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--indigo-900);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.decision-quote .triplet {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-4);
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+.decision-quote .triplet > div {
+  text-align: center;
+  padding: var(--space-3);
+}
+.decision-quote .triplet strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--violet-700);
+  margin-bottom: var(--space-1);
+}
+
+/* ---------- TABLEAUX premium ---------- */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+table.premium {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+table.premium thead {
+  background: linear-gradient(135deg, var(--indigo-950), var(--indigo-900));
+}
+table.premium thead th {
+  color: white;
+  text-align: left;
+  padding: var(--space-4) var(--space-5);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+table.premium tbody tr {
+  border-top: 1px solid var(--slate-100);
+  transition: background 0.15s ease;
+}
+table.premium tbody tr:hover {
+  background: var(--indigo-50);
+}
+table.premium tbody td {
+  padding: var(--space-4) var(--space-5);
+  vertical-align: top;
+  color: var(--slate-700);
+  line-height: 1.55;
+}
+table.premium tbody td:first-child {
+  font-weight: 600;
+  color: var(--indigo-950);
+}
+table.premium tbody td strong {
+  color: var(--indigo-950);
+}
+
+/* ---------- Pills priorité ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill.critique { background: var(--rose-100); color: var(--rose-600); }
+.pill.eleve    { background: var(--amber-100); color: var(--amber-600); }
+.pill.moyenne  { background: var(--indigo-100); color: var(--indigo-700); }
+.pill.ok       { background: var(--emerald-100); color: var(--emerald-600); }
+
+/* ---------- KPIs / chiffres clés ---------- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-12);
+}
+.stat-card {
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.stat-card .stat__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+.stat-card .stat__label {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  font-weight: 500;
+}
+
+/* ---------- BLOC architecture data ---------- */
+.flow-diagram {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr 60px 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-12);
+}
+.flow-block {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--slate-200);
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+.flow-block h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+}
+.flow-block p {
+  font-size: 0.82rem;
+  color: var(--slate-600);
+  line-height: 1.5;
+}
+.flow-block.sources { border-top: 4px solid var(--amber-500); }
+.flow-block.etl     { border-top: 4px solid var(--violet-600); }
+.flow-block.module  { border-top: 4px solid var(--emerald-500); }
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--violet-600);
+  font-weight: 700;
+}
+
+/* ---------- BLOC scope In/Out ---------- */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+.scope-card {
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow);
+}
+.scope-card.in {
+  border-top: 4px solid var(--emerald-500);
+}
+.scope-card.out {
+  border-top: 4px solid var(--slate-400);
+  background: var(--slate-50);
+}
+.scope-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.scope-card h3 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+}
+.scope-card.in h3 .badge  { background: var(--emerald-500); }
+.scope-card.out h3 .badge { background: var(--slate-400); }
+.scope-card h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--violet-700);
+  letter-spacing: 0.04em;
+  margin: var(--space-5) 0 var(--space-2);
+  text-transform: uppercase;
+}
+.scope-card.out h4 {
+  color: var(--slate-500);
+}
+.scope-card ul {
+  list-style: none;
+  font-size: 0.92rem;
+}
+.scope-card ul li {
+  padding: var(--space-2) 0 var(--space-2) var(--space-6);
+  position: relative;
+  color: var(--slate-700);
+  line-height: 1.5;
+}
+.scope-card.in ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--emerald-600);
+  font-weight: 700;
+}
+.scope-card.out ul li::before {
+  content: '×';
+  position: absolute;
+  left: 0;
+  color: var(--slate-400);
+  font-weight: 700;
+}
+
+/* ---------- HYPOTHÈSES À ARBITRER ---------- */
+.h-callout {
+  padding: var(--space-5) var(--space-6);
+  background: linear-gradient(135deg, var(--amber-50), var(--white));
+  border-left: 4px solid var(--amber-500);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-8);
+  font-size: 1rem;
+  color: var(--slate-800);
+  box-shadow: var(--shadow-sm);
+}
+.h-callout strong { color: var(--amber-600); }
+
+/* ---------- JALONS / Roadmap ---------- */
+.jalons-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+.jalon-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-left: 4px solid var(--indigo-500);
+  border-radius: var(--radius);
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+.jalon-item:hover {
+  border-left-color: var(--violet-600);
+  transform: translateX(2px);
+}
+.jalon-item.critical {
+  border-left-color: var(--rose-500);
+  background: linear-gradient(90deg, var(--rose-50), var(--white) 30%);
+}
+.jalon-item__date {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--indigo-700);
+}
+.jalon-item.critical .jalon-item__date {
+  color: var(--rose-600);
+}
+.jalon-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.jalon-item__title {
+  font-weight: 600;
+  color: var(--indigo-950);
+  font-size: 0.98rem;
+}
+.jalon-item__desc {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+}
+
+/* ---------- SYNTHÈSE finale ---------- */
+.synthesis {
+  padding: var(--space-12);
+  background: linear-gradient(135deg, var(--indigo-950) 0%, var(--violet-700) 100%);
+  border-radius: var(--radius-xl);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.synthesis::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+  border-radius: 50%;
+}
+.synthesis__inner { position: relative; z-index: 1; }
+.synthesis__kicker {
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo-100);
+  margin-bottom: var(--space-5);
+}
+.synthesis h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: var(--space-6);
+  letter-spacing: -0.015em;
+  color: white;
+}
+.synthesis p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--indigo-100);
+  max-width: 800px;
+  margin-bottom: var(--space-5);
+}
+.synthesis__points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+.synthesis__point {
+  padding: var(--space-5);
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+}
+.synthesis__point .num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--violet-100);
+  margin-bottom: var(--space-2);
+}
+.synthesis__point h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  color: white;
+}
+.synthesis__point p {
+  font-size: 0.88rem;
+  color: var(--indigo-100);
+  margin-bottom: 0;
+}
+
+/* ---------- FOOTER ---------- */
+footer.foot {
+  padding: var(--space-12) 0 var(--space-8);
+  background: var(--slate-50);
+  border-top: 1px solid var(--slate-200);
+  text-align: center;
+}
+footer.foot .foot__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-3);
+}
+footer.foot .foot__brand .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+}
+footer.foot .foot__line {
+  color: var(--slate-500);
+  font-size: 0.88rem;
+  margin-bottom: var(--space-2);
+}
+
+/* ---------- Responsive desktop-first ---------- */
+@media (max-width: 1024px) {
+  .modules-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline::before { display: none; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .flow-diagram { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); padding: var(--space-2) 0; }
+}
+@media (max-width: 720px) {
+  .topnav__menu { display: none; }
+  .ambition__grid, .scope-grid { grid-template-columns: 1fr; }
+  .modules-grid, .timeline-grid, .stats-row { grid-template-columns: 1fr; }
+  .decision-card { grid-template-columns: 60px 1fr; gap: var(--space-4); padding: var(--space-5); }
+  .decision-card__num { width: 60px; height: 60px; font-size: 1.4rem; }
+  .decision-quote .triplet { grid-template-columns: 1fr; }
+  .synthesis__points { grid-template-columns: 1fr; }
+  .jalon-item { grid-template-columns: 1fr; gap: var(--space-2); }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .topnav { display: none; }
+  body { background: white; font-size: 11pt; }
+  section.block { padding: 1cm 0; page-break-inside: avoid; }
+  .module-card, .decision-card, .jalon-item, .scope-card,
+  .timeline-step, .stat-card, .table-wrap { box-shadow: none; }
+  .synthesis { background: var(--indigo-950) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero { padding: 1cm 0; }
+}
+
+/* ---------- Bouton Retour Accueil ---------- */
+.topnav__home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  border: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px -2px rgb(99 102 241 / 0.35);
+}
+.topnav__home:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.45);
+}
+.topnav__home .icon {
+  font-size: 0.95rem;
+}
+.topnav__glossary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--indigo-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--white);
+  border: 1px solid #c7d2fe;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__glossary:hover {
+  background: var(--indigo-50);
+  border-color: var(--indigo-500);
+}
+.topnav__glossary .icon {
+  font-size: 0.95rem;
+}
+
+/* ---------- Cards d'accès aux ateliers détaillés ---------- */
+.atelier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.atelier-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.atelier-card::after {
+  content: '→';
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 1.5rem;
+  color: #c4b5fd;
+  transition: all 0.2s ease;
+}
+.atelier-card:hover {
+  border-color: #c4b5fd;
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-4px);
+}
+.atelier-card:hover::after {
+  color: var(--violet-600);
+  transform: translateX(4px);
+}
+.atelier-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 6px 16px -4px rgb(99 102 241 / 0.45);
+}
+.atelier-card__date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.atelier-card__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  line-height: 1.25;
+  margin-bottom: var(--space-3);
+}
+.atelier-card__desc {
+  font-size: 0.92rem;
+  color: var(--slate-600);
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: var(--space-4);
+}
+.atelier-card__cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-700);
+}
+@media (max-width: 1024px) { .atelier-cards { grid-template-columns: 1fr; } }
+
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     TOP NAV STICKY
+     ===================================================================== -->
+<nav class="topnav">
+  <div class="topnav__inner">
+    <div style="display:flex; align-items:center; gap:var(--space-3);">
+      <a href="../Accueil Phase 2.html" class="topnav__home" title="Retour à l'accueil Phase 2">
+        <span class="icon">⌂</span>
+        <span>Accueil</span>
+      </a>
+      <a href="../glossaire.html" class="topnav__glossary" title="Consulter le glossaire">
+        <span class="icon">📖</span>
+        <span>Glossaire</span>
+      </a>
+      <div class="topnav__brand" style="border-left:1px solid var(--slate-200); padding-left:var(--space-4);">
+        <span class="dot"></span>
+        <span>Parnass × Ailéane · Restitution Phase&nbsp;2</span>
+      </div>
+    </div>
+    <ul class="topnav__menu">
+      <li><a href="#preambule">Préambule</a></li>
+      <li><a href="#ambition">Ambition</a></li>
+      <li><a href="#modules">Modules</a></li>
+      <li><a href="#parcours">Parcours</a></li>
+      <li><a href="#detailles">Comptes-rendus</a></li>
+      <li><a href="#transverses">Transverses</a></li>
+      <li><a href="#decisions">Décisions</a></li>
+      <li><a href="#modele">Modèle</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#scope">Scope</a></li>
+      <li><a href="#hypotheses">Arbitrages</a></li>
+      <li><a href="#jalons">Jalons</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- =====================================================================
+     1. HERO
+     ===================================================================== -->
+<header class="hero">
+  <div class="container hero__inner">
+    <div class="hero__kicker">
+      <span class="pulse"></span>
+      Restitution Discovery · Phase 2 · 11 mai 2026
+    </div>
+    <h1>De Plateforme Parnass<br>au <em>Cockpit économique</em><br>du transport.</h1>
+    <p class="hero__lead">
+      Restitution consolidée des quatre ateliers Discovery menés du 13 au 15 avril 2026.
+      Cette page pose le cap, formalise les décisions structurantes du module
+      Rentabilité d'Exploitation, et présente les arbitrages attendus pour engager la phase de construction.
+    </p>
+    <div class="hero__meta">
+      <div class="hero__meta-item">
+        <div class="label">Réunion</div>
+        <div class="value">11 mai 2026</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Audience</div>
+        <div class="value">Sponsors & Chefs de projet</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Périmètre</div>
+        <div class="value">6 modules · 4 ateliers réalisés</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Objectif</div>
+        <div class="value">Collecte de retours sur le scope</div>
+      </div>
+    </div>
+
+    <div style="margin-top: var(--space-6); padding: var(--space-5) var(--space-6); background: linear-gradient(135deg, var(--emerald-50), var(--white)); border: 1px solid var(--emerald-100); border-left: 4px solid var(--emerald-500); border-radius: 10px; max-width: 760px; box-shadow: var(--shadow-sm);">
+      <div style="font-size: 0.75rem; color: var(--emerald-600); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-2);">Prochaines étapes — cette semaine</div>
+      <ul style="margin: 0; padding-left: var(--space-5); color: var(--indigo-950); font-size: 0.95rem; line-height: 1.8;">
+        <li>Session Module commercial</li>
+        <li>Partage d'un premier prototype</li>
+        <li>Validation cadrage</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<!-- =====================================================================
+     1bis. PRÉAMBULE — OBJECTIF DE LA SESSION
+     ===================================================================== -->
+<section id="preambule" class="block" style="padding-top: var(--space-12); padding-bottom: var(--space-12);">
+  <div class="container">
+    <div style="background: linear-gradient(135deg, var(--indigo-950), var(--violet-700)); border-radius: 24px; padding: var(--space-12) var(--space-10); color: #fff; box-shadow: 0 20px 60px -20px rgba(30, 27, 75, 0.4);">
+      <div style="display:inline-block; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-5);">
+        Préambule · Objectif de la session
+      </div>
+      <h2 style="font-family: var(--font-display); font-size: clamp(1.8rem, 3.2vw, 2.4rem); line-height: 1.2; margin-bottom: var(--space-5); color: #fff; max-width: 900px;">
+        Formaliser ce que la Discovery a permis de poser — pour engager la phase de construction.
+      </h2>
+      <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.9); max-width: 820px; margin-bottom: var(--space-6);">
+        Quatre ateliers menés du 13 au 15 avril 2026 ont permis de faire émerger la matière brute du futur module Rentabilité.
+        L'objectif de cette session du 11 mai est de <strong style="color: #fff;">formaliser collectivement</strong>, à partir des conclusions de ces ateliers,
+        les trois piliers structurants du module :
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-top: var(--space-6);">
+        <div style="background: rgba(255,255,255,0.08); border-left: 3px solid var(--emerald-500); padding: var(--space-4) var(--space-5); border-radius: 8px;">
+          <div style="font-size: 0.75rem; color: var(--emerald-500); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">Pilier 01</div>
+          <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Le modèle économique</div>
+          <div style="font-size: 0.9rem; color: rgba(255,255,255,0.75);">Référentiels maîtres, grille des postes, règles de calcul théorique vs réel.</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.08); border-left: 3px solid var(--amber-500); padding: var(--space-4) var(--space-5); border-radius: 8px;">
+          <div style="font-size: 0.75rem; color: var(--amber-500); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">Pilier 02</div>
+          <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px;">L'architecture &amp; le SI</div>
+          <div style="font-size: 0.9rem; color: rgba(255,255,255,0.75);">Cartographie des sources à orchestrer, pipeline ETL, gouvernance de la donnée.</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.08); border-left: 3px solid var(--rose-500); padding: var(--space-4) var(--space-5); border-radius: 8px;">
+          <div style="font-size: 0.75rem; color: var(--rose-500); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">Pilier 03</div>
+          <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Le scope produit</div>
+          <div style="font-size: 0.9rem; color: rgba(255,255,255,0.75);">Périmètre In / Out, hypothèses à arbitrer, jalons et conditions de succès.</div>
+        </div>
+      </div>
+      <p style="margin-top: var(--space-7); font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 820px; font-style: italic;">
+        Cette restitution n'est pas un compte-rendu : c'est le socle de validation à partir duquel s'engagent les SPEC fonctionnelles
+        et la livraison des Modules 1 &amp; 2 au 8 juin 2026.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     2. AMBITION
+     ===================================================================== -->
+<section id="ambition" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">02 · Ambition</div>
+      <h2 class="section__title">Passer de la gestion des tournées à la maîtrise de la rentabilité.</h2>
+      <p class="section__lead">
+        La Phase 2 transforme Plateforme Parnass — aujourd'hui outil d'organisation de l'exploitation — en
+        un véritable cockpit économique du transport, capable de mesurer, expliquer et piloter la marge
+        à toutes les granularités utiles aux équipes.
+      </p>
+    </div>
+
+    <div class="ambition__grid">
+      <div class="ambition__card before">
+        <span class="ambition__label">Aujourd'hui</span>
+        <h3>Plateforme Parnass — outil d'exploitation</h3>
+        <p>
+          Organisation des tournées, planification, gestion des prestations.
+          La lecture économique reste partielle, dispersée, reconstruite manuellement
+          dans Excel. Delta de marge ~600 k€/an entre prévision et réel — non tracé.
+        </p>
+      </div>
+      <div class="ambition__card after">
+        <span class="ambition__label">Demain</span>
+        <h3>Parnass — cockpit économique</h3>
+        <p>
+          Maîtrise totale de la rentabilité d'exploitation. Lecture systématique
+          théorique vs réel, ventilation poste par poste, indexation carburant intégrée,
+          alertes opérationnelles, drill-down du global vers la fiche de tournée.
+        </p>
+      </div>
+    </div>
+    <div class="ambition__arrow">→ Une transformation en 6 modules ←</div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     3. LES 6 MODULES
+     ===================================================================== -->
+<section id="modules" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">03 · Périmètre produit</div>
+      <h2 class="section__title">Six modules interdépendants formant la chaîne de valeur économique.</h2>
+      <p class="section__lead">
+        Chaque module joue un rôle précis dans la chaîne, du calcul du revenu jusqu'à l'aide à la décision.
+        La Phase 2 cible les modules 1 à 5. Le module 6 est capé en différé.
+      </p>
+    </div>
+
+    <div class="modules-grid">
+      <article class="module-card">
+        <div class="module-card__num">1</div>
+        <h3>Commercial &amp; Tarification</h3>
+        <div class="role">Le moteur de revenu</div>
+        <p>Sécurise la marge avant exploitation. Calcule le CA théorique, intègre les grilles tarifaires et l'indexation carburant. Aide au chiffrage Spot avec coût estimé et prix conseillé.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">2</div>
+        <h3>Data Cost Hub</h3>
+        <div class="role">La base de vérité des coûts</div>
+        <p>Centralise et fiabilise les données dispersées. Connexions à AS24, Engie, Masternaut, Michelin, Tachygraphe, Factorial, Silae, WinCPL, MyRentCar.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">3</div>
+        <h3>Cost Engine</h3>
+        <div class="role">Le moteur de calcul</div>
+        <p>Transforme les données brutes en coûts financiers. Calcule théorique et réel poste par poste : carburant, salarial, matériels, péages, sous-traitance.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">4</div>
+        <h3>Profitability Engine</h3>
+        <div class="role">Le moteur d'analyse</div>
+        <p>Confronte revenus et coûts au niveau de la tournée. Calcule la marge brute par tournée / prestation / client. Analyse des écarts théorique vs réel.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">5</div>
+        <h3>Dashboard Rentabilité</h3>
+        <div class="role">Le cockpit de pilotage</div>
+        <p>Vues synthétiques et détaillées en temps réel. P&amp;L par tournée, exploration interactive, alertes opérationnelles. Remplace les analyses Excel mensuelles.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">6</div>
+        <h3>Decision Support</h3>
+        <div class="role">L'assistant stratégique</div>
+        <p>Détecte les anomalies, propose des leviers d'amélioration et permet de simuler des scénarios économiques. <strong>Capé en Phase 2</strong> — différé.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     4. PARCOURS DISCOVERY
+     ===================================================================== -->
+<section id="parcours" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">04 · Méthodologie</div>
+      <h2 class="section__title">Quatre ateliers en trois jours pour cadrer la Phase 2.</h2>
+      <p class="section__lead">
+        Animés par Raphaela SALAS avec Matthieu, Housam, Laurent et Soubir côté Parnass.
+        Du cadrage économique aux vues produit, chaque atelier a posé une brique structurante du module.
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-grid">
+        <div class="timeline-step">
+          <span class="timeline-step__num">1</span>
+          <div class="timeline-step__date">13 avril · 14h30 → 17h30</div>
+          <div class="timeline-step__title">Cadrage</div>
+          <div class="timeline-step__desc">Finalité, unités économiques de référence, axes d'analyse — décision pivot des 2 tracks théorique vs réel.</div>
+        </div>
+        <div class="timeline-step">
+          <span class="timeline-step__num">2</span>
+          <div class="timeline-step__date">14 avril · 9h30 → 12h30</div>
+          <div class="timeline-step__title">Construction (Partie 1)</div>
+          <div class="timeline-step__desc">Grille de coûts à 13 postes, méthode salariale forfait jour, allocation des remorques par taux d'utilisation.</div>
+        </div>
+        <div class="timeline-step">
+          <span class="timeline-step__num">3</span>
+          <div class="timeline-step__date">14 avril · 14h → 17h</div>
+          <div class="timeline-step__title">Construction (Partie 2)</div>
+          <div class="timeline-step__desc">Mécanique d'indexation carburant, bascule CNR + DIREM, pondérations par contrat, cas FedEx / Auchan / CEVA.</div>
+        </div>
+        <div class="timeline-step">
+          <span class="timeline-step__num">4</span>
+          <div class="timeline-step__date">15 avril · 9h30 → 12h30</div>
+          <div class="timeline-step__title">Cadrage produit</div>
+          <div class="timeline-step__desc">Vues, blocs Repositionnement / Optimisation / HLP, gouvernance et droits d'accès, lexique commun, horizon planning S → S+4.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     4bis. COMPTES-RENDUS DÉTAILLÉS — accès aux pages atelier
+     ===================================================================== -->
+<section id="detailles" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">04 bis · Comptes-rendus détaillés</div>
+      <h2 class="section__title">Approfondir chaque atelier dans sa restitution dédiée.</h2>
+      <p class="section__lead">
+        Pour zoomer sur le déroulé, les décisions et les livrables d'un atelier en particulier,
+        chaque restitution est disponible en page autonome avec sa propre navigation interne.
+      </p>
+    </div>
+
+    <div class="atelier-cards">
+      <a href="Restitution_Atelier_1.html" class="atelier-card">
+        <div class="atelier-card__num">1</div>
+        <div class="atelier-card__date">13 avril · Jour 1</div>
+        <div class="atelier-card__title">Cadrage : finalité, unités économiques, axes d'analyse</div>
+        <div class="atelier-card__desc">Décision pivot des 2 tracks théorique/réel · 3 unités d'analyse cibles · besoins par profil utilisateur · cartographie initiale des sources.</div>
+        <div class="atelier-card__cta">Voir la restitution complète</div>
+      </a>
+
+      <a href="Restitution_Atelier_2_3.html" class="atelier-card">
+        <div class="atelier-card__num">2·3</div>
+        <div class="atelier-card__date">14 avril · Jour 2</div>
+        <div class="atelier-card__title">Construction de la rentabilité : grille &amp; indexation</div>
+        <div class="atelier-card__desc">Grille de coûts à 13 postes typés · forfait jour différencié par typologie de permis · mécanique d'indexation carburant CNR + DIREM · cas FedEx, Auchan, CEVA.</div>
+        <div class="atelier-card__cta">Voir la restitution complète</div>
+      </a>
+
+      <a href="Restitution_Atelier_4.html" class="atelier-card">
+        <div class="atelier-card__num">4</div>
+        <div class="atelier-card__date">15 avril · Jour 3</div>
+        <div class="atelier-card__title">Cadrage produit : vues, blocs, droits, lexique</div>
+        <div class="atelier-card__desc">5 vues de rentabilité · 11 indicateurs cibles · nomenclature blocs Repositionnement / Optimisation / HLP · matrice de gouvernance à 7 rôles · lexique commun.</div>
+        <div class="atelier-card__cta">Voir la restitution complète</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     4ter. SECTIONS TRANSVERSES — pages de synthèse formalisée
+     ===================================================================== -->
+<section id="transverses" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">04 ter · Sections transverses</div>
+      <h2 class="section__title">Approfondir la synthèse — modèle, data, scope, annexes.</h2>
+      <p class="section__lead">
+        Les sections transverses formalisent ce qui a émergé des quatre ateliers :
+        le modèle économique, l'architecture data, le périmètre produit et les preuves factuelles.
+        Chacune est disponible en page autonome pour un usage direct par les équipes (SPEC dev, validation client).
+      </p>
+    </div>
+
+    <div class="atelier-cards">
+      <a href="Restitution_Modele_Economique.html" class="atelier-card">
+        <div class="atelier-card__num">6</div>
+        <div class="atelier-card__date">Section transverse</div>
+        <div class="atelier-card__title">Modèle économique formalisé</div>
+        <div class="atelier-card__desc">Les 2 tracks théorique/réel · 3 unités d'analyse · grille à 13 postes typés · règles de calcul (CA, indexation, RH, consommation, km) · 11 KPIs cibles · règles d'allocation et de ventilation.</div>
+        <div class="atelier-card__cta">Voir la synthèse complète</div>
+      </a>
+
+      <a href="Restitution_Architecture_Data.html" class="atelier-card">
+        <div class="atelier-card__num">7</div>
+        <div class="atelier-card__date">Section transverse</div>
+        <div class="atelier-card__title">Architecture data &amp; dépendances SI</div>
+        <div class="atelier-card__desc">11 sources cartographiées · séquence d'intégration priorisée · pipeline ETL en 6 étapes · champs à créer côté ADV · 10 risques data identifiés · gouvernance Source-of-Truth + Exception 80/20.</div>
+        <div class="atelier-card__cta">Voir la synthèse complète</div>
+      </a>
+
+      <a href="Restitution_Scope.html" class="atelier-card" style="border-top: 4px solid var(--rose-500);">
+        <div class="atelier-card__num" style="background: linear-gradient(135deg, var(--rose-500), var(--rose-600));">8</div>
+        <div class="atelier-card__date" style="color: var(--rose-600);">Section transverse · Décision 11 mai</div>
+        <div class="atelier-card__title">Scope produit Phase 2 — In / Out</div>
+        <div class="atelier-card__desc">5 modules in scope · Module 6 capé · 11 hypothèses dont 3 arbitrées (H1, H8, H10) et 2 critiques restantes (H2, H11) · roadmap hebdo S19→S24 · livraison Modules 1 &amp; 2 au 8 juin.</div>
+        <div class="atelier-card__cta">Voir la page de décision</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     5. DÉCISIONS PIVOT
+     ===================================================================== -->
+<section id="decisions" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">05 · Décisions structurantes</div>
+      <h2 class="section__title">Cinq décisions ont posé l'ossature du module.</h2>
+      <p class="section__lead">
+        Les conclusions des quatre ateliers convergent vers cinq choix qui structurent désormais
+        l'ensemble du modèle économique cible.
+      </p>
+    </div>
+
+    <div class="decisions">
+
+      <article class="decision-card pivot">
+        <div class="decision-card__num">01</div>
+        <div class="decision-card__body">
+          <h3>Les deux tracks fondamentaux <span class="decision-card__tag">Décision pivot</span></h3>
+          <p class="decision-card__desc">Distinction Théorique vs Réel comme colonne vertébrale de tous les calculs et toutes les vues. Aucune analyse ne s'affranchit de ce cadre.</p>
+          <div class="decision-quote">
+            <div class="triplet">
+              <div><strong>Théorique</strong>ce qu'on pensait gagner</div>
+              <div><strong>Réel</strong>ce qu'on a réellement gagné/dépensé</div>
+              <div><strong>Écart</strong>ce qui explique la différence</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">02</div>
+        <div class="decision-card__body">
+          <h3>Trois unités d'analyse — socle final <span class="decision-card__tag" style="background:var(--emerald-100); color:var(--emerald-600);">Périmètre figé</span></h3>
+          <p class="decision-card__desc">
+            <strong>Conducteur · Véhicule · Tournée.</strong> Ces trois unités constituent le socle final du modèle d'analyse Phase 2.
+            <strong>Aucun élargissement</strong> n'est prévu : Trajet/Prestation, Client/Contrat et Semi-remorque restent consultables
+            via les agrégations standard, mais ne constituent pas des unités de pilotage. Le périmètre est figé pour garantir la lisibilité
+            du modèle et la qualité des écarts théorique vs réel.
+          </p>
+          <div class="decision-quote" style="margin-top:var(--space-3);">
+            <span style="font-style:normal; font-family:var(--font-sans); font-size:0.9rem; color:var(--slate-700);">
+              Implication : trois clés de jointure structurent le modèle —
+              <strong>matricule conducteur</strong>, <strong>immatriculation véhicule</strong>, <strong>identifiant tournée</strong>.
+              Toute donnée entrante (paie, télématique, carburant, péages) doit pouvoir se rattacher à au moins l'une de ces clés.
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">03</div>
+        <div class="decision-card__body">
+          <h3>Trois types de blocs de planning</h3>
+          <p class="decision-card__desc">
+            Nomenclature actée pour les segments entre prestations :
+            <strong style="color:var(--indigo-700)">🔵 Repositionnement</strong> (imputé à la tournée, pas au client) ·
+            <strong style="color:var(--rose-600)">🔴 Optimisation</strong> (trou exploitable entre deux prestations) ·
+            <strong style="color:var(--amber-600)">🟠 HLP — Haut Le Pied</strong> (trajet à vide entre le dépôt et le premier client, ou entre le dernier client et le dépôt).
+            Calcul automatique du temps et du kilométrage entre prestations.
+          </p>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">04</div>
+        <div class="decision-card__body">
+          <h3>Forfait jour théorique différencié par typologie de permis <span class="decision-card__tag" style="background:var(--emerald-100); color:var(--emerald-600);">H1 arbitré · 21 j</span></h3>
+          <p class="decision-card__desc">
+            Le coût conducteur théorique est calculé en <strong>forfait jour par profil</strong>, et non plus par grille unique.
+            Quatre profils sont distingués, chacun avec sa grille salariale, ses primes et ses seuils tachygraphe :
+          </p>
+          <div class="table-wrap" style="margin-top:var(--space-3);">
+            <table class="premium" style="font-size:0.85rem;">
+              <thead>
+                <tr><th style="width:80px;">Code</th><th>Profil</th><th>Permis</th><th>Usage typique</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>VL</strong></td><td>Conducteur Véhicule Léger</td><td>B</td><td>Livraison &lt; 3,5 T</td></tr>
+                <tr><td><strong>CM</strong></td><td>Conducteur Messagerie</td><td>C / C1</td><td>Distribution porteur léger</td></tr>
+                <tr><td><strong>SPL</strong></td><td>Conducteur Super Poids Lourd</td><td>CE</td><td>Tracteur + semi (44 T)</td></tr>
+                <tr><td><strong>Polyvalent</strong></td><td>Conducteur multi-profils</td><td>Multi</td><td>Affectation flexible selon planning</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:var(--space-3); font-size:0.9rem; color:var(--slate-700);">
+            <strong>Variables rattachées au forfait :</strong> amplitude, temps de service, primes (nuit / dimanche / découcher / panier), frais repas.
+            <strong>Source théorique :</strong> grilles renseignées directement par le client (référentiel RH Factorial + CCN Transport).
+            <strong>Source réelle :</strong> tachygraphe → Solid → Silae (paie effective avec charges).
+          </p>
+          <div class="decision-quote" style="margin-top:var(--space-3);">
+            <span style="font-style:normal; font-family:var(--font-sans); font-size:0.9rem; color:var(--slate-700);">
+              <strong style="color:var(--emerald-600);">Hypothèse H1 arbitrée :</strong> le diviseur jours ouvrés retenu est <strong>21 jours</strong> — c'est désormais la source de vérité
+              pour tous les calculs de coût journalier théorique.
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">05</div>
+        <div class="decision-card__body">
+          <h3>Accès aux rentabilités réelles restreint</h3>
+          <p class="decision-card__desc">
+            Lecture complète restreinte à <strong>Mathieu et Zoubir</strong>. Superviseurs en écriture sur les paramètres :
+            <strong>Laurent + Housam</strong>. La Conception ne voit que le code couleur (vert/orange/rouge) sans chiffres détaillés.
+            Modélisation finale des droits par Yasmine + Alexandre.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     6. MODÈLE ÉCONOMIQUE FORMALISÉ
+     ===================================================================== -->
+<section id="modele" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">06 · Modèle économique</div>
+      <h2 class="section__title">Une grille à 13 postes, deux tracks, onze indicateurs.</h2>
+      <p class="section__lead">
+        Le modèle formalisé pendant la Discovery articule la grille de coûts (socle théorique),
+        les sources réelles (paie, télématique, factures) et les règles de calcul (CA, indexation, ventilation).
+      </p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat__num">13</div>
+        <div class="stat__label">Postes de coûts<br>dans la grille</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat__num">3</div>
+        <div class="stat__label">Unités d'analyse<br>Conducteur · Véhicule · Tournée</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat__num">11</div>
+        <div class="stat__label">Indicateurs cibles<br>quotidien · hebdo · mensuel</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat__num">5</div>
+        <div class="stat__label">Vues de rentabilité<br>formalisées</div>
+      </div>
+    </div>
+
+    <!-- TROIS RÉFÉRENTIELS MAÎTRES -->
+    <div style="margin-top:var(--space-10);">
+      <h3 style="font-family:var(--font-display); font-size:1.4rem; color:var(--indigo-950); margin-bottom:var(--space-3);">Trois référentiels maîtres — la condition de tout le reste</h3>
+      <p style="color:var(--slate-600); margin-bottom:var(--space-5); max-width:780px;">
+        Avant la grille de coûts elle-même, trois référentiels doivent être figés dans le Data Cost Hub.
+        Sans ce typage, tout coût unitaire est faux et l'écart théorique / réel devient ininterprétable.
+      </p>
+      <div class="scope-grid" style="grid-template-columns: repeat(3, 1fr); gap: var(--space-4);">
+        <div class="scope-card in" style="background: linear-gradient(135deg, var(--indigo-50), var(--white));">
+          <h3 style="font-size:1.05rem;"><span class="badge" style="background:var(--indigo-600);">1</span> Conducteurs</h3>
+          <p style="font-size:0.9rem; color:var(--slate-700); margin-bottom:var(--space-3);">
+            Matricule + type (VL / CM / SPL / Polyvalent) + <strong>taux journalier théorique</strong> par profil.
+            Le calcul théorique et le calcul réel sont volontairement <strong>scindés</strong> : les sources et les données nécessaires diffèrent — pour le théorique, on alimente avec les grilles renseignées par le client ; pour le réel, on récupère la paie effective et le temps de service mesurés.
+          </p>
+          <p style="font-size:0.85rem; color:var(--slate-600);"><strong>Sources :</strong> Factorial (référentiel théorique) → Silae (paie réelle) → Solid (temps de service réel via tachygraphe).</p>
+        </div>
+        <div class="scope-card in" style="background: linear-gradient(135deg, var(--violet-50), var(--white));">
+          <h3 style="font-size:1.05rem;"><span class="badge" style="background:var(--violet-600);">2</span> Véhicules</h3>
+          <p style="font-size:0.9rem; color:var(--slate-700); margin-bottom:var(--space-3);">
+            Immatriculation + catégorie (VL / PL porteur / Tracteur / Remorque) + énergie + <strong>équipements</strong> (frigo, hayon, etc.) + <strong>casse / sinistres</strong> + <strong>assurance</strong> et tout ce qui touche au véhicule au sens large.
+          </p>
+          <p style="font-size:0.85rem; color:var(--slate-600);"><strong>Sources :</strong> MyRentCar (parc loué + contrats) · WinCPL (à fiabiliser pour entretien et casse).</p>
+        </div>
+        <div class="scope-card in" style="background: linear-gradient(135deg, var(--emerald-50), var(--white));">
+          <h3 style="font-size:1.05rem;"><span class="badge" style="background:var(--emerald-600);">3</span> Énergies</h3>
+          <p style="font-size:0.9rem; color:var(--slate-700); margin-bottom:var(--space-3);">
+            Code énergie (Gasoil B7 / GNV / GNL / Électrique / AdBlue) + unité (L, kg) + table d'indexation prix associée.
+            Une table par énergie, pas une table unique.
+          </p>
+          <p style="font-size:0.85rem; color:var(--slate-600);"><strong>Sources théoriques :</strong> CNR Gasoil / GNV / GNL + DIREM. <strong>Source réelle :</strong> télématique Michelin (consommation embarquée).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRILLE COMPLÈTE 13 POSTES -->
+    <h3 style="font-family:var(--font-display); font-size:1.4rem; color:var(--indigo-950); margin-top:var(--space-12); margin-bottom:var(--space-3);">Grille de coûts complète — 13 postes</h3>
+    <p style="color:var(--slate-600); margin-bottom:var(--space-5); max-width:820px;">
+      Chaque poste porte sa <strong>formule théorique</strong> et sa <strong>formule réelle</strong>, avec leurs sources respectives.
+      Sur certains postes (loyers, carburant frigo, AdBlue) le théorique et le réel sont volontairement alignés sur la même donnée — il n'y a pas d'écart à mesurer.
+      Sur d'autres (carburant tracteur, salaires, primes), la scission théorique/réel produit l'écart qui alimente le Profitability Engine.
+    </p>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th>Poste de coût</th>
+            <th>Nature</th>
+            <th>Méthode théorique</th>
+            <th>Méthode &amp; source réelle</th>
+            <th>Fréquence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>01</strong></td><td>Loyer tracteur</td><td>Fixe</td><td>Loyer mensuel contrat MyRentCar <strong>÷ 21</strong> (pour ventilation au jour, cohérent H1) × nb tracteurs utilisés</td><td><em>Réel = Théorique</em> · contrat MyRentCar (filtre client C9TPS)</td><td>Mensuel</td></tr>
+          <tr><td><strong>02</strong></td><td>Loyer remorque</td><td>Fixe</td><td>Loyer mensuel ÷ 21 × nb tractés utilisés · règle d'allocation : <strong>1 semi par type nécessaire vs CdC</strong> (affectation plein temps) · <strong>débord client = 100 % imputé au client</strong></td><td><em>Réel = Théorique</em> · contrat MyRentCar (Module Commercial pour débord, Conception pour planifié)</td><td>Mensuel</td></tr>
+          <tr><td><strong>03</strong></td><td>Carburant tracteur (toutes énergies)</td><td>Variable</td><td>Conso théorique × Km planifiés (incl. km à vide) × Prix indice de référence · <em>conso réf. par typologie moteur :</em> TRAGO 28 L/100 km · TRAGZ 30,5 kg/100 km · PORGO 30 L/100 km · PORGZ 33 kg/100 km</td><td>Conso réelle × Km parcourus × Prix au litre · AS24 + télématique Michelin</td><td>Mensuel (M-1)</td></tr>
+          <tr><td><strong>04</strong></td><td>Carburant frigo (GNR)</td><td>Variable</td><td>Conso de réf. <strong>2 L / heure</strong> × heures de fonctionnement semi × prix au litre du GNR (Gaz Non Routier)</td><td><em>Réel = Théorique</em> · même donnée que le théorique</td><td>Mensuel (M-1)</td></tr>
+          <tr><td><strong>05</strong></td><td>AdBlue <span style="font-size:0.75rem; color:var(--slate-500);">(tracteurs Gasoil uniquement)</span></td><td>Variable</td><td>Prix au litre × Km planifiés × Consommation théorique (1,9 L / 100 km) · prix réf. <strong>0,42 € / L</strong></td><td><em>Réel = Théorique</em> · même donnée que le théorique</td><td>Mensuel</td></tr>
+          <tr><td><strong>06</strong></td><td>Salaires conducteur (forfait jour par profil)</td><td>Variable</td><td>Taux journalier théorique × jours plan (base 21 j) · réf. atelier : <strong>SPL 210 € · CM 235 € · Polyvalent 305 €</strong> <span style="color:var(--amber-600); font-size:0.78rem;">(VL à confirmer)</span> · amplitude réf. 12 h</td><td>Factorial (référentiel) → Silae (paie réelle + charges)</td><td>Mensuel (M-1)</td></tr>
+          <tr><td><strong>07</strong></td><td>Primes &amp; variables RH</td><td>Variable</td><td>Forfait moyen par profil (nuit / dimanche / découcher / panier)</td><td>Coût salarial réel mensuel ÷ jours travaillés · sources Silae + Solid</td><td>Mensuel (M-1)</td></tr>
+          <tr><td><strong>08</strong></td><td>Péages</td><td>Variable</td><td>Trajets avec péages validés × coût péage de PTV · option <em>"hors autoroute"</em> à cocher si péages non validés · sources PTV + module commercial</td><td>AS24 (portail péage, API live) + télébadges · <strong>imputation du péage à la bonne presta / course</strong> par l'Exploitation</td><td>Mensuel</td></tr>
+          <tr><td><strong>09</strong></td><td>Entretien &amp; pièces</td><td>Fixe forfaitaire</td><td>Forfait mensuel ÷ 21 × nb tracteurs &amp; tractés utilisés</td><td><em>Réel = Théorique</em> · MyRentCar</td><td>Mensuel</td></tr>
+          <tr><td><strong>10</strong></td><td>Pneumatiques</td><td>Fixe forfaitaire</td><td>Forfait mensuel ÷ 21 × nb tracteurs &amp; tractés utilisés</td><td><em>Réel = Théorique</em> · MyRentCar</td><td>Mensuel</td></tr>
+          <tr><td><strong>11</strong></td><td>Assurance flotte</td><td>Fixe forfaitaire</td><td>Forfait mensuel ÷ 21 × nb tracteurs &amp; tractés utilisés</td><td><em>Réel = Théorique</em> · MyRentCar</td><td>Mensuel</td></tr>
+          <tr><td><strong>12</strong></td><td>Casse</td><td>Variable lissé</td><td>Prix de la casse mensuelle ÷ CA du mois (typé CM / SPL / VL+tractés) · réf. ≈ 1,4 %</td><td>Grille de dépenses réelles renseignée par le client</td><td>Mensuel</td></tr>
+          <tr><td><strong>13</strong></td><td>Sous-traitance <span style="font-size:0.75rem; color:var(--slate-500);">(resp. Housam)</span></td><td>Variable</td><td>Prix sur facture du sous-traitant · ventilation au <strong>prorata des heures des courses vs tournées</strong></td><td><em>Réel = Théorique</em> · facture sous-traitant</td><td>Au fil de l'eau</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--space-3); font-size:0.85rem; color:var(--slate-500); font-style:italic;">
+      13 postes — la grille intégrale fait foi. Chaque ligne porte sa clé de jointure (matricule, immatriculation, identifiant tournée).
+      Les postes 01, 02, 04, 05, 09, 10, 11 et 13 ont une donnée réelle alignée sur la donnée théorique — pas d'écart à mesurer ; les autres alimentent l'analyse d'écart.
+    </p>
+
+    <!-- INDEXATION CARBURANT -->
+    <div style="margin-top:var(--space-12);">
+      <h3 style="font-family:var(--font-display); font-size:1.4rem; color:var(--indigo-950); margin-bottom:var(--space-5);">Mécanique d'indexation carburant</h3>
+      <div class="decision-quote" style="max-width:none;">
+        <strong style="display:block; margin-bottom:var(--space-2); color:var(--indigo-900); font-style:normal;">Variation = (Indice M − Indice Référence) / Indice Référence</strong>
+        <span style="font-style:normal; font-family:var(--font-sans);">Application = Variation × Pondération × Base CA (ou × km contractuels si pondération en consommation)</span>
+        <p style="margin-top:var(--space-3); font-size:0.9rem; color:var(--slate-600); font-style:normal;">
+          Modes temporels supportés : <strong>M / M-1 (majoritaire) / M-2</strong>. Pondération exprimée en % du forfait OU en consommation L/100km × km contractuels.
+          <br><strong>Bascule CNR → DIREM :</strong> CNR Gasoil utilisé pour le routier longue distance jusqu'à fin 2025, <strong>DIREM</strong> (Direction des ressources énergétiques et minières) prend le relais pour les prix de marché du carburant routier — bascule effective <strong>janvier 2026</strong>, rupture de série à gérer côté Cost Engine.
+        </p>
+      </div>
+
+      <h4 style="font-family:var(--font-display); font-size:1.05rem; color:var(--indigo-950); margin-top:var(--space-6); margin-bottom:var(--space-3);">Les cinq indices CNR utilisés en détail</h4>
+      <div class="table-wrap">
+        <table class="premium" style="font-size:0.88rem;">
+          <thead>
+            <tr>
+              <th style="width:38px;">#</th>
+              <th>Indice CNR</th>
+              <th>Usage</th>
+              <th>Modalité</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>01</strong></td><td>CNR Gasoil professionnel (3 chiffres)</td><td>Référence routier longue distance jusqu'à fin 2025</td><td>API CNR · historique janvier 2000 → décembre 2025</td></tr>
+            <tr><td><strong>02</strong></td><td>CNR Gasoil <em>hors TVA</em></td><td>Calculs HT pour facturation B2B</td><td>API CNR</td></tr>
+            <tr><td><strong>03</strong></td><td>Cuve moyenne mensuelle <span style="color:var(--amber-600); font-size:0.78rem;">(payant)</span></td><td>Référence prix cuve dépôt — abonnement à souscrire</td><td>Source externe payante</td></tr>
+            <tr><td><strong>04</strong></td><td>CNR carburant GNV</td><td>Indexation des contrats sur véhicules GNV / GNL</td><td>API CNR · même méthodo qu'indice Gasoil</td></tr>
+            <tr><td><strong>05</strong></td><td>CNR fioul</td><td>Indexation du carburant frigo (poste 04)</td><td>API CNR</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:var(--space-3); font-size:0.85rem; color:var(--slate-500); font-style:italic;">
+        Pour les énergies alternatives spécifiques au parc Parnass : conversion à 3 chiffres réalisée via les fichiers CSV Engie (GNC L · BIO GNC · GNL · historique à intégrer). Pour l'électrique : tarifs contractuels Engie.
+      </p>
+
+      <div class="h-callout" style="margin-top:var(--space-6); background: linear-gradient(135deg, var(--violet-50), var(--white)); border-left: 4px solid var(--violet-600);">
+        <strong>Cas particulier client — Auchan :</strong> remise partielle de la <strong>TIPCE</strong> (Taxe Intérieure de Consommation sur les Produits Énergétiques) à appliquer sur le réel — basée sur le prix cuve moyenne mensuelle CNR. Modalité spécifique au contrat Auchan, à porter dans le module Commercial & Tarification.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     7. ARCHITECTURE DATA
+     ===================================================================== -->
+<section id="data" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">07 · Architecture data</div>
+      <h2 class="section__title">Onze sources à orchestrer en pipeline ETL.</h2>
+      <p class="section__lead">
+        Cartographie consolidée des données nécessaires au module, avec leur statut d'intégration,
+        leur fréquence d'alimentation et leur priorité opérationnelle.
+      </p>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-block sources">
+        <h4>11 sources orchestrées</h4>
+        <p>RH (3) · Parc (2) · Énergie (3) · Externes (2) · ADV/Compta (1)</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-block etl">
+        <h4>Pipeline ETL</h4>
+        <p>Validation · Normalisation · Mapping clés (matricule · immat · tournée) · Logs &amp; alertes</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-block module">
+        <h4>Module Parnass</h4>
+        <p>Data Cost Hub<br>Cost Engine<br>Profitability Engine<br>Dashboard</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--font-display); font-size:1.4rem; color:var(--indigo-950); margin-bottom:var(--space-5);">Les 11 sources à orchestrer — typées par domaine</h3>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th>Source</th>
+            <th>Domaine</th>
+            <th>Données apportées</th>
+            <th>Fréquence</th>
+            <th>Priorité</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>01</strong></td><td>Factorial</td><td>RH</td><td>Référentiel conducteurs · grilles salariales par profil VL/CM/SPL/Polyvalent</td><td>Continue</td><td><span class="pill critique">Critique</span></td><td>À connecter</td></tr>
+          <tr><td><strong>02</strong></td><td>Silae</td><td>RH / Paie</td><td>Paie réelle · charges · primes (nuit / dimanche / découcher)</td><td>Mensuel (M-1)</td><td><span class="pill critique">Critique</span></td><td>En attente code d'accès</td></tr>
+          <tr><td><strong>03</strong></td><td>Solid (tachygraphe)</td><td>RH / Temps</td><td>Amplitude · temps de service · repos · coupures</td><td>Continue</td><td><span class="pill eleve">Élevée</span></td><td>Synchro irrégulière</td></tr>
+          <tr><td><strong>04</strong></td><td>MyRentCar</td><td>Parc</td><td>Référentiel véhicules loués · contrats LLD · loyers · factures locateur</td><td>Mensuel</td><td><span class="pill critique">Critique</span></td><td>À connecter</td></tr>
+          <tr><td><strong>05</strong></td><td>WinCPL</td><td>Parc</td><td>Fiche signalétique véhicules · entretien · pièces · pneus rattachés au châssis</td><td>Continue</td><td><span class="pill eleve">Élevée</span></td><td>À fiabiliser</td></tr>
+          <tr><td><strong>06</strong></td><td>AS24</td><td>Énergie</td><td>Cartes flotte Gasoil par immatriculation · péages</td><td>Mensuel</td><td><span class="pill critique">Critique</span></td><td>En attente code d'accès</td></tr>
+          <tr><td><strong>07</strong></td><td>Engie (élec + gaz)</td><td>Énergie</td><td>Bornes électriques dépôt · stations GNV / GNL contractuelles · groupe froid</td><td>Mensuel</td><td><span class="pill critique">Critique</span></td><td>En attente code d'accès</td></tr>
+          <tr><td><strong>08</strong></td><td>Michelin (télématique)</td><td>Énergie / Parc</td><td>Consommation embarquée · géolocalisation · jauge carburant temps réel</td><td>Continue</td><td><span class="pill critique">Critique</span></td><td>À connecter</td></tr>
+          <tr><td><strong>09</strong></td><td>Masternaut</td><td>Parc / Activité</td><td>Kilométrage par véhicule · trajets réalisés</td><td>Continue</td><td><span class="pill eleve">Élevée</span></td><td>À connecter</td></tr>
+          <tr><td><strong>10</strong></td><td>CNR + DIREM</td><td>Externe</td><td>Indices Gasoil / GNV / GNL (CNR) · prix marché carburant routier (DIREM)</td><td>Mensuel</td><td><span class="pill moyenne">Moyenne</span></td><td>À intégrer</td></tr>
+          <tr><td><strong>11</strong></td><td>ADV / Comptabilité</td><td>Financier</td><td>Contrats clients · CA théorique · amortissements · factures fournisseurs</td><td>Continue</td><td><span class="pill critique">Critique</span></td><td>À connecter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--font-display); font-size:1.2rem; color:var(--indigo-950); margin-top:var(--space-10); margin-bottom:var(--space-3);">Deux zones d'arbitrage — sources concurrentes à trancher</h3>
+    <p style="color:var(--slate-600); margin-bottom:var(--space-5); max-width:780px;">
+      Sur deux sujets, plusieurs systèmes peuvent fournir la même donnée. Il faut explicitement désigner la source de vérité côté Cost Engine.
+    </p>
+    <div class="scope-grid" style="grid-template-columns: repeat(2, 1fr); gap: var(--space-4);">
+      <div class="scope-card out" style="background: linear-gradient(135deg, var(--amber-50), var(--white)); border-color: var(--amber-500);">
+        <h3 style="font-size:1rem; color: var(--amber-600);">Consommation carburant : achat vs combustion</h3>
+        <p style="font-size:0.9rem; color:var(--slate-700);">
+          <strong>AS24</strong> donne les litres servis (achat). <strong>Michelin</strong> donne les litres brûlés (consommation embarquée). Les deux divergent.
+          Décision : laquelle des deux alimente le Cost Engine en réel ?
+        </p>
+      </div>
+      <div class="scope-card out" style="background: linear-gradient(135deg, var(--amber-50), var(--white)); border-color: var(--amber-500);">
+        <h3 style="font-size:1rem; color: var(--amber-600);">Entretien, casse, équipements véhicule : MyRentCar vs WinCPL</h3>
+        <p style="font-size:0.9rem; color:var(--slate-700);">
+          <strong>MyRentCar</strong> porte les contrats et les éléments négociés (équipements, assurance incluse).
+          <strong>WinCPL</strong> porte l'historique d'entretien et de casse sur le terrain. Décision : qui devient la source de vérité par poste, et quelle articulation pour les sujets transverses (équipements posés, sinistres facturés) ?
+        </p>
+      </div>
+    </div>
+
+    <div class="h-callout" style="margin-top:var(--space-8);">
+      <strong>Risques bloquants identifiés :</strong> absence d'outil de gestion de parc centralisé (WinCPL à fiabiliser) ·
+      format CSV Engie non normalisé · synchro Tachy/Solid irrégulière (défaut 7 nuits).
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     8. SCOPE PHASE 2
+     ===================================================================== -->
+<section id="scope" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">08 · Scope produit</div>
+      <h2 class="section__title">Le périmètre Phase 2 — In / Out.</h2>
+      <p class="section__lead">
+        Délimitation précise issue de la Discovery. C'est le scope que nous proposons de valider
+        formellement aujourd'hui pour engager la phase de développement.
+      </p>
+    </div>
+
+    <div class="scope-grid">
+      <div class="scope-card in">
+        <h3><span class="badge">✓</span> In Scope — Phase 2</h3>
+
+        <h4>Module 1 — Commercial &amp; Tarification</h4>
+        <ul>
+          <li>Mécanique complète d'indexation carburant (CNR / DIREM, modes M/M-1/M-2)</li>
+          <li>Paramétrage par prestation OU par contrat (héritage)</li>
+          <li>Calcul automatique du CA théorique depuis l'ADV</li>
+        </ul>
+
+        <h4>Module 2 — Data Cost Hub</h4>
+        <ul>
+          <li>Connexions aux 11 sources identifiées (séquence priorisée)</li>
+          <li>Pipeline ETL : normalisation, mapping, dédoublonnage, alertes</li>
+          <li>Historisation 12 mois minimum</li>
+        </ul>
+
+        <h4>Module 3 — Cost Engine</h4>
+        <ul>
+          <li>Grille à 13 postes avec dates d'application paramétrables</li>
+          <li>Calcul dual théorique vs réel poste par poste</li>
+          <li>Imputation des repositionnements à la tournée (pas au client) · agrégation 15j week-end</li>
+        </ul>
+
+        <h4>Module 4 — Profitability Engine</h4>
+        <ul>
+          <li>Marge brute par tournée / prestation / client</li>
+          <li>Analyse des écarts ventilée par poste</li>
+          <li>Décomposition CA en effet volume / prix / indexation</li>
+        </ul>
+
+        <h4>Module 5 — Dashboard Rentabilité</h4>
+        <ul>
+          <li>5 vues formalisées + 11 KPIs cibles</li>
+          <li>Code couleur intégré dans l'écran de conception</li>
+          <li>Drill-down du global vers la fiche détaillée</li>
+        </ul>
+
+        <h4>Transverse</h4>
+        <ul>
+          <li>Nomenclature blocs Repositionnement / Optimisation / HLP</li>
+          <li>Module déclaratif semi-remorque (phase test)</li>
+          <li>Gouvernance : 7 rôles + matrice droits</li>
+          <li>Lexique commun + SOP qualité</li>
+        </ul>
+      </div>
+
+      <div class="scope-card out">
+        <h3><span class="badge">×</span> Out of Scope — différé</h3>
+
+        <h4>Module 6 — Decision Support (capé)</h4>
+        <ul>
+          <li>Moteur avancé de recommandation</li>
+          <li>Simulations prédictives (what-if)</li>
+          <li>Optimisation automatique d'itinéraires</li>
+          <li>Tarification intelligente (pricing dynamique)</li>
+          <li>Recommandation station AS24 pertinente</li>
+        </ul>
+
+        <h4>Hors scope explicite (SPEC Laurent)</h4>
+        <ul>
+          <li>Lecture comptable ligne à ligne</li>
+          <li>Refacturation complexe automatisée</li>
+          <li>Optimisation automatique des choix d'exploitation</li>
+        </ul>
+
+        <h4>Rappel — Hors Scope Phase 1 et 2</h4>
+        <ul>
+          <li>Application conducteur (exclusion confirmée depuis Phase 1)</li>
+          <li>Module RH dans son intégralité</li>
+          <li>Module Garage dans son intégralité</li>
+          <li>Refonte ergonomique complète de Plateforme Parnass</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     9. HYPOTHÈSES À ARBITRER
+     ===================================================================== -->
+<section id="hypotheses" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">09 · Arbitrages attendus</div>
+      <h2 class="section__title">Onze hypothèses posées — trois résolues, huit à arbitrer.</h2>
+      <p class="section__lead">
+        Trois hypothèses sont désormais tranchées (H1 diviseur 21 j · H8 ventilation parc via MyRentCar · H10 consommation par véhicule).
+        Huit restent ouvertes ; deux sont critiques pour engager le développement avec un puits de vérité fiable :
+        <strong>H2 (week-end)</strong> et <strong>H11 (matrice droits)</strong>.
+      </p>
+    </div>
+
+    <div class="h-callout">
+      <strong>Lecture rapide :</strong> chaque ligne = une question. La colonne « statut » distingue ce qui est arbitré (✓) de ce qui est ouvert.
+      Les hypothèses critiques restantes (🔴) doivent être tranchées d'ici la fin S19 pour ne pas décaler la livraison du 8 juin.
+    </div>
+
+    <div class="table-wrap">
+      <table class="premium">
+        <thead>
+          <tr>
+            <th style="width:60px;">#</th>
+            <th>Hypothèse</th>
+            <th>Responsable</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>H1</strong></td><td>Diviseur jours ouvrés — <strong>arbitré : 21 jours</strong> retenus comme source de vérité</td><td>Mathieu / Conception</td><td><span class="pill" style="background:var(--emerald-100); color:var(--emerald-600);">✓ Arbitré</span></td></tr>
+          <tr><td><strong>H2</strong></td><td>Agrégation conducteur week-end : règle sur 15 j et fusion tournées semaine/WE</td><td>Conception / RH</td><td><span class="pill critique">Critique</span></td></tr>
+          <tr><td><strong>H3</strong></td><td>Association automatique des remorques partagées (mutualisation vs dédié)</td><td>Exploitation / IT</td><td><span class="pill eleve">Élevée</span></td></tr>
+          <tr><td><strong>H4</strong></td><td>Fréquence rafraîchissement loyers (annuel + vérifs vs synchro MyRentCar)</td><td>Raphael</td><td><span class="pill eleve">Élevée</span></td></tr>
+          <tr><td><strong>H5</strong></td><td>Formule exacte Auchan : M-1 moins TCPE — à confirmer</td><td>Laurent / Commerce</td><td><span class="pill eleve">Élevée</span></td></tr>
+          <tr><td><strong>H6</strong></td><td>FedEx : indexation par prestation — processus de saisie à définir</td><td>Commerce</td><td><span class="pill eleve">Élevée</span></td></tr>
+          <tr><td><strong>H7</strong></td><td>Équipements subventionnés (tire-palettes) : loyer ou amortissement ?</td><td>Direction financière</td><td><span class="pill moyenne">Moyenne</span></td></tr>
+          <tr><td><strong>H8</strong></td><td>Source véhicules &amp; indexation carburant — <strong>arbitré : MyRentCar pour le parc, indices CNR + DIREM</strong> (et non Avia)</td><td>Direction</td><td><span class="pill" style="background:var(--emerald-100); color:var(--emerald-600);">✓ Arbitré</span></td></tr>
+          <tr><td><strong>H9</strong></td><td>Attribution casse à un conducteur en cas de succession</td><td>Exploitation / RH</td><td><span class="pill moyenne">Moyenne</span></td></tr>
+          <tr><td><strong>H10</strong></td><td>Consommation réelle — <strong>arbitré : par véhicule (immatriculation)</strong>, alignée sur les 3 unités d'analyse retenues</td><td>Exploitation</td><td><span class="pill" style="background:var(--emerald-100); color:var(--emerald-600);">✓ Arbitré</span></td></tr>
+          <tr><td><strong>H11</strong></td><td>Finalisation rôles et mapping droits d'accès (lecture restreinte Mathieu/Zoubir, écriture Laurent/Housam)</td><td>Yasmine / Alexandre</td><td><span class="pill critique">Critique</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- =====================================================================
+     10. ROADMAP HEBDOMADAIRE — LIVRAISON MODULES 1 & 2 AU 8 JUIN
+     ===================================================================== -->
+<section id="jalons" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">10 · Roadmap</div>
+      <h2 class="section__title">Cinq semaines pour livrer un puits de vérité fiable au 8 juin.</h2>
+      <p class="section__lead">
+        L'objectif au 8 juin 2026 : un <strong>Module 1 Commercial &amp; Tarification opérationnel</strong> et un
+        <strong>Module 2 Data Cost Hub</strong> fournissant des données théoriques et réelles fiables sur les 13 postes.
+        Ce socle conditionne la suite (Cost Engine, Profitability Engine, Dashboard).
+      </p>
+    </div>
+
+    <div class="h-callout" style="background: linear-gradient(135deg, var(--indigo-50), var(--violet-50)); border-left: 4px solid var(--indigo-600);">
+      <strong>Stratégie de livraison :</strong> deux chantiers conduits en parallèle dès la S19 — d'un côté la fiabilisation des trois référentiels maîtres (conducteurs / véhicules / énergies), de l'autre le branchement progressif des 11 sources. Chaque semaine clôt un palier visible côté client.
+    </div>
+
+    <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--indigo-950); margin-top:var(--space-10); margin-bottom:var(--space-5);">Découpage hebdomadaire</h3>
+
+    <div class="jalons-list">
+
+      <div class="jalon-item critical">
+        <div class="jalon-item__date">S19 · 5 → 10 mai</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Validation scope &amp; lancement chantier</div>
+          <div class="jalon-item__desc">
+            <strong>Objectif :</strong> figer le périmètre et démarrer la construction.<br>
+            <strong>Actions :</strong> restitution Discovery au sponsor (5/05) · arbitrage des 8 hypothèses ouvertes (H2, H3, H4, H5, H6, H7, H9, H11) · ouverture des accès techniques côté Parnass (Factorial, MyRentCar, Solid, WinCPL, AS24, Engie, Michelin, Masternaut) · kickoff équipe Ailéane.<br>
+            <strong>Livrable client :</strong> compte-rendu décisions + planning détaillé S19-S24 + matrice RACI.
+          </div>
+        </div>
+      </div>
+
+      <div class="jalon-item">
+        <div class="jalon-item__date">S20 · 11 → 17 mai</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Fondations — référentiels maîtres &amp; conception modules</div>
+          <div class="jalon-item__desc">
+            <strong>Objectif :</strong> figer les trois référentiels qui conditionnent toute la suite.<br>
+            <strong>Actions :</strong> conception détaillée Module 1 (modèle de données CA théorique, indexation CNR/DIREM) · conception détaillée Module 2 (schéma Data Cost Hub, mapping clés matricule / immat / tournée) · construction du référentiel <strong>Conducteurs</strong> (typologie VL/CM/SPL/Polyvalent + taux journaliers théoriques) · construction du référentiel <strong>Véhicules</strong> (catégorie + énergie + équipements + casse + assurance) · construction du référentiel <strong>Énergies</strong> (Gasoil, GNV, GNL, Élec, AdBlue).<br>
+            <strong>Livrable client :</strong> SPEC Module 1 v1.0 + SPEC Module 2 v1.0 + 3 référentiels validés en démo Notion.
+          </div>
+        </div>
+      </div>
+
+      <div class="jalon-item">
+        <div class="jalon-item__date">S21 · 18 → 24 mai</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Branchement APIs &amp; ingestion premier flux</div>
+          <div class="jalon-item__desc">
+            <strong>Objectif :</strong> faire entrer les premières données réelles dans le Data Cost Hub.<br>
+            <strong>Actions :</strong> connecteurs développés sur les 4 sources critiques prioritaires — <strong>AS24</strong> (carburant + péages), <strong>MyRentCar</strong> (parc + loyers), <strong>Factorial</strong> (référentiel RH), <strong>Silae</strong> (paie M-1) · pipeline ETL v1 (validation, normalisation, mapping immatriculations) · début intégration table d'indexation carburant CNR/DIREM (Module 1).<br>
+            <strong>Livrable client :</strong> démo « première donnée réelle bout-en-bout » sur 1 véhicule + 1 conducteur + 1 mois M-1.
+          </div>
+        </div>
+      </div>
+
+      <div class="jalon-item">
+        <div class="jalon-item__date">S22 · 25 → 31 mai</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Module 1 opérationnel + extension du Hub</div>
+          <div class="jalon-item__desc">
+            <strong>Objectif :</strong> Module Commercial fonctionnel · 7 sources sur 11 actives.<br>
+            <strong>Actions :</strong> finalisation Module 1 — calcul automatique CA théorique depuis ADV · indexation carburant complète (CNR + DIREM, modes M / M-1 / M-2) · paramétrage prestation/contrat · branchement <strong>Michelin</strong> (télématique conso), <strong>Masternaut</strong> (km), <strong>Engie</strong> (CSV gaz/élec normalisé) · début connexion <strong>Solid</strong> (tachy) et <strong>WinCPL</strong> (parc + entretien).<br>
+            <strong>Livrable client :</strong> Module 1 en démo end-to-end (calcul CA prévu sur 5 contrats clients réels) + tableau de bord d'avancement Hub (7/11 sources OK).
+          </div>
+        </div>
+      </div>
+
+      <div class="jalon-item">
+        <div class="jalon-item__date">S23 · 1 → 7 juin</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Complétion 11 sources + recette croisée théorique/réel</div>
+          <div class="jalon-item__desc">
+            <strong>Objectif :</strong> 11 sources actives · données théoriques et réelles disponibles sur 13 postes.<br>
+            <strong>Actions :</strong> branchement des 4 dernières sources (<strong>WinCPL</strong> fiabilisé, <strong>CNR + DIREM</strong>, <strong>ADV / Comptabilité</strong>) · recette croisée avec Raphaela sur un mois de référence (avril 2026) — validation par poste de coût · tests de cohérence (rapprochement AS24 vs Michelin, MyRentCar vs ADV) · nettoyage anomalies · exécution checklist qualité.<br>
+            <strong>Livrable client :</strong> rapport de recette signé par Raphaela + Mathieu + indicateurs de complétude par source.
+          </div>
+        </div>
+      </div>
+
+      <div class="jalon-item critical">
+        <div class="jalon-item__date">S24 · 8 juin</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Livraison Modules 1 &amp; 2 — Puits de vérité opérationnel</div>
+          <div class="jalon-item__desc">
+            <strong>Objectif atteint :</strong> Modules 1 &amp; 2 livrés et opérationnels — base solide pour la suite.<br>
+            <strong>Périmètre livré :</strong> Module 1 Commercial &amp; Tarification opérationnel (CA théorique, indexation, paramétrage) + Module 2 Data Cost Hub avec les 11 sources connectées · 3 référentiels figés · 13 postes alimentés en théorique et réel · pipeline ETL stable avec logs et alertes.<br>
+            <strong>Réunion :</strong> démo de bout-en-bout au sponsor + validation formelle de bascule vers la suite (Cost Engine, Profitability Engine, Dashboard).
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Marqueurs de jalons clés -->
+    <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--indigo-950); margin-top:var(--space-12); margin-bottom:var(--space-5);">Jalons de pilotage — points de contrôle hebdomadaires</h3>
+    <div class="scope-grid" style="grid-template-columns: repeat(2, 1fr); gap: var(--space-4);">
+      <div class="scope-card in" style="background: linear-gradient(135deg, var(--indigo-50), var(--white));">
+        <h3 style="font-size:1rem;">Comité hebdomadaire de pilotage</h3>
+        <p style="font-size:0.9rem; color:var(--slate-700);">
+          Tous les vendredis 16 h en visio. Points abordés : avancement vs plan, sources connectées, hypothèses arbitrées, blocages remontés. Côté Parnass : Mathieu, Zoubir, Housam. Côté Ailéane : Raphaela, Yann + équipe technique.
+        </p>
+      </div>
+      <div class="scope-card in" style="background: linear-gradient(135deg, var(--violet-50), var(--white));">
+        <h3 style="font-size:1rem;">Démos de fin de semaine</h3>
+        <p style="font-size:0.9rem; color:var(--slate-700);">
+          Chaque semaine se clôt par une démo concrète du livrable produit (S20 référentiels, S21 première donnée bout-en-bout, S22 Module 1, S23 recette croisée, S24 puits de vérité). Le client visualise la marge de construction en continu.
+        </p>
+      </div>
+      <div class="scope-card in" style="background: linear-gradient(135deg, var(--emerald-50), var(--white));">
+        <h3 style="font-size:1rem;">Tableau de bord d'avancement</h3>
+        <p style="font-size:0.9rem; color:var(--slate-700);">
+          Indicateurs partagés en temps réel : 11 sources / statut connexion · 13 postes / complétude · 11 hypothèses / résolution · qualité données par véhicule. Tout est traçable.
+        </p>
+      </div>
+      <div class="scope-card in" style="background: linear-gradient(135deg, var(--amber-50), var(--white));">
+        <h3 style="font-size:1rem;">Marges de manœuvre intégrées</h3>
+        <p style="font-size:0.9rem; color:var(--slate-700);">
+          Le découpage prévoit qu'une source critique en retard puisse être rattrapée S23 sans décaler la livraison. Les sources non bloquantes (CNR/DIREM, casse) peuvent être finalisées en post-livraison sans impact sur le puits de vérité.
+        </p>
+      </div>
+    </div>
+
+    <!-- Synthèse exécutive -->
+    <div class="synthesis" style="margin-top:var(--space-16);">
+      <div class="synthesis__inner">
+        <div class="synthesis__kicker">En synthèse</div>
+        <h2>Discovery cadrée, premiers arbitrages tranchés.<br>Cap sur un puits de vérité fiable au 8 juin.</h2>
+        <p>
+          Quatre ateliers ont permis de construire un cadrage opérationnel du module de rentabilité : deux tracks alignés (théorique vs réel),
+          trois unités d'analyse — socle final (Conducteur · Véhicule · Tournée), grille de coûts à 13 postes typés, trois référentiels maîtres identifiés
+          (Conducteurs VL/CM/SPL/Polyvalent · Véhicules avec énergie, équipements et assurance · Énergies indexées CNR + DIREM avec consommation réelle Michelin), mécanique d'indexation formalisée.
+          Trois hypothèses sont déjà arbitrées (H1, H8, H10) — restent huit arbitrages à mener d'ici fin S19.
+          La trajectoire est claire : livrer au 8 juin un Module Commercial &amp; Tarification opérationnel et un Data Cost Hub alimenté par 11 sources.
+        </p>
+        <div class="synthesis__points">
+          <div class="synthesis__point">
+            <div class="num">01</div>
+            <h4>Scope resserré et clair</h4>
+            <p>5 modules in scope · 6e capé · 3 unités d'analyse · 13 postes typés · 11 sources orchestrées.</p>
+          </div>
+          <div class="synthesis__point">
+            <div class="num">02</div>
+            <h4>Premiers arbitrages actés</h4>
+            <p>3 hypothèses tranchées (H1 21 j · H8 MyRentCar+DIREM · H10 par véhicule). 8 restantes, dont 2 critiques (H2, H11).</p>
+          </div>
+          <div class="synthesis__point">
+            <div class="num">03</div>
+            <h4>Roadmap engagée au 8 juin</h4>
+            <p>5 semaines de construction (S19→S24) · démo hebdo client · Modules 1 &amp; 2 livrés et opérationnels avec données théoriques + réelles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     FOOTER
+     ===================================================================== -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot__brand">
+      <span class="dot"></span>
+      Parnass × Ailéane
+    </div>
+    <div class="foot__line">Restitution Discovery — Phase 2 · Module Rentabilité d'Exploitation</div>
+    <div class="foot__line">Document de travail consolidé · Réunion du 11 mai 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>

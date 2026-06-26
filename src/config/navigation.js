@@ -16,7 +16,6 @@ import {
   Truck,
   Users,
   Car,
-  Package,
   ArrowUpDown,
   PieChart,
   Tag,
@@ -27,58 +26,55 @@ import {
 export const demoSidebarModules = [
   { name: "Accueil", href: "/", icon: LayoutDashboard, sections: [] },
 
+  // ── Module principal : Rentabilité (ancien M4 + M5) ───────────────
   {
-    name: "M1 · Commercial & Tarification",
+    name: "Rentabilité",
+    href: "/rentabilite/synthese",
+    icon: Layers,
+    sections: [
+      { name: "Vue synthétique", href: "/rentabilite/synthese", icon: PieChart },
+      { name: "KPIs détaillés", href: "/rentabilite/kpis", icon: BarChart3 },
+      { name: "Alertes", href: "/rentabilite/alertes", icon: AlertTriangle },
+      { name: "Par tournée", href: "/rentabilite/par-tournee", icon: Truck },
+      { name: "Par véhicule", href: "/rentabilite/par-vehicule", icon: Car },
+      { name: "Par chauffeur", href: "/rentabilite/par-chauffeur", icon: Users },
+      { name: "Analyse des écarts", href: "/rentabilite/analyse-ecarts", icon: Sigma },
+    ],
+  },
+
+  // ── Séparateur Back office ────────────────────────────────────────
+  { type: "separator", label: "Back office" },
+
+  // ── Back office : M1, M2, M3 ─────────────────────────────────────
+  {
+    name: "Commercial & Tarification",
     href: "/m1",
     icon: BarChart3,
     sections: [
-      { name: "P1.1 Contrats / ADV", href: "/m1/adv-contrats", icon: ClipboardList },
-      { name: "P1.2 Indexation carburant", href: "/m1/indexation-carburant", icon: Fuel },
-      { name: "P1.3 CA théorique", href: "/m1/ca-theorique", icon: Calculator },
-      { name: "P1.4 Chiffrage Spot", href: "/m1/chiffrage-spot", icon: Tag },
+      { name: "Contrats / ADV", href: "/m1/adv-contrats", icon: ClipboardList },
+      { name: "Indexation carburant", href: "/m1/indexation-carburant", icon: Fuel },
+      { name: "CA théorique", href: "/m1/ca-theorique", icon: Calculator },
+      { name: "Chiffrage Spot", href: "/m1/chiffrage-spot", icon: Tag },
     ],
   },
 
   {
-    name: "M2 · Data Cost Hub",
+    name: "Data Cost Hub",
     href: "/m2",
     icon: Database,
     sections: [{ name: "Grille 13 — données & flux", href: "/m2", icon: Grid3X3 }],
   },
 
   {
-    name: "M3 · Cost Engine",
+    name: "Cost Engine",
     href: "/m3",
     icon: Calculator,
     sections: [
-      { name: "P3.1 Grille 13 postes", href: "/m3/grille-couts", icon: Grid3X3 },
-      { name: "P3.2 Coûts théoriques", href: "/m3/couts-theoriques", icon: Calculator },
-      { name: "P3.3 Coûts réels", href: "/m3/ingestion-couts-reels", icon: Database },
-      { name: "P3.4 Allocation", href: "/m3/regles-allocation", icon: ArrowLeftRight },
-      { name: "P3.5 Audit", href: "/m3/historique-audit", icon: History },
-    ],
-  },
-
-  {
-    name: "M4 · Profitability Engine",
-    href: "/rentabilite/par-tournee",
-    icon: TrendingUp,
-    sections: [
-      { name: "P4.1 Par tournée", href: "/rentabilite/par-tournee", icon: Truck },
-      { name: "P4.2 Par véhicule", href: "/rentabilite/par-vehicule", icon: Car },
-      { name: "P4.3 Par chauffeur", href: "/rentabilite/par-chauffeur", icon: Users },
-      { name: "P4.4 Analyse des écarts", href: "/rentabilite/analyse-ecarts", icon: Sigma },
-    ],
-  },
-
-  {
-    name: "M5 · Dashboard Rentabilité",
-    href: "/rentabilite/synthese",
-    icon: Layers,
-    sections: [
-      { name: "P5.1 Synthèse cockpit", href: "/rentabilite/synthese", icon: PieChart },
-      { name: "P5.2 KPIs détaillés", href: "/rentabilite/kpis", icon: BarChart3 },
-      { name: "P5.3 Alertes", href: "/rentabilite/alertes", icon: AlertTriangle },
+      { name: "Grille 13 postes", href: "/m3/grille-couts", icon: Grid3X3 },
+      { name: "Coûts théoriques", href: "/m3/couts-theoriques", icon: Calculator },
+      { name: "Coûts réels", href: "/m3/ingestion-couts-reels", icon: Database },
+      { name: "Allocation", href: "/m3/regles-allocation", icon: ArrowLeftRight },
+      { name: "Audit", href: "/m3/historique-audit", icon: History },
     ],
   },
 ];

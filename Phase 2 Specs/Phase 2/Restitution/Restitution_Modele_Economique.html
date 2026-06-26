@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modèle économique formalisé · Restitution Discovery Phase 2 · Parnass × Ailéane</title>
+<style>
+
+/* ---------- Variables design system ---------- */
+:root {
+  /* Couleurs primaires */
+  --indigo-950: #1e1b4b;
+  --indigo-900: #312e81;
+  --indigo-700: #4338ca;
+  --indigo-600: #4f46e5;
+  --indigo-500: #6366f1;
+  --indigo-100: #e0e7ff;
+  --indigo-50:  #eef2ff;
+
+  --violet-700: #6d28d9;
+  --violet-600: #7c3aed;
+  --violet-100: #ede9fe;
+  --violet-50:  #f5f3ff;
+
+  /* Accents fonctionnels */
+  --emerald-600: #059669;
+  --emerald-500: #10b981;
+  --emerald-100: #d1fae5;
+  --emerald-50:  #ecfdf5;
+
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --rose-600: #e11d48;
+  --rose-500: #f43f5e;
+  --rose-100: #ffe4e6;
+  --rose-50:  #fff1f2;
+
+  /* Neutres */
+  --slate-950: #020617;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --white:     #ffffff;
+
+  /* Système de spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Typographie */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow:    0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.05);
+  --shadow-violet: 0 10px 30px -10px rgb(124 58 237 / 0.25);
+
+  /* Rayons */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ---------- Reset léger ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--slate-800);
+  background: var(--slate-50);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Container ---------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* ---------- Navigation sticky ---------- */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--slate-200);
+}
+.topnav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+.topnav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--indigo-950);
+  letter-spacing: -0.01em;
+}
+.topnav__brand .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  box-shadow: 0 0 0 4px var(--indigo-50);
+}
+.topnav__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  font-size: 0.85rem;
+}
+.topnav__menu a {
+  color: var(--slate-600);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__menu a:hover {
+  color: var(--indigo-700);
+  background: var(--indigo-50);
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  padding: var(--space-24) 0 var(--space-20);
+  background: linear-gradient(135deg, #fafbff 0%, #f5f3ff 100%);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -300px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08), transparent 70%);
+  border-radius: 50%;
+}
+.hero__inner { position: relative; z-index: 1; }
+.hero__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--white);
+  border: 1px solid var(--indigo-100);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo-700);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+.hero__kicker .pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--violet-600);
+  box-shadow: 0 0 0 0 rgb(124 58 237 / 0.6);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0.5); }
+  70% { box-shadow: 0 0 0 12px rgb(124 58 237 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0); }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-5);
+  max-width: 900px;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(120deg, var(--indigo-600), var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero__lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--slate-600);
+  max-width: 720px;
+  margin-bottom: var(--space-10);
+}
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-6);
+  max-width: 800px;
+  padding: var(--space-6);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--slate-200);
+}
+.hero__meta-item .label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  margin-bottom: var(--space-1);
+}
+.hero__meta-item .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--indigo-950);
+}
+
+/* ---------- Section générique ---------- */
+section.block {
+  padding: var(--space-20) 0;
+}
+section.block.alt {
+  background: var(--white);
+}
+.section__head {
+  margin-bottom: var(--space-12);
+  max-width: 820px;
+}
+.section__num {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-3);
+}
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-4);
+}
+.section__lead {
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--slate-600);
+}
+
+/* ---------- AMBITION (section 2) ---------- */
+.ambition__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: stretch;
+}
+.ambition__card {
+  padding: var(--space-8);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.ambition__card.before {
+  border-left: 4px solid var(--slate-400);
+}
+.ambition__card.after {
+  border-left: 4px solid var(--violet-600);
+  background: linear-gradient(135deg, var(--white) 0%, var(--violet-50) 100%);
+}
+.ambition__label {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--slate-100);
+  color: var(--slate-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  margin-bottom: var(--space-4);
+}
+.ambition__card.after .ambition__label {
+  background: var(--violet-100);
+  color: var(--violet-700);
+}
+.ambition__card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-3);
+  line-height: 1.3;
+}
+.ambition__card p {
+  color: var(--slate-600);
+  line-height: 1.65;
+}
+.ambition__arrow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-8) 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+}
+.ambition__arrow::before, .ambition__arrow::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--violet-200, #ddd6fe), transparent);
+  margin: 0 var(--space-4);
+}
+
+/* ---------- 6 MODULES (section 3) ---------- */
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.module-card {
+  position: relative;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-violet);
+  border-color: var(--violet-200, #ddd6fe);
+}
+.module-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.4);
+}
+.module-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.module-card .role {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-600);
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+.module-card p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--slate-600);
+  flex: 1;
+}
+
+/* ---------- TIMELINE PARCOURS (section 4) ---------- */
+.timeline {
+  position: relative;
+  padding: var(--space-6) 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--indigo-200, #c7d2fe), var(--violet-200, #ddd6fe));
+  transform: translateY(-50%);
+}
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+.timeline-step {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.timeline-step__date {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--indigo-50);
+  color: var(--indigo-700);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  margin-bottom: var(--space-3);
+}
+.timeline-step__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.timeline-step__desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--slate-600);
+}
+.timeline-step__num {
+  position: absolute;
+  top: -14px;
+  right: var(--space-5);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--violet-600), var(--indigo-600));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px -2px rgb(124 58 237 / 0.5);
+}
+
+/* ---------- DÉCISIONS PIVOT (section 5) ---------- */
+.decisions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.decision-card {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.decision-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+}
+.decision-card.pivot::before {
+  background: linear-gradient(180deg, var(--violet-600), var(--indigo-600));
+}
+.decision-card.standard::before {
+  background: var(--indigo-500);
+}
+.decision-card__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--indigo-50), var(--violet-50));
+  color: var(--violet-700);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+}
+.decision-card.pivot .decision-card__num {
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  box-shadow: 0 8px 20px -4px rgb(124 58 237 / 0.4);
+}
+.decision-card__body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.decision-card__tag {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  background: var(--violet-100);
+  color: var(--violet-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-left: var(--space-2);
+  vertical-align: middle;
+}
+.decision-card__desc {
+  color: var(--slate-700);
+  margin-bottom: var(--space-4);
+  line-height: 1.65;
+}
+.decision-quote {
+  padding: var(--space-4) var(--space-5);
+  background: linear-gradient(135deg, var(--indigo-50), var(--violet-50));
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--indigo-900);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.decision-quote .triplet {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-4);
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+.decision-quote .triplet > div {
+  text-align: center;
+  padding: var(--space-3);
+}
+.decision-quote .triplet strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--violet-700);
+  margin-bottom: var(--space-1);
+}
+
+/* ---------- TABLEAUX premium ---------- */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+table.premium {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+table.premium thead {
+  background: linear-gradient(135deg, var(--indigo-950), var(--indigo-900));
+}
+table.premium thead th {
+  color: white;
+  text-align: left;
+  padding: var(--space-4) var(--space-5);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+table.premium tbody tr {
+  border-top: 1px solid var(--slate-100);
+  transition: background 0.15s ease;
+}
+table.premium tbody tr:hover {
+  background: var(--indigo-50);
+}
+table.premium tbody td {
+  padding: var(--space-4) var(--space-5);
+  vertical-align: top;
+  color: var(--slate-700);
+  line-height: 1.55;
+}
+table.premium tbody td:first-child {
+  font-weight: 600;
+  color: var(--indigo-950);
+}
+table.premium tbody td strong {
+  color: var(--indigo-950);
+}
+
+/* ---------- Pills priorité ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill.critique { background: var(--rose-100); color: var(--rose-600); }
+.pill.eleve    { background: var(--amber-100); color: var(--amber-600); }
+.pill.moyenne  { background: var(--indigo-100); color: var(--indigo-700); }
+.pill.ok       { background: var(--emerald-100); color: var(--emerald-600); }
+
+/* ---------- KPIs / chiffres clés ---------- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-12);
+}
+.stat-card {
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.stat-card .stat__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+.stat-card .stat__label {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  font-weight: 500;
+}
+
+/* ---------- BLOC architecture data ---------- */
+.flow-diagram {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr 60px 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-12);
+}
+.flow-block {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--slate-200);
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+.flow-block h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+}
+.flow-block p {
+  font-size: 0.82rem;
+  color: var(--slate-600);
+  line-height: 1.5;
+}
+.flow-block.sources { border-top: 4px solid var(--amber-500); }
+.flow-block.etl     { border-top: 4px solid var(--violet-600); }
+.flow-block.module  { border-top: 4px solid var(--emerald-500); }
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--violet-600);
+  font-weight: 700;
+}
+
+/* ---------- BLOC scope In/Out ---------- */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+.scope-card {
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow);
+}
+.scope-card.in {
+  border-top: 4px solid var(--emerald-500);
+}
+.scope-card.out {
+  border-top: 4px solid var(--slate-400);
+  background: var(--slate-50);
+}
+.scope-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.scope-card h3 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+}
+.scope-card.in h3 .badge  { background: var(--emerald-500); }
+.scope-card.out h3 .badge { background: var(--slate-400); }
+.scope-card h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--violet-700);
+  letter-spacing: 0.04em;
+  margin: var(--space-5) 0 var(--space-2);
+  text-transform: uppercase;
+}
+.scope-card.out h4 {
+  color: var(--slate-500);
+}
+.scope-card ul {
+  list-style: none;
+  font-size: 0.92rem;
+}
+.scope-card ul li {
+  padding: var(--space-2) 0 var(--space-2) var(--space-6);
+  position: relative;
+  color: var(--slate-700);
+  line-height: 1.5;
+}
+.scope-card.in ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--emerald-600);
+  font-weight: 700;
+}
+.scope-card.out ul li::before {
+  content: '×';
+  position: absolute;
+  left: 0;
+  color: var(--slate-400);
+  font-weight: 700;
+}
+
+/* ---------- HYPOTHÈSES À ARBITRER ---------- */
+.h-callout {
+  padding: var(--space-5) var(--space-6);
+  background: linear-gradient(135deg, var(--amber-50), var(--white));
+  border-left: 4px solid var(--amber-500);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-8);
+  font-size: 1rem;
+  color: var(--slate-800);
+  box-shadow: var(--shadow-sm);
+}
+.h-callout strong { color: var(--amber-600); }
+
+/* ---------- JALONS / Roadmap ---------- */
+.jalons-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+.jalon-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-left: 4px solid var(--indigo-500);
+  border-radius: var(--radius);
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+.jalon-item:hover {
+  border-left-color: var(--violet-600);
+  transform: translateX(2px);
+}
+.jalon-item.critical {
+  border-left-color: var(--rose-500);
+  background: linear-gradient(90deg, var(--rose-50), var(--white) 30%);
+}
+.jalon-item__date {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--indigo-700);
+}
+.jalon-item.critical .jalon-item__date {
+  color: var(--rose-600);
+}
+.jalon-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.jalon-item__title {
+  font-weight: 600;
+  color: var(--indigo-950);
+  font-size: 0.98rem;
+}
+.jalon-item__desc {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+}
+
+/* ---------- SYNTHÈSE finale ---------- */
+.synthesis {
+  padding: var(--space-12);
+  background: linear-gradient(135deg, var(--indigo-950) 0%, var(--violet-700) 100%);
+  border-radius: var(--radius-xl);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.synthesis::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+  border-radius: 50%;
+}
+.synthesis__inner { position: relative; z-index: 1; }
+.synthesis__kicker {
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo-100);
+  margin-bottom: var(--space-5);
+}
+.synthesis h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: var(--space-6);
+  letter-spacing: -0.015em;
+  color: white;
+}
+.synthesis p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--indigo-100);
+  max-width: 800px;
+  margin-bottom: var(--space-5);
+}
+.synthesis__points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+.synthesis__point {
+  padding: var(--space-5);
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+}
+.synthesis__point .num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--violet-100);
+  margin-bottom: var(--space-2);
+}
+.synthesis__point h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  color: white;
+}
+.synthesis__point p {
+  font-size: 0.88rem;
+  color: var(--indigo-100);
+  margin-bottom: 0;
+}
+
+/* ---------- FOOTER ---------- */
+footer.foot {
+  padding: var(--space-12) 0 var(--space-8);
+  background: var(--slate-50);
+  border-top: 1px solid var(--slate-200);
+  text-align: center;
+}
+footer.foot .foot__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-3);
+}
+footer.foot .foot__brand .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+}
+footer.foot .foot__line {
+  color: var(--slate-500);
+  font-size: 0.88rem;
+  margin-bottom: var(--space-2);
+}
+
+/* ---------- Responsive desktop-first ---------- */
+@media (max-width: 1024px) {
+  .modules-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline::before { display: none; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .flow-diagram { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); padding: var(--space-2) 0; }
+}
+@media (max-width: 720px) {
+  .topnav__menu { display: none; }
+  .ambition__grid, .scope-grid { grid-template-columns: 1fr; }
+  .modules-grid, .timeline-grid, .stats-row { grid-template-columns: 1fr; }
+  .decision-card { grid-template-columns: 60px 1fr; gap: var(--space-4); padding: var(--space-5); }
+  .decision-card__num { width: 60px; height: 60px; font-size: 1.4rem; }
+  .decision-quote .triplet { grid-template-columns: 1fr; }
+  .synthesis__points { grid-template-columns: 1fr; }
+  .jalon-item { grid-template-columns: 1fr; gap: var(--space-2); }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .topnav { display: none; }
+  body { background: white; font-size: 11pt; }
+  section.block { padding: 1cm 0; page-break-inside: avoid; }
+  .module-card, .decision-card, .jalon-item, .scope-card,
+  .timeline-step, .stat-card, .table-wrap { box-shadow: none; }
+  .synthesis { background: var(--indigo-950) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero { padding: 1cm 0; }
+}
+
+/* ---------- Bouton Retour Accueil ---------- */
+.topnav__home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  border: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px -2px rgb(99 102 241 / 0.35);
+}
+.topnav__home:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.45);
+}
+.topnav__home .icon {
+  font-size: 0.95rem;
+}
+.topnav__glossary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--indigo-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--white);
+  border: 1px solid #c7d2fe;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__glossary:hover {
+  background: var(--indigo-50);
+  border-color: var(--indigo-500);
+}
+.topnav__glossary .icon {
+  font-size: 0.95rem;
+}
+
+/* ---------- Cards d'accès aux ateliers détaillés ---------- */
+.atelier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.atelier-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.atelier-card::after {
+  content: '→';
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 1.5rem;
+  color: #c4b5fd;
+  transition: all 0.2s ease;
+}
+.atelier-card:hover {
+  border-color: #c4b5fd;
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-4px);
+}
+.atelier-card:hover::after {
+  color: var(--violet-600);
+  transform: translateX(4px);
+}
+.atelier-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 6px 16px -4px rgb(99 102 241 / 0.45);
+}
+.atelier-card__date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.atelier-card__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  line-height: 1.25;
+  margin-bottom: var(--space-3);
+}
+.atelier-card__desc {
+  font-size: 0.92rem;
+  color: var(--slate-600);
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: var(--space-4);
+}
+.atelier-card__cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-700);
+}
+@media (max-width: 1024px) { .atelier-cards { grid-template-columns: 1fr; } }
+
+
+
+/* ---------- Inter-page nav ---------- */
+.topnav__home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  border: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px -2px rgb(99 102 241 / 0.35);
+}
+.topnav__home:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.45);
+}
+.topnav__home .icon {
+  font-size: 0.95rem;
+}
+.topnav__glossary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--indigo-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--white);
+  border: 1px solid #c7d2fe;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__glossary:hover {
+  background: var(--indigo-50);
+  border-color: var(--indigo-500);
+}
+.topnav__glossary .icon {
+  font-size: 0.95rem;
+}
+.topnav__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--violet-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--violet-50);
+  border: 1px solid var(--violet-100);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__back:hover {
+  background: var(--violet-100);
+  transform: translateX(-2px);
+}
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--space-4);
+  align-items: stretch;
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-8);
+}
+.pagination__link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-5) var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--indigo-950);
+  transition: all 0.2s ease;
+}
+.pagination__link:hover {
+  border-color: var(--violet-300, #c4b5fd);
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-2px);
+}
+.pagination__link.center {
+  text-align: center;
+  background: linear-gradient(135deg, var(--indigo-950), var(--violet-700));
+  color: white;
+  border: none;
+}
+.pagination__link.center:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+.pagination__link.next {
+  text-align: right;
+  align-items: flex-end;
+}
+.pagination__link.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  background: var(--slate-50);
+}
+.pagination__direction {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.pagination__link.center .pagination__direction { color: var(--indigo-100); }
+.pagination__link.disabled .pagination__direction { color: var(--slate-400); }
+.pagination__title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+@media (max-width: 720px) {
+  .pagination { grid-template-columns: 1fr; gap: var(--space-3); }
+  .pagination__link.next { text-align: left; align-items: flex-start; }
+}
+
+/* ---------- Cards d'accès aux ateliers depuis la page principale ---------- */
+.atelier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.atelier-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.atelier-card::after {
+  content: '→';
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 1.5rem;
+  color: var(--violet-300, #c4b5fd);
+  transition: all 0.2s ease;
+}
+.atelier-card:hover {
+  border-color: var(--violet-300, #c4b5fd);
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-4px);
+}
+.atelier-card:hover::after {
+  color: var(--violet-600);
+  transform: translateX(4px);
+}
+.atelier-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 6px 16px -4px rgb(99 102 241 / 0.45);
+}
+.atelier-card__date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.atelier-card__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  line-height: 1.25;
+  margin-bottom: var(--space-3);
+}
+.atelier-card__desc {
+  font-size: 0.92rem;
+  color: var(--slate-600);
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: var(--space-4);
+}
+.atelier-card__cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-700);
+}
+@media (max-width: 1024px) { .atelier-cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav__inner">
+    <div style="display:flex; align-items:center; gap:var(--space-3);">
+      <a href="../Accueil Phase 2.html" class="topnav__home" title="Retour à l'accueil Phase 2">
+        <span class="icon">⌂</span>
+        <span>Accueil</span>
+      </a>
+      <a href="../glossaire.html" class="topnav__glossary" title="Consulter le glossaire">
+        <span class="icon">📖</span>
+        <span>Glossaire</span>
+      </a>
+      <a href="Restitution_Discovery_Phase2_05-05-2026.html" class="topnav__back" title="Retour à la restitution principale">
+        <span>←</span>
+        <span>Restitution</span>
+      </a>
+      <div class="topnav__brand" style="border-left:1px solid var(--slate-200); padding-left:var(--space-4);">
+        <span class="dot"></span>
+        <span>Modèle économique formalisé</span>
+      </div>
+    </div>
+    <ul class="topnav__menu">
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#tracks">2 tracks</a></li>
+      <li><a href="#unites">Unités</a></li>
+      <li><a href="#couts">Grille coûts</a></li>
+      <li><a href="#regles">Règles calcul</a></li>
+      <li><a href="#kpis">KPIs</a></li>
+      <li><a href="#allocation">Allocation</a></li>
+      <li><a href="#synthese">Synthèse</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero__inner">
+    <div class="hero__kicker">
+      <span class="pulse"></span>
+      Section transverse · Modèle économique formalisé
+    </div>
+    <h1>Le <em>modèle économique</em><br>du module<br>Rentabilité.</h1>
+    <p class="hero__lead">
+      Synthèse consolidée des 4 ateliers Discovery articulant la grille de coûts (socle théorique),
+      les sources réelles (paie, télématique, factures) et les règles de calcul (CA, indexation, ventilation).
+      Cette page sert de socle direct aux SPEC fonctionnelles côté développement.
+    </p>
+    <div class="hero__meta">
+      <div class="hero__meta-item">
+        <div class="label">Postes de coûts</div>
+        <div class="value">14 postes formalisés</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Unités d'analyse</div>
+        <div class="value">6 unités distinctes</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Indicateurs cibles</div>
+        <div class="value">11 KPIs · quotidien à mensuel</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Vues de rentabilité</div>
+        <div class="value">5 vues formalisées</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- 6.1 ARCHITECTURE CONCEPTUELLE -->
+<section id="architecture" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.1 · Architecture conceptuelle</div>
+      <h2 class="section__title">Cinq blocs fonctionnels pour porter le module.</h2>
+      <p class="section__lead">Le module est structuré en 5 blocs interdépendants qui s'agencent dans l'écosystème des 6 modules de l'offre Phase 2.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>#</th><th>Bloc</th><th>Description</th><th>Module(s) cible</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Grille de coûts</strong></td><td>Base de coûts de référence (théoriques) pour alimenter les calculs de rentabilité conception et théorique</td><td>Cost Engine + Data Cost Hub</td></tr>
+          <tr><td>2</td><td><strong>Rentabilité théorique</strong></td><td>Performance attendue avant exécution — CA attendu vs coûts théoriques paramétrés</td><td>Commercial &amp; Tarification + Profitability Engine</td></tr>
+          <tr><td>3</td><td><strong>Rentabilité réelle</strong></td><td>Performance observée — données terrain et financières effectivement constatées</td><td>Data Cost Hub + Cost Engine + Profitability Engine</td></tr>
+          <tr><td>4</td><td><strong>Analyse théorique vs réel</strong></td><td>Comparaison prévu / réalisé pour identifier et expliquer les écarts</td><td>Profitability Engine + Dashboard Rentabilité</td></tr>
+          <tr><td>5</td><td><strong>Rentabilité sous-traitance</strong></td><td>Lecture dédiée marge achat/vente sur prestations confiées à des sous-traitants</td><td>Profitability Engine</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6.2 LES 2 TRACKS FONDAMENTAUX -->
+<section id="tracks" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.2 · Les deux tracks fondamentaux</div>
+      <h2 class="section__title">Théorique vs Réel — la décision pivot.</h2>
+      <p class="section__lead">Distinction qui structure l'ensemble du modèle — actée dès l'Atelier 1.</p>
+    </div>
+
+    <div class="decision-quote" style="margin-bottom: var(--space-8);">
+      <div class="triplet">
+        <div><strong>Théorique</strong>ce qu'on pensait gagner</div>
+        <div><strong>Réel</strong>ce qu'on a réellement gagné/dépensé</div>
+        <div><strong>Écart</strong>ce qui explique la différence</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>&nbsp;</th><th>Théorique (Prévision / Conception)</th><th>Réel (Réalisé / Exploitation)</th></tr></thead>
+        <tbody>
+          <tr><td>Définition</td><td>Performance attendue avant exécution</td><td>Performance observée après exécution</td></tr>
+          <tr><td>CA</td><td>Somme prestations contrat (ADV)</td><td>Somme prestations réellement effectuées</td></tr>
+          <tr><td>Charges</td><td>Grille de coûts + hypothèses paramétrées</td><td>Paie (Silae/Factorial), carburant (AS24/Engie), péages, télématique</td></tr>
+          <tr><td>Indexation carburant</td><td>Optionnel — vue hors indexation possible</td><td>Intégrée obligatoirement</td></tr>
+          <tr><td>Affichage vues</td><td>Colonne 'Théorique' + indicateurs conception</td><td>Colonne 'Réel' + ligne d'écart + ventilation unités d'œuvre</td></tr>
+          <tr><td>Responsable</td><td>Commerce (Laurent) — saisie ADV</td><td>Exploitation — validation prestations réalisées</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6.3 UNITÉS D'ANALYSE -->
+<section id="unites" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.3 · Six unités d'analyse retenues</div>
+      <h2 class="section__title">Les 6 grilles de lecture du modèle.</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>Unité</th><th>Rôle principal</th><th>Complexité spécifique</th></tr></thead>
+        <tbody>
+          <tr><td>Chauffeur</td><td>Coûts RH (salaires, forfaits, amplitude)</td><td>Alternance week-end → agréger sur 15 jours</td></tr>
+          <tr><td>Tracteur</td><td>Coûts détention, location, entretien, kilométrage</td><td>Diviseur jours (21 vs 26) à décider — base 22h</td></tr>
+          <tr><td>Semi-remorque</td><td>Coûts location, assurance, taux d'utilisation</td><td>Mutualisation entre tournées → % d'affectation requis</td></tr>
+          <tr><td>Tournée</td><td>Mutualisation des ressources — mix clients/prestations</td><td>Inclure pieds/repositionnements dans le coût total</td></tr>
+          <tr><td>Trajet / Prestation</td><td>Granularité fine pour ventiler CA et charges réelles</td><td>Indexation carburant, ventilation coûts, sous-traitance</td></tr>
+          <tr><td>Client / Contrat</td><td>Règles tarifaires, indexation, facturation</td><td>Paramétrage indexation par prestation (ex. FedEx multi-lignes)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6.4 GRILLE DE COÛTS — 14 POSTES -->
+<section id="couts" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.4 · Catégories de coûts — grille à 14 postes</div>
+      <h2 class="section__title">Le socle économique du module.</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>Poste</th><th>Nature</th><th>Méthode théorique</th><th>Source réelle</th><th>Fréquence MàJ</th></tr></thead>
+        <tbody>
+          <tr><td>Loyers tracteurs</td><td>Fixe</td><td>Facture globale ÷ nb véhicules</td><td>Avia Location</td><td>Annuel + vérif. mensuelle</td></tr>
+          <tr><td>Loyers semi-remorques</td><td>Fixe</td><td>Forfait par semi (~700€)</td><td>Facture locateur</td><td>Annuel</td></tr>
+          <tr><td>Entretien &amp; maintenance</td><td>Semi-variable</td><td>Forfait annuel ÷ 12</td><td>Factures garage</td><td>Mensuel</td></tr>
+          <tr><td>Pneumatiques</td><td>Variable (km)</td><td>Coût/km × km théoriques</td><td>Factures garage</td><td>Mensuel</td></tr>
+          <tr><td>Assurances</td><td>Fixe</td><td>Prime annuelle ÷ 12</td><td>Facture assureur</td><td>Annuel</td></tr>
+          <tr><td>Carburant tracteur</td><td>Variable</td><td>Conso × km × prix €/L</td><td>AS24 / Engie par immat.</td><td>Mensuel (M-1)</td></tr>
+          <tr><td>Carburant frigo</td><td>Variable</td><td>2 L/h × heures fonctionnement</td><td>Engie CSV</td><td>Mensuel (M-1)</td></tr>
+          <tr><td>Péages</td><td>Variable</td><td>Tarif théorique / trajet (PTV)</td><td>AS24 / portail péage</td><td>Mensuel</td></tr>
+          <tr><td>Salaires &amp; charges RH</td><td>Variable</td><td>Forfait jour (~165€/j) × jours travaillés</td><td>Factorial / Silae</td><td>Mensuel (M-1)</td></tr>
+          <tr><td>Équipements (GPS, ADR, tire-palette)</td><td>Fixe</td><td>Loyer / abonnement mensuel</td><td>Factures fournisseurs</td><td>Annuel</td></tr>
+          <tr><td>Casse / sinistres non assurés</td><td>Variable lissé</td><td>% du CA (1,7%)</td><td>Données Raphaela</td><td>Mensuel / Trim.</td></tr>
+          <tr><td>Immobilisation véhicules</td><td>Exceptionnel</td><td>N/A théorique</td><td>Exploitation</td><td>Mensuel</td></tr>
+          <tr><td>Sous-traitance (achat)</td><td>Variable</td><td>Prix d'achat unitaire</td><td>Factures sous-traitants</td><td>Au fil des prestations</td></tr>
+          <tr><td>Repositionnements / pieds</td><td>Variable</td><td>km × coût/km + temps × coût horaire</td><td>Masternaut / Solides</td><td>Mensuel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6.5 RÈGLES DE CALCUL -->
+<section id="regles" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.5 · Règles de calcul formalisées</div>
+      <h2 class="section__title">Les formules qui pilotent le moteur économique.</h2>
+    </div>
+
+    <div class="decisions">
+
+      <article class="decision-card pivot">
+        <div class="decision-card__num">CA</div>
+        <div class="decision-card__body">
+          <h3>CA Théorique vs CA Réel</h3>
+          <p class="decision-card__desc"><strong>CA Théorique</strong> = somme des prestations définies au contrat (ADV) avec règles d'éclatement sur trajets si nécessaire.</p>
+          <p class="decision-card__desc"><strong>CA Réel</strong> = somme des prestations réellement effectuées (exploitation) + application de l'indexation carburant.</p>
+        </div>
+      </article>
+
+      <article class="decision-card pivot">
+        <div class="decision-card__num">⛽</div>
+        <div class="decision-card__body">
+          <h3>Indexation carburant</h3>
+          <div class="decision-quote">
+            <strong style="color: var(--indigo-900); font-style: normal; display: block; margin-bottom: var(--space-2);">Variation = (Indice M − Indice Référence) / Indice Référence</strong>
+            <span style="font-style: normal; font-family: var(--font-sans);">Application = Variation × Pondération × Base CA (ou × km contractuels si pondération en consommation)</span>
+          </div>
+          <p class="decision-card__desc" style="margin-top: var(--space-4);">
+            Modes : <strong>M-1 (majoritaire)</strong> · M-2 (quelques contrats) · M (rare).
+            Pondération : <strong>% du forfait</strong> OU <strong>L/100km × km contractuels</strong>.
+            Bascule CNR → Dirham effective janvier 2026.
+            Cas particuliers : FedEx (par prestation), Auchan (M-1 moins TCPE), CEVA (à définir).
+          </p>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">RH</div>
+        <div class="decision-card__body">
+          <h3>Coûts salariaux</h3>
+          <p class="decision-card__desc">
+            Méthode : <strong>forfait jour ~165€/j SPL</strong> incluant charges + congés. Diviseur à fixer (22, 23 ou 26 jours).<br>
+            Sources : Factorial / Silae (149 bulletins en mars 2026, ~324 751€ sur 76 bulletins).<br>
+            Variables rattachées : amplitude, temps de service (Solides), forfaits horaires (9h/10h/11h/12h).<br>
+            Variables complémentaires (bas de bulletin) : primes, découchers, frais repas.<br>
+            Remplacements : règle de répercussion du delta coût à formaliser.<br>
+            Agrégation week-end : analyse sur 15 jours pour chauffeurs en alternance.
+          </p>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">⛽</div>
+        <div class="decision-card__body">
+          <h3>Consommation carburant — Théorique vs Réel</h3>
+          <div class="table-wrap" style="margin-top: var(--space-3);">
+            <table class="premium">
+              <thead><tr><th>&nbsp;</th><th>Théorique</th><th>Réel</th></tr></thead>
+              <tbody>
+                <tr><td>Tracteur</td><td>Conso standard (28 L/100km GO, 30,5 GNC) × km × prix €/L</td><td>AS24 / Engie par immatriculation + km Masternaut</td></tr>
+                <tr><td>Semi frigorifique</td><td>2 L/h × heures fonctionnement</td><td>Engie CSV — neutraliser pleins inter-mois</td></tr>
+                <tr><td>Km vides (pieds)</td><td>Calculés depuis PTV entre prestations</td><td>Masternaut / Solides — imputer à la tournée</td></tr>
+                <tr><td>Contrôle</td><td>Comparaison théorique vs réel par immatriculation</td><td>Alertes sur écarts importants (vols, plannings multi-mois)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">km</div>
+        <div class="decision-card__body">
+          <h3>Kilométrage et seuils</h3>
+          <p class="decision-card__desc">
+            Hypothèse annuelle tracteur : <strong>~150 000 km/an</strong> (jusqu'à 250-300k pour longues distances).<br>
+            Déclenchement actions si dépassement : facturation complémentaire ou remplacement.<br>
+            Révisions majeures à surveiller (ex. 180k km) pour éviter pics de coûts.<br>
+            Km vides (prise de poste / dépôt / pieds) → ventiler en consommation non facturée.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 6.6 INDICATEURS CIBLES -->
+<section id="kpis" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.6 · Onze indicateurs cibles</div>
+      <h2 class="section__title">Le tableau de bord opérationnel.</h2>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat__num">11</div>
+        <div class="stat__label">KPIs cibles<br>retenus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat__num">3</div>
+        <div class="stat__label">Quotidiens<br>(km, utilisation, amplitude)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat__num">7</div>
+        <div class="stat__label">Mensuels<br>(CA, marge, conso, indexation, péages, casse, delta)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat__num">1</div>
+        <div class="stat__label">Hebdomadaire<br>(taux modification S-1)</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>Indicateur</th><th>Unité</th><th>Fréquence</th></tr></thead>
+        <tbody>
+          <tr><td>CA réalisé vs prévu</td><td>€ + %</td><td>Mensuel / Hebdo</td></tr>
+          <tr><td>Marge / % rentabilité d'exploitation</td><td>€ + %</td><td>Mensuel</td></tr>
+          <tr><td>Kilométrage théorique et réel</td><td>km</td><td>Quotidien</td></tr>
+          <tr><td>Taux d'utilisation véhicule (base 22h)</td><td>%</td><td>Quotidien / Hebdo</td></tr>
+          <tr><td>Amplitude et heures de service</td><td>h</td><td>Quotidien</td></tr>
+          <tr><td>Consommation carburant réelle vs théorique</td><td>L/100km + €</td><td>Mensuel (M-1)</td></tr>
+          <tr><td>Impact indexation carburant</td><td>€ + %</td><td>Mensuel</td></tr>
+          <tr><td>Coûts de péage</td><td>€</td><td>Mensuel</td></tr>
+          <tr><td>Coûts de casse et d'immobilisation</td><td>€</td><td>Mensuel (5-10 M-1)</td></tr>
+          <tr><td>Delta théorique vs réel</td><td>€ + %</td><td>Mensuel</td></tr>
+          <tr><td>Taux de modification S-1 (qualité planification)</td><td>%</td><td>Hebdomadaire</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6.7 RÈGLES D'ALLOCATION -->
+<section id="allocation" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">6.7 · Règles d'allocation et de ventilation</div>
+      <h2 class="section__title">Comment ventiler les coûts entre les unités.</h2>
+    </div>
+    <div class="modules-grid">
+      <article class="module-card">
+        <div class="module-card__num">⏱</div>
+        <h3>Prorata temporis</h3>
+        <p>Pour les coûts fixes : loyer réparti selon jours d'utilisation ou tournées effectuées.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">📦</div>
+        <h3>Taux d'utilisation remorque</h3>
+        <p>Extraction Masternaut OU déclaratif exploitant (immatriculation tractée). Phase test sur le déclaratif.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">RH</div>
+        <h3>Salaires</h3>
+        <p>Liaison amplitude + temps de service (Solides/Michelin) + données paie Factorial.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">⛽</div>
+        <h3>Carburant</h3>
+        <p>Imputation au véhicule (jauge Masternaut) + neutralisation des pleins inter-mois.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">🔵</div>
+        <h3>Repositionnements (pieds)</h3>
+        <p>km et temps imputés à la <strong>tournée</strong>, pas au client. Évite de fausser la rentabilité d'une prestation.</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">📅</div>
+        <h3>Week-end</h3>
+        <p>Agrégation 15 jours pour chauffeurs en alternance (semaine 1 samedi / semaine 2 dimanche).</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">9h-12h</div>
+        <h3>Forfaits conducteurs</h3>
+        <p>Grilles 9h/10h/11h/12h à définir avec Mathieu / Conception (Q1).</p>
+      </article>
+      <article class="module-card">
+        <div class="module-card__num">↔️</div>
+        <h3>Mutualisation tracteur</h3>
+        <p>Approche modèle « plage 24h optimisable » par tracteur — deux tournées sur un même véhicule possibles.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SYNTHÈSE -->
+<section id="synthese" class="block">
+  <div class="container">
+    <div class="synthesis">
+      <div class="synthesis__inner">
+        <div class="synthesis__kicker">En synthèse</div>
+        <h2>Un modèle économique cohérent,<br>directement actionnable côté SPEC.</h2>
+        <p>
+          14 postes de coûts formalisés avec méthode théorique et source réelle.
+          6 unités d'analyse avec leurs règles de complexité spécifiques.
+          11 indicateurs cibles définis avec leurs fréquences.
+          La distinction Théorique vs Réel structure tous les calculs et toutes les vues.
+          Les règles d'indexation, de ventilation et d'allocation sont posées de manière exhaustive.
+        </p>
+        <div class="synthesis__points">
+          <div class="synthesis__point"><div class="num">14</div><h4>Postes formalisés</h4><p>Avec source, méthode, fréquence, responsable.</p></div>
+          <div class="synthesis__point"><div class="num">2</div><h4>Tracks fondamentaux</h4><p>Théorique vs Réel — colonne vertébrale.</p></div>
+          <div class="synthesis__point"><div class="num">11</div><h4>KPIs cibles</h4><p>Du quotidien au mensuel — pilotage opérationnel.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="block alt">
+  <div class="container">
+    <nav class="pagination">
+      <a href="Restitution_Atelier_4.html" class="pagination__link"><div class="pagination__direction">← Atelier précédent</div><div class="pagination__title">Atelier 4 — Cadrage produit</div></a>
+      <a href="Restitution_Discovery_Phase2_05-05-2026.html" class="pagination__link center">
+        <div class="pagination__direction">↑ Sommaire</div>
+        <div class="pagination__title">Restitution principale</div>
+      </a>
+      <a href="Restitution_Architecture_Data.html" class="pagination__link next"><div class="pagination__direction">Atelier suivant →</div><div class="pagination__title">Architecture data & dépendances SI</div></a>
+    </nav>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot__brand">
+      <span class="dot"></span>
+      Parnass × Ailéane
+    </div>
+    <div class="foot__line">Restitution Discovery — Phase 2 · Module Rentabilité d'Exploitation</div>
+    <div class="foot__line">Modèle économique formalisé · Document de travail consolidé</div>
+  </div>
+</footer>
+
+</body>
+</html>

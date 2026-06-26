@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier 1 — Cadrage · Restitution Discovery Phase 2 · Parnass × Ailéane</title>
+<style>
+
+/* ---------- Variables design system ---------- */
+:root {
+  /* Couleurs primaires */
+  --indigo-950: #1e1b4b;
+  --indigo-900: #312e81;
+  --indigo-700: #4338ca;
+  --indigo-600: #4f46e5;
+  --indigo-500: #6366f1;
+  --indigo-100: #e0e7ff;
+  --indigo-50:  #eef2ff;
+
+  --violet-700: #6d28d9;
+  --violet-600: #7c3aed;
+  --violet-100: #ede9fe;
+  --violet-50:  #f5f3ff;
+
+  /* Accents fonctionnels */
+  --emerald-600: #059669;
+  --emerald-500: #10b981;
+  --emerald-100: #d1fae5;
+  --emerald-50:  #ecfdf5;
+
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --rose-600: #e11d48;
+  --rose-500: #f43f5e;
+  --rose-100: #ffe4e6;
+  --rose-50:  #fff1f2;
+
+  /* Neutres */
+  --slate-950: #020617;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --white:     #ffffff;
+
+  /* Système de spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Typographie */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow:    0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.05);
+  --shadow-violet: 0 10px 30px -10px rgb(124 58 237 / 0.25);
+
+  /* Rayons */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ---------- Reset léger ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--slate-800);
+  background: var(--slate-50);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Container ---------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* ---------- Navigation sticky ---------- */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--slate-200);
+}
+.topnav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+.topnav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--indigo-950);
+  letter-spacing: -0.01em;
+}
+.topnav__brand .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  box-shadow: 0 0 0 4px var(--indigo-50);
+}
+.topnav__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  font-size: 0.85rem;
+}
+.topnav__menu a {
+  color: var(--slate-600);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__menu a:hover {
+  color: var(--indigo-700);
+  background: var(--indigo-50);
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  padding: var(--space-24) 0 var(--space-20);
+  background: linear-gradient(135deg, #fafbff 0%, #f5f3ff 100%);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -300px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08), transparent 70%);
+  border-radius: 50%;
+}
+.hero__inner { position: relative; z-index: 1; }
+.hero__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--white);
+  border: 1px solid var(--indigo-100);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo-700);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+.hero__kicker .pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--violet-600);
+  box-shadow: 0 0 0 0 rgb(124 58 237 / 0.6);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0.5); }
+  70% { box-shadow: 0 0 0 12px rgb(124 58 237 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0); }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-5);
+  max-width: 900px;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(120deg, var(--indigo-600), var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero__lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--slate-600);
+  max-width: 720px;
+  margin-bottom: var(--space-10);
+}
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-6);
+  max-width: 800px;
+  padding: var(--space-6);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--slate-200);
+}
+.hero__meta-item .label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  margin-bottom: var(--space-1);
+}
+.hero__meta-item .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--indigo-950);
+}
+
+/* ---------- Section générique ---------- */
+section.block {
+  padding: var(--space-20) 0;
+}
+section.block.alt {
+  background: var(--white);
+}
+.section__head {
+  margin-bottom: var(--space-12);
+  max-width: 820px;
+}
+.section__num {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-3);
+}
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-4);
+}
+.section__lead {
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--slate-600);
+}
+
+/* ---------- AMBITION (section 2) ---------- */
+.ambition__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: stretch;
+}
+.ambition__card {
+  padding: var(--space-8);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.ambition__card.before {
+  border-left: 4px solid var(--slate-400);
+}
+.ambition__card.after {
+  border-left: 4px solid var(--violet-600);
+  background: linear-gradient(135deg, var(--white) 0%, var(--violet-50) 100%);
+}
+.ambition__label {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--slate-100);
+  color: var(--slate-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  margin-bottom: var(--space-4);
+}
+.ambition__card.after .ambition__label {
+  background: var(--violet-100);
+  color: var(--violet-700);
+}
+.ambition__card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-3);
+  line-height: 1.3;
+}
+.ambition__card p {
+  color: var(--slate-600);
+  line-height: 1.65;
+}
+.ambition__arrow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-8) 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+}
+.ambition__arrow::before, .ambition__arrow::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--violet-200, #ddd6fe), transparent);
+  margin: 0 var(--space-4);
+}
+
+/* ---------- 6 MODULES (section 3) ---------- */
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.module-card {
+  position: relative;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-violet);
+  border-color: var(--violet-200, #ddd6fe);
+}
+.module-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.4);
+}
+.module-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.module-card .role {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-600);
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+.module-card p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--slate-600);
+  flex: 1;
+}
+
+/* ---------- TIMELINE PARCOURS (section 4) ---------- */
+.timeline {
+  position: relative;
+  padding: var(--space-6) 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--indigo-200, #c7d2fe), var(--violet-200, #ddd6fe));
+  transform: translateY(-50%);
+}
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+.timeline-step {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.timeline-step__date {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--indigo-50);
+  color: var(--indigo-700);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  margin-bottom: var(--space-3);
+}
+.timeline-step__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.timeline-step__desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--slate-600);
+}
+.timeline-step__num {
+  position: absolute;
+  top: -14px;
+  right: var(--space-5);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--violet-600), var(--indigo-600));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px -2px rgb(124 58 237 / 0.5);
+}
+
+/* ---------- DÉCISIONS PIVOT (section 5) ---------- */
+.decisions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.decision-card {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.decision-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+}
+.decision-card.pivot::before {
+  background: linear-gradient(180deg, var(--violet-600), var(--indigo-600));
+}
+.decision-card.standard::before {
+  background: var(--indigo-500);
+}
+.decision-card__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--indigo-50), var(--violet-50));
+  color: var(--violet-700);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+}
+.decision-card.pivot .decision-card__num {
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  box-shadow: 0 8px 20px -4px rgb(124 58 237 / 0.4);
+}
+.decision-card__body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.decision-card__tag {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  background: var(--violet-100);
+  color: var(--violet-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-left: var(--space-2);
+  vertical-align: middle;
+}
+.decision-card__desc {
+  color: var(--slate-700);
+  margin-bottom: var(--space-4);
+  line-height: 1.65;
+}
+.decision-quote {
+  padding: var(--space-4) var(--space-5);
+  background: linear-gradient(135deg, var(--indigo-50), var(--violet-50));
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--indigo-900);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.decision-quote .triplet {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-4);
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+.decision-quote .triplet > div {
+  text-align: center;
+  padding: var(--space-3);
+}
+.decision-quote .triplet strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--violet-700);
+  margin-bottom: var(--space-1);
+}
+
+/* ---------- TABLEAUX premium ---------- */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+table.premium {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+table.premium thead {
+  background: linear-gradient(135deg, var(--indigo-950), var(--indigo-900));
+}
+table.premium thead th {
+  color: white;
+  text-align: left;
+  padding: var(--space-4) var(--space-5);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+table.premium tbody tr {
+  border-top: 1px solid var(--slate-100);
+  transition: background 0.15s ease;
+}
+table.premium tbody tr:hover {
+  background: var(--indigo-50);
+}
+table.premium tbody td {
+  padding: var(--space-4) var(--space-5);
+  vertical-align: top;
+  color: var(--slate-700);
+  line-height: 1.55;
+}
+table.premium tbody td:first-child {
+  font-weight: 600;
+  color: var(--indigo-950);
+}
+table.premium tbody td strong {
+  color: var(--indigo-950);
+}
+
+/* ---------- Pills priorité ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill.critique { background: var(--rose-100); color: var(--rose-600); }
+.pill.eleve    { background: var(--amber-100); color: var(--amber-600); }
+.pill.moyenne  { background: var(--indigo-100); color: var(--indigo-700); }
+.pill.ok       { background: var(--emerald-100); color: var(--emerald-600); }
+
+/* ---------- KPIs / chiffres clés ---------- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-12);
+}
+.stat-card {
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.stat-card .stat__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+.stat-card .stat__label {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  font-weight: 500;
+}
+
+/* ---------- BLOC architecture data ---------- */
+.flow-diagram {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr 60px 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-12);
+}
+.flow-block {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--slate-200);
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+.flow-block h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-2);
+}
+.flow-block p {
+  font-size: 0.82rem;
+  color: var(--slate-600);
+  line-height: 1.5;
+}
+.flow-block.sources { border-top: 4px solid var(--amber-500); }
+.flow-block.etl     { border-top: 4px solid var(--violet-600); }
+.flow-block.module  { border-top: 4px solid var(--emerald-500); }
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--violet-600);
+  font-weight: 700;
+}
+
+/* ---------- BLOC scope In/Out ---------- */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+.scope-card {
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow);
+}
+.scope-card.in {
+  border-top: 4px solid var(--emerald-500);
+}
+.scope-card.out {
+  border-top: 4px solid var(--slate-400);
+  background: var(--slate-50);
+}
+.scope-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.scope-card h3 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+}
+.scope-card.in h3 .badge  { background: var(--emerald-500); }
+.scope-card.out h3 .badge { background: var(--slate-400); }
+.scope-card h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--violet-700);
+  letter-spacing: 0.04em;
+  margin: var(--space-5) 0 var(--space-2);
+  text-transform: uppercase;
+}
+.scope-card.out h4 {
+  color: var(--slate-500);
+}
+.scope-card ul {
+  list-style: none;
+  font-size: 0.92rem;
+}
+.scope-card ul li {
+  padding: var(--space-2) 0 var(--space-2) var(--space-6);
+  position: relative;
+  color: var(--slate-700);
+  line-height: 1.5;
+}
+.scope-card.in ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--emerald-600);
+  font-weight: 700;
+}
+.scope-card.out ul li::before {
+  content: '×';
+  position: absolute;
+  left: 0;
+  color: var(--slate-400);
+  font-weight: 700;
+}
+
+/* ---------- HYPOTHÈSES À ARBITRER ---------- */
+.h-callout {
+  padding: var(--space-5) var(--space-6);
+  background: linear-gradient(135deg, var(--amber-50), var(--white));
+  border-left: 4px solid var(--amber-500);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-8);
+  font-size: 1rem;
+  color: var(--slate-800);
+  box-shadow: var(--shadow-sm);
+}
+.h-callout strong { color: var(--amber-600); }
+
+/* ---------- JALONS / Roadmap ---------- */
+.jalons-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+.jalon-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-left: 4px solid var(--indigo-500);
+  border-radius: var(--radius);
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+.jalon-item:hover {
+  border-left-color: var(--violet-600);
+  transform: translateX(2px);
+}
+.jalon-item.critical {
+  border-left-color: var(--rose-500);
+  background: linear-gradient(90deg, var(--rose-50), var(--white) 30%);
+}
+.jalon-item__date {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--indigo-700);
+}
+.jalon-item.critical .jalon-item__date {
+  color: var(--rose-600);
+}
+.jalon-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.jalon-item__title {
+  font-weight: 600;
+  color: var(--indigo-950);
+  font-size: 0.98rem;
+}
+.jalon-item__desc {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+}
+
+/* ---------- SYNTHÈSE finale ---------- */
+.synthesis {
+  padding: var(--space-12);
+  background: linear-gradient(135deg, var(--indigo-950) 0%, var(--violet-700) 100%);
+  border-radius: var(--radius-xl);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.synthesis::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+  border-radius: 50%;
+}
+.synthesis__inner { position: relative; z-index: 1; }
+.synthesis__kicker {
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo-100);
+  margin-bottom: var(--space-5);
+}
+.synthesis h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: var(--space-6);
+  letter-spacing: -0.015em;
+  color: white;
+}
+.synthesis p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--indigo-100);
+  max-width: 800px;
+  margin-bottom: var(--space-5);
+}
+.synthesis__points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+.synthesis__point {
+  padding: var(--space-5);
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+}
+.synthesis__point .num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--violet-100);
+  margin-bottom: var(--space-2);
+}
+.synthesis__point h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  color: white;
+}
+.synthesis__point p {
+  font-size: 0.88rem;
+  color: var(--indigo-100);
+  margin-bottom: 0;
+}
+
+/* ---------- FOOTER ---------- */
+footer.foot {
+  padding: var(--space-12) 0 var(--space-8);
+  background: var(--slate-50);
+  border-top: 1px solid var(--slate-200);
+  text-align: center;
+}
+footer.foot .foot__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--indigo-950);
+  margin-bottom: var(--space-3);
+}
+footer.foot .foot__brand .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+}
+footer.foot .foot__line {
+  color: var(--slate-500);
+  font-size: 0.88rem;
+  margin-bottom: var(--space-2);
+}
+
+/* ---------- Responsive desktop-first ---------- */
+@media (max-width: 1024px) {
+  .modules-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline::before { display: none; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .flow-diagram { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); padding: var(--space-2) 0; }
+}
+@media (max-width: 720px) {
+  .topnav__menu { display: none; }
+  .ambition__grid, .scope-grid { grid-template-columns: 1fr; }
+  .modules-grid, .timeline-grid, .stats-row { grid-template-columns: 1fr; }
+  .decision-card { grid-template-columns: 60px 1fr; gap: var(--space-4); padding: var(--space-5); }
+  .decision-card__num { width: 60px; height: 60px; font-size: 1.4rem; }
+  .decision-quote .triplet { grid-template-columns: 1fr; }
+  .synthesis__points { grid-template-columns: 1fr; }
+  .jalon-item { grid-template-columns: 1fr; gap: var(--space-2); }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .topnav { display: none; }
+  body { background: white; font-size: 11pt; }
+  section.block { padding: 1cm 0; page-break-inside: avoid; }
+  .module-card, .decision-card, .jalon-item, .scope-card,
+  .timeline-step, .stat-card, .table-wrap { box-shadow: none; }
+  .synthesis { background: var(--indigo-950) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero { padding: 1cm 0; }
+}
+
+/* ---------- Bouton Retour Accueil ---------- */
+.topnav__home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  border: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px -2px rgb(99 102 241 / 0.35);
+}
+.topnav__home:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.45);
+}
+.topnav__home .icon {
+  font-size: 0.95rem;
+}
+.topnav__glossary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--indigo-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--white);
+  border: 1px solid #c7d2fe;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__glossary:hover {
+  background: var(--indigo-50);
+  border-color: var(--indigo-500);
+}
+.topnav__glossary .icon {
+  font-size: 0.95rem;
+}
+
+/* ---------- Cards d'accès aux ateliers détaillés ---------- */
+.atelier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.atelier-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.atelier-card::after {
+  content: '→';
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 1.5rem;
+  color: #c4b5fd;
+  transition: all 0.2s ease;
+}
+.atelier-card:hover {
+  border-color: #c4b5fd;
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-4px);
+}
+.atelier-card:hover::after {
+  color: var(--violet-600);
+  transform: translateX(4px);
+}
+.atelier-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 6px 16px -4px rgb(99 102 241 / 0.45);
+}
+.atelier-card__date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.atelier-card__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  line-height: 1.25;
+  margin-bottom: var(--space-3);
+}
+.atelier-card__desc {
+  font-size: 0.92rem;
+  color: var(--slate-600);
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: var(--space-4);
+}
+.atelier-card__cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-700);
+}
+@media (max-width: 1024px) { .atelier-cards { grid-template-columns: 1fr; } }
+
+
+
+/* ---------- Inter-page nav ---------- */
+.topnav__home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  border: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px -2px rgb(99 102 241 / 0.35);
+}
+.topnav__home:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(99 102 241 / 0.45);
+}
+.topnav__home .icon {
+  font-size: 0.95rem;
+}
+.topnav__glossary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--indigo-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--white);
+  border: 1px solid #c7d2fe;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__glossary:hover {
+  background: var(--indigo-50);
+  border-color: var(--indigo-500);
+}
+.topnav__glossary .icon {
+  font-size: 0.95rem;
+}
+.topnav__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--violet-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--violet-50);
+  border: 1px solid var(--violet-100);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.topnav__back:hover {
+  background: var(--violet-100);
+  transform: translateX(-2px);
+}
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--space-4);
+  align-items: stretch;
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-8);
+}
+.pagination__link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-5) var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--indigo-950);
+  transition: all 0.2s ease;
+}
+.pagination__link:hover {
+  border-color: var(--violet-300, #c4b5fd);
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-2px);
+}
+.pagination__link.center {
+  text-align: center;
+  background: linear-gradient(135deg, var(--indigo-950), var(--violet-700));
+  color: white;
+  border: none;
+}
+.pagination__link.center:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+.pagination__link.next {
+  text-align: right;
+  align-items: flex-end;
+}
+.pagination__link.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  background: var(--slate-50);
+}
+.pagination__direction {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.pagination__link.center .pagination__direction { color: var(--indigo-100); }
+.pagination__link.disabled .pagination__direction { color: var(--slate-400); }
+.pagination__title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+@media (max-width: 720px) {
+  .pagination { grid-template-columns: 1fr; gap: var(--space-3); }
+  .pagination__link.next { text-align: left; align-items: flex-start; }
+}
+
+/* ---------- Cards d'accès aux ateliers depuis la page principale ---------- */
+.atelier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.atelier-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.atelier-card::after {
+  content: '→';
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 1.5rem;
+  color: var(--violet-300, #c4b5fd);
+  transition: all 0.2s ease;
+}
+.atelier-card:hover {
+  border-color: var(--violet-300, #c4b5fd);
+  box-shadow: var(--shadow-violet);
+  transform: translateY(-4px);
+}
+.atelier-card:hover::after {
+  color: var(--violet-600);
+  transform: translateX(4px);
+}
+.atelier-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 6px 16px -4px rgb(99 102 241 / 0.45);
+}
+.atelier-card__date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--violet-600);
+  margin-bottom: var(--space-2);
+}
+.atelier-card__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--indigo-950);
+  line-height: 1.25;
+  margin-bottom: var(--space-3);
+}
+.atelier-card__desc {
+  font-size: 0.92rem;
+  color: var(--slate-600);
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: var(--space-4);
+}
+.atelier-card__cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-700);
+}
+@media (max-width: 1024px) { .atelier-cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav__inner">
+    <div style="display:flex; align-items:center; gap:var(--space-3);">
+      <a href="../Accueil Phase 2.html" class="topnav__home" title="Retour à l'accueil Phase 2">
+        <span class="icon">⌂</span>
+        <span>Accueil</span>
+      </a>
+      <a href="../glossaire.html" class="topnav__glossary" title="Consulter le glossaire">
+        <span class="icon">📖</span>
+        <span>Glossaire</span>
+      </a>
+      <a href="Restitution_Discovery_Phase2_05-05-2026.html" class="topnav__back" title="Retour à la restitution principale">
+        <span>←</span>
+        <span>Restitution</span>
+      </a>
+      <div class="topnav__brand" style="border-left:1px solid var(--slate-200); padding-left:var(--space-4);">
+        <span class="dot"></span>
+        <span>Restitution Atelier 1</span>
+      </div>
+    </div>
+    <ul class="topnav__menu">
+      <li><a href="#identite">Identité</a></li>
+      <li><a href="#objectifs">Objectifs</a></li>
+      <li><a href="#deroule">Déroulé</a></li>
+      <li><a href="#decisions">Décisions</a></li>
+      <li><a href="#profils">Profils</a></li>
+      <li><a href="#sources">Sources</a></li>
+      <li><a href="#risques">Risques</a></li>
+      <li><a href="#mapping">Mapping</a></li>
+      <li><a href="#parking">Parking lot</a></li>
+      <li><a href="#livrables">Livrables</a></li>
+      <li><a href="#synthese">Synthèse</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero__inner">
+    <div class="hero__kicker">
+      <span class="pulse"></span>
+      Restitution Discovery · Atelier 1 · 13 avril 2026
+    </div>
+    <h1>Cadrage : finalité,<br><em>unités économiques</em><br>et axes d'analyse.</h1>
+    <p class="hero__lead">
+      Premier atelier de la Discovery Phase 2 du projet Parnass — module Rentabilité d'Exploitation.
+      Cette page restitue les décisions, constats et points structurants issus du cadrage initial :
+      finalité du module, définition des unités économiques de référence, alignement Théorique vs Réel.
+    </p>
+    <div class="hero__meta">
+      <div class="hero__meta-item">
+        <div class="label">Date</div>
+        <div class="value">13 avril 2026 · 14h30 → 17h30</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Animation</div>
+        <div class="value">Raphaela SALAS</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Position</div>
+        <div class="value">Jour 1 / 3 · phase « Comprendre »</div>
+      </div>
+      <div class="hero__meta-item">
+        <div class="label">Statut</div>
+        <div class="value">Atelier réalisé · synthèse consolidée</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- 2.1 IDENTITÉ -->
+<section id="identite" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.1 · Identité de l'atelier</div>
+      <h2 class="section__title">Cadre, participants et sources de l'atelier.</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <tbody>
+          <tr><td>Date</td><td>13 avril 2026 — 14h30 à 17h30 (3h)</td></tr>
+          <tr><td>Animation</td><td>Raphaela SALAS</td></tr>
+          <tr><td>Participants Parnass</td><td>Matthieu, Housam, Laurent, Soubir</td></tr>
+          <tr><td>Participants Ailéane</td><td>Yann, Raphaela</td></tr>
+          <tr><td>Position dans le parcours</td><td>Jour 1 / 3 — phase « Comprendre »</td></tr>
+          <tr><td>Sources</td><td>Atelier 1 - Synthèse (Notion) · SPEC Fonctionnelle - Laurent (Notion)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 2.2 OBJECTIFS -->
+<section id="objectifs" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.2 · Objectifs poursuivis</div>
+      <h2 class="section__title">Trois objectifs ont structuré l'atelier.</h2>
+    </div>
+    <div class="decision-quote" style="font-family:var(--font-sans); font-style:normal; font-size:1.1rem; line-height:1.7;">
+      Trois objectifs principaux ont structuré l'atelier : clarifier la
+      <strong style="color:var(--violet-700);">finalité</strong> du module et les décisions qu'il doit améliorer ;
+      définir les <strong style="color:var(--violet-700);">unités économiques de référence</strong>
+      (à quel niveau on calcule, on analyse, on restitue) ;
+      aligner les équipes sur les définitions <strong style="color:var(--violet-700);">Théorique vs Réel</strong>
+      comme socle de tout le modèle.
+    </div>
+  </div>
+</section>
+
+<!-- 2.3 DÉROULÉ -->
+<section id="deroule" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.3 · Déroulé</div>
+      <h2 class="section__title">Trois heures rythmées en cinq temps.</h2>
+    </div>
+    <div class="jalons-list">
+      <div class="jalon-item"><div class="jalon-item__date">14h30 · 15 min</div><div class="jalon-item__content"><div class="jalon-item__title">Kick-off Phase 2</div><div class="jalon-item__desc">Lancement officiel et cadre des trois jours de Discovery.</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">14h45 · 60 min</div><div class="jalon-item__content"><div class="jalon-item__title">Finalité du module &amp; besoins par profil</div><div class="jalon-item__desc">Cartographie des besoins métier par rôle utilisateur.</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">15h45 · 15 min</div><div class="jalon-item__content"><div class="jalon-item__title">Pause</div><div class="jalon-item__desc">&nbsp;</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">16h00 · 60 min</div><div class="jalon-item__content"><div class="jalon-item__title">Axes d'analyse et lectures attendues</div><div class="jalon-item__desc">Définition des unités économiques et des niveaux de restitution.</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">17h00 · 30 min</div><div class="jalon-item__content"><div class="jalon-item__title">Synthèse &amp; points ouverts</div><div class="jalon-item__desc">Reformulation des acquis et préparation Atelier 2.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.4 DÉCISIONS STRUCTURANTES -->
+<section id="decisions" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.4 · Décisions structurantes</div>
+      <h2 class="section__title">Quatre décisions ont posé le socle du module.</h2>
+      <p class="section__lead">Section pivot de la restitution : ces choix structurent l'ensemble du modèle économique cible.</p>
+    </div>
+
+    <div class="decisions">
+
+      <article class="decision-card pivot">
+        <div class="decision-card__num">01</div>
+        <div class="decision-card__body">
+          <h3>Les deux tracks fondamentaux <span class="decision-card__tag">Décision pivot</span></h3>
+          <p class="decision-card__desc">Distinction qui structure <strong>TOUS</strong> les calculs et <strong>TOUTES</strong> les vues du module.</p>
+          <div class="decision-quote">
+            <div class="triplet">
+              <div><strong>Théorique</strong>ce qu'on pensait gagner</div>
+              <div><strong>Réel</strong>ce qu'on a réellement gagné/dépensé</div>
+              <div><strong>Écart</strong>ce qui explique la différence</div>
+            </div>
+          </div>
+          <div style="margin-top:var(--space-5);">
+            <div class="table-wrap">
+              <table class="premium">
+                <thead>
+                  <tr><th>&nbsp;</th><th>Théorique (Prévision / Conception)</th><th>Réel (Réalisé / Exploitation)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Définition</td><td>Performance attendue avant exécution</td><td>Performance observée après exécution</td></tr>
+                  <tr><td>CA</td><td>Somme prestations contrat (ADV)</td><td>Somme prestations réellement effectuées</td></tr>
+                  <tr><td>Charges</td><td>Grille de coûts + hypothèses paramétrées</td><td>Paie (Silae/Factorial), carburant (AS24/Engie), péages, télématique</td></tr>
+                  <tr><td>Indexation carburant</td><td>Optionnel — vue hors indexation possible</td><td>Intégrée obligatoirement</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">02</div>
+        <div class="decision-card__body">
+          <h3>Les unités d'analyse retenues</h3>
+          <p class="decision-card__desc">Six unités structurent la lecture du module à tous les niveaux.</p>
+          <div class="table-wrap">
+            <table class="premium">
+              <thead><tr><th>Unité</th><th>Rôle</th><th>Complexité spécifique</th></tr></thead>
+              <tbody>
+                <tr><td>Chauffeur</td><td>Coûts RH (salaires, forfaits, amplitude)</td><td>Alternance week-end → agréger sur 15 jours</td></tr>
+                <tr><td>Tracteur</td><td>Coûts détention, location, entretien, kilométrage</td><td>Diviseur jours (21 vs 26) à décider</td></tr>
+                <tr><td>Semi-remorque</td><td>Coûts location, assurance, taux d'utilisation</td><td>Mutualisation entre tournées</td></tr>
+                <tr><td>Tournée</td><td>Mutualisation des ressources, mix clients/prestations</td><td>Inclure pieds/repositionnements</td></tr>
+                <tr><td>Trajet / Prestation</td><td>Granularité fine pour ventiler CA et charges</td><td>Indexation carburant, sous-traitance</td></tr>
+                <tr><td>Client / Contrat</td><td>Règles tarifaires, indexation, facturation</td><td>FedEx = nombreuses lignes</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">03</div>
+        <div class="decision-card__body">
+          <h3>Approche modèle « plage 24h optimisable »</h3>
+          <div class="decision-quote">
+            « Concevoir une plage horaire 24h optimisable par tracteur, travailler la <strong style="color:var(--violet-700);">mutualisation</strong> (deux tournées sur un même véhicule) plutôt que de raisonner en SPL1/SPL2 isolés. »
+          </div>
+        </div>
+      </article>
+
+      <article class="decision-card standard">
+        <div class="decision-card__num">04</div>
+        <div class="decision-card__body">
+          <h3>Code couleur opérationnel</h3>
+          <p class="decision-card__desc">
+            Vue conception : code couleur <strong style="color:var(--emerald-600);">vert</strong> /
+            <strong style="color:var(--amber-600);">orange</strong> /
+            <strong style="color:var(--rose-600);">rouge</strong> pour les tournées,
+            <strong>sans chiffres détaillés</strong> visibles côté planificateur, qui voit uniquement la santé économique globale de sa tournée.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 2.5 BESOINS PAR PROFIL -->
+<section id="profils" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.5 · Besoins par profil utilisateur</div>
+      <h2 class="section__title">Quatre profils, quatre logiques d'usage.</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>Profil</th><th>Besoins prioritaires identifiés</th></tr></thead>
+        <tbody>
+          <tr><td>Laurent / ADV</td><td>Analyser la rentabilité réelle d'une tournée · comparer théorie vs réel · comprendre quel poste dégrade la marge — sans refaire tout l'Excel</td></tr>
+          <tr><td>Commerce</td><td>Voir si un client / contrat est rentable · identifier les prestations sous-tarifées · challenger / ajuster un tarif</td></tr>
+          <tr><td>Exploitation</td><td>Identifier les anomalies de coût · détecter les mauvaises affectations / inefficiences</td></tr>
+          <tr><td>Direction</td><td>Piloter la marge par client / site / activité · identifier les poches de perte · prioriser les actions correctives</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 2.6 SOURCES -->
+<section id="sources" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.6 · Sources de données identifiées</div>
+      <h2 class="section__title">Sept sources cartographiées avec priorité initiale.</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>Source</th><th>Donnée fournie</th><th>Priorité posée en atelier 1</th></tr></thead>
+        <tbody>
+          <tr><td>ADV / Contrats</td><td>CA théorique, règles tarifaires, indexation</td><td><span class="pill critique">Critique</span></td></tr>
+          <tr><td>Exploitation (module)</td><td>Prestations réalisées, CA réel</td><td><span class="pill critique">Critique</span></td></tr>
+          <tr><td>AS24</td><td>Carburant réel, péages</td><td><span class="pill critique">Critique (priorité immédiate)</span></td></tr>
+          <tr><td>Engie</td><td>Carburant CSV mensuel</td><td><span class="pill critique">Critique</span></td></tr>
+          <tr><td>Masternaut / CPL</td><td>Kilométrage, consommation, géoloc</td><td><span class="pill eleve">Élevée</span></td></tr>
+          <tr><td>Factorial / Silae</td><td>Bulletins paie, coûts RH</td><td><span class="pill critique">Critique</span></td></tr>
+          <tr><td>Factures garage / locateur</td><td>Entretien, casse, pneumatiques</td><td><span class="pill eleve">Élevée — manuel actuellement</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="h-callout" style="margin-top:var(--space-6);">
+      <strong>Décision de priorité :</strong> carburant et péages connectés en premier.
+    </div>
+  </div>
+</section>
+
+<!-- 2.7 RISQUES -->
+<section id="risques" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.7 · Risques majeurs verbalisés</div>
+      <h2 class="section__title">Quatre risques identifiés en atelier.</h2>
+    </div>
+    <div class="jalons-list">
+      <div class="jalon-item critical">
+        <div class="jalon-item__date">🔴 Bloquant</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Absence d'outil de gestion de parc centralisé</div>
+          <div class="jalon-item__desc">Contrats de location, ventilation coûts inter-entités, incohérences factures garage (ex. casse mêlée Avia Location / NAS Transport).</div>
+        </div>
+      </div>
+      <div class="jalon-item critical">
+        <div class="jalon-item__date">🔴 Bloquant</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Décorrélation conception / exploitation</div>
+          <div class="jalon-item__desc">Planning non rétro-alimenté → CA non associable aux prestations réalisées sans import manuel.</div>
+        </div>
+      </div>
+      <div class="jalon-item" style="border-left-color: var(--amber-500);">
+        <div class="jalon-item__date" style="color: var(--amber-600);">⚠️ Levier majeur</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">600 k€ de coûts de non-utilisation véhicules</div>
+          <div class="jalon-item__desc">Sur l'exercice passé, non tracés dans l'outil actuel — gisement d'économie identifié.</div>
+        </div>
+      </div>
+      <div class="jalon-item" style="border-left-color: var(--amber-500);">
+        <div class="jalon-item__date" style="color: var(--amber-600);">🟠 Élevé</div>
+        <div class="jalon-item__content">
+          <div class="jalon-item__title">Identification du conducteur responsable d'une casse non fiable</div>
+          <div class="jalon-item__desc">Quand plusieurs conducteurs se sont succédé sur un même véhicule sur une période donnée.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.8 MAPPING -->
+<section id="mapping" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.8 · Mapping Atelier 1 → 6 modules</div>
+      <h2 class="section__title">Comment cet atelier alimente le périmètre produit.</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="premium">
+        <thead><tr><th>Module de l'offre</th><th>Apports de l'Atelier 1</th></tr></thead>
+        <tbody>
+          <tr><td>1. Commercial &amp; Tarification</td><td>Définition du CA théorique (ADV) — règles d'éclatement sur trajets</td></tr>
+          <tr><td>2. Data Cost Hub</td><td>Cartographie initiale des sources (ADV, AS24, Engie, Masternaut, Silae, Factorial, factures garage)</td></tr>
+          <tr><td>3. Cost Engine</td><td>Familles de coûts identifiées : RH, carburant, véhicule/matériel, péages, sous-traitance</td></tr>
+          <tr><td>4. Profitability Engine</td><td><strong>Décision pivot des 2 tracks</strong> · structure de l'analyse écart théorique/réel</td></tr>
+          <tr><td>5. Dashboard Rentabilité</td><td>Axes de lecture, besoins par profil, code couleur conception</td></tr>
+          <tr><td>6. Decision Support</td><td>Pas adressé en atelier 1 — relevé pour phase ultérieure</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 2.9 PARKING LOT -->
+<section id="parking" class="block">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.9 · Questions ouvertes — Parking lot</div>
+      <h2 class="section__title">Sujets relevés pour traitement ultérieur.</h2>
+    </div>
+    <div class="jalons-list">
+      <div class="jalon-item"><div class="jalon-item__date">→ Atelier 2</div><div class="jalon-item__content"><div class="jalon-item__title">Ventilation des coûts de location</div><div class="jalon-item__desc">Quand la facturation Avia ne reflète pas la ventilation souhaitée entre entités — traité en Atelier 2.</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">→ À traiter</div><div class="jalon-item__content"><div class="jalon-item__title">Attribution casse à un conducteur</div><div class="jalon-item__desc">Quand plusieurs conducteurs se sont succédé sur le véhicule — relevé pour la suite (Q9).</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">→ Atelier 2</div><div class="jalon-item__content"><div class="jalon-item__title">Forfaits « triangle »</div><div class="jalon-item__desc">Matériel + horaire + TK — traité en Atelier 2.</div></div></div>
+      <div class="jalon-item"><div class="jalon-item__date">→ Atelier 2</div><div class="jalon-item__content"><div class="jalon-item__title">Maturité réelle des API carburant / péage / Engie</div><div class="jalon-item__desc">Confirmation des accès et des formats — traité en Atelier 2.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.10 LIVRABLES -->
+<section id="livrables" class="block alt">
+  <div class="container">
+    <div class="section__head">
+      <div class="section__num">2.10 · Livrables produits par l'atelier</div>
+      <h2 class="section__title">Six livrables consolidés en sortie d'atelier.</h2>
+    </div>
+    <div class="modules-grid">
+      <article class="module-card"><div class="module-card__num">✓</div><h3>Vision alignée Théorique vs Réel</h3><p>Colonne vertébrale de tout le module — distinction conservée dans tous les calculs et toutes les vues.</p></article>
+      <article class="module-card"><div class="module-card__num">✓</div><h3>Liste des 6 unités d'analyse</h3><p>Chauffeur, Tracteur, Semi, Tournée, Trajet, Client/Contrat — avec cas d'usage pour chacune.</p></article>
+      <article class="module-card"><div class="module-card__num">✓</div><h3>Cartographie des profils</h3><p>4 profils utilisateurs avec leurs questions métier et leurs besoins prioritaires identifiés.</p></article>
+      <article class="module-card"><div class="module-card__num">✓</div><h3>Inventaire des sources</h3><p>7 sources cartographiées avec priorisation initiale (carburant et péages en tête).</p></article>
+      <article class="module-card"><div class="module-card__num">✓</div><h3>Liste des risques majeurs</h3><p>Parc, décorrélation conception/exploitation, qualité données — verbalisés et hiérarchisés.</p></article>
+      <article class="module-card"><div class="module-card__num">✓</div><h3>Trajectoire pour Atelier 2</h3><p>Construire la grille de coûts détaillée + tester la mécanique d'indexation carburant.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- SYNTHÈSE -->
+<section id="synthese" class="block">
+  <div class="container">
+    <div class="synthesis">
+      <div class="synthesis__inner">
+        <div class="synthesis__kicker">En synthèse</div>
+        <h2>L'Atelier 1 a posé la colonne vertébrale<br>du futur module de rentabilité.</h2>
+        <p>
+          Lecture systématique Théorique vs Réel, première définition des unités économiques, identification des profils utilisateurs,
+          sources prioritaires et principaux risques de fiabilisation.
+          Cet atelier fournit le cadre nécessaire pour engager l'Atelier 2 sur le modèle économique détaillé.
+        </p>
+        <div class="synthesis__points">
+          <div class="synthesis__point"><div class="num">01</div><h4>Cadre posé</h4><p>2 tracks, 6 unités, 4 profils — base partagée pour la suite.</p></div>
+          <div class="synthesis__point"><div class="num">02</div><h4>Données scopées</h4><p>7 sources priorisées, intégration carburant en tête.</p></div>
+          <div class="synthesis__point"><div class="num">03</div><h4>Risques verbalisés</h4><p>Parc, décorrélation, qualité — pilotage lucide engagé.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="block alt">
+  <div class="container">
+    <nav class="pagination">
+      <div class="pagination__link disabled"><div class="pagination__direction">← Précédent</div><div class="pagination__title">—</div></div>
+      <a href="Restitution_Discovery_Phase2_05-05-2026.html" class="pagination__link center">
+        <div class="pagination__direction">↑ Sommaire</div>
+        <div class="pagination__title">Restitution principale</div>
+      </a>
+      <a href="Restitution_Atelier_2_3.html" class="pagination__link next"><div class="pagination__direction">Atelier suivant →</div><div class="pagination__title">Ateliers 2 & 3 — Construction</div></a>
+    </nav>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot__brand">
+      <span class="dot"></span>
+      Parnass × Ailéane
+    </div>
+    <div class="foot__line">Restitution Discovery — Phase 2 · Module Rentabilité d'Exploitation</div>
+    <div class="foot__line">Restitution Atelier 1 · Document de travail consolidé</div>
+  </div>
+</footer>
+
+</body>
+</html>
