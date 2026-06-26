@@ -16,9 +16,13 @@ export function Sidebar() {
   const pathname = usePathname();
   const { navWide } = useSidebarContext();
 
-  const isModuleActive = (href) => {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
+  const isModuleActive = (module) => {
+    if (module.href === "/") return pathname === "/";
+    if (module.activeFor) {
+      const prefixes = Array.isArray(module.activeFor) ? module.activeFor : [module.activeFor];
+      return prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
+    }
+    return pathname.startsWith(module.href);
   };
 
   const isSectionActive = (href) => pathname === href || pathname.startsWith(`${href}/`);
@@ -39,14 +43,9 @@ export function Sidebar() {
       <nav className="flex flex-col py-3 flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
         {demoSidebarModules.map((module) => {
           const Icon = module.icon;
-          const active = isModuleActive(module.href);
+          const active = isModuleActive(module);
           const visibleSections = module.sections ?? [];
-          const targetHref =
-            active && pathname.startsWith(module.href)
-              ? pathname
-              : visibleSections?.length > 0
-                ? visibleSections[0].href
-                : module.href;
+          const targetHref = module.href;
 
           return (
             <div key={module.href} className="flex flex-col flex-shrink-0 mb-0.5">

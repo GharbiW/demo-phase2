@@ -779,14 +779,14 @@ export const m4Chauffeurs = [
 // ─── M4 — VÉHICULES (8) ──────────────────────────────────────────
 
 export const m4Vehicules = [
-  { id: "V-01", immat: "AB-421-PL", type: "Tracteur GO", annee: 2021, km: 198400, txUtilisation: 76, marge: 52000, conso: 29.1, alert: true, loyer: 1800 },
-  { id: "V-02", immat: "CD-183-PL", type: "Tracteur GO", annee: 2020, km: 142300, txUtilisation: 68, marge: -8000, conso: 31.4, alert: false, loyer: 1750 },
-  { id: "V-03", immat: "EF-092-PL", type: "Tracteur GNC", annee: 2022, km: 167800, txUtilisation: 82, marge: 71000, conso: 30.2, alert: false, loyer: 1950 },
-  { id: "V-04", immat: "GH-774-PL", type: "Tracteur GNC", annee: 2023, km: 89200, txUtilisation: 59, marge: 18000, conso: 29.8, alert: false, loyer: 2100 },
-  { id: "V-05", immat: "IJ-556-PL", type: "Tracteur GO", annee: 2019, km: 221600, txUtilisation: 71, marge: 4000, conso: 32.1, alert: true, loyer: 1600 },
-  { id: "V-06", immat: "KL-309-PL", type: "Tracteur GO", annee: 2022, km: 134700, txUtilisation: 74, marge: 39000, conso: 28.7, alert: false, loyer: 1900 },
-  { id: "V-07", immat: "MN-447-PL", type: "Tracteur GNC", annee: 2023, km: 98500, txUtilisation: 77, marge: 44000, conso: 30.8, alert: false, loyer: 2050 },
-  { id: "V-08", immat: "OP-812-PL", type: "Tracteur GO", annee: 2021, km: 176300, txUtilisation: 65, marge: 12000, conso: 30.5, alert: false, loyer: 1850 },
+  { id: "V-01", immat: "AB-421-PL", type: "Tracteur GO",  annee: 2021, km: 198400, txUtilisation: 76, marge: 52000,  txMarge: 15.0, conso: 29.1, alert: true,  loyer: 1800 },
+  { id: "V-02", immat: "CD-183-PL", type: "Tracteur GO",  annee: 2020, km: 142300, txUtilisation: 68, marge: -8000,  txMarge: -5.0, conso: 31.4, alert: false, loyer: 1750 },
+  { id: "V-03", immat: "EF-092-PL", type: "Tracteur GNC", annee: 2022, km: 167800, txUtilisation: 82, marge: 71000,  txMarge: 18.0, conso: 30.2, alert: false, loyer: 1950 },
+  { id: "V-04", immat: "GH-774-PL", type: "Tracteur GNC", annee: 2023, km: 89200,  txUtilisation: 59, marge: 18000,  txMarge: 10.0, conso: 29.8, alert: false, loyer: 2100 },
+  { id: "V-05", immat: "IJ-556-PL", type: "Tracteur GO",  annee: 2019, km: 221600, txUtilisation: 71, marge: 4000,   txMarge:  2.0, conso: 32.1, alert: true,  loyer: 1600 },
+  { id: "V-06", immat: "KL-309-PL", type: "Tracteur GO",  annee: 2022, km: 134700, txUtilisation: 74, marge: 39000,  txMarge: 14.0, conso: 28.7, alert: false, loyer: 1900 },
+  { id: "V-07", immat: "MN-447-PL", type: "Tracteur GNC", annee: 2023, km: 98500,  txUtilisation: 77, marge: 44000,  txMarge: 16.0, conso: 30.8, alert: false, loyer: 2050 },
+  { id: "V-08", immat: "OP-812-PL", type: "Tracteur GO",  annee: 2021, km: 176300, txUtilisation: 65, marge: 12000,  txMarge:  7.0, conso: 30.5, alert: false, loyer: 1850 },
 ];
 
 // ─── M5 — KPIs ───────────────────────────────────────────────────

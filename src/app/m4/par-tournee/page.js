@@ -77,7 +77,6 @@ export default function ParTourneePage() {
           label="IA — Pattern déficit détecté sur chauffeur Dupont A."
           insight="3 tournées consécutives déficitaires détectées pour Dupont A. (T-0422, T-0427, T-0450). Surconsommation GO systématique +18% vs théorique. Amplitude moyenne 11.4h. Recommandation : révision route + diagnostic moteur AB-421-PL."
           confidence={87}
-          action={{ label: "Voir l'analyse des écarts", href: "/rentabilite/analyse-ecarts" }}
         />
 
         {/* Health chips + view toggle */}
@@ -152,6 +151,9 @@ export default function ParTourneePage() {
                       <div className={`text-sm font-bold font-mono ${t.marge < 0 ? "text-red-600" : t.marge < 500 ? "text-amber-600" : "text-emerald-600"}`}>
                         {t.marge.toLocaleString("fr-FR")} €
                       </div>
+                      <div className={`text-[10px] font-semibold font-mono mt-0.5 ${t.marge < 0 ? "text-red-500" : t.marge < 500 ? "text-amber-500" : "text-emerald-500"}`}>
+                        {((t.marge / t.ca) * 100).toFixed(1)}%
+                      </div>
                     </div>
                   </div>
 
@@ -195,6 +197,7 @@ export default function ParTourneePage() {
                   <Th right>CA prévu</Th>
                   <Th right>Coût réel</Th>
                   <Th right>Marge nette</Th>
+                  <Th right>Tx marge</Th>
                   <Th right>Delta</Th>
                   <Th>Statut</Th>
                 </Tr>
@@ -213,6 +216,11 @@ export default function ParTourneePage() {
                       <Td right>
                         <span className={`font-mono text-xs font-semibold ${t.marge < 0 ? "text-red-600" : t.marge < 500 ? "text-amber-600" : "text-emerald-600"}`}>
                           {t.marge.toLocaleString("fr-FR")} €
+                        </span>
+                      </Td>
+                      <Td right>
+                        <span className={`font-mono text-xs font-bold ${t.marge < 0 ? "text-red-600" : t.marge / t.ca < 0.08 ? "text-amber-600" : "text-emerald-700"}`}>
+                          {((t.marge / t.ca) * 100).toFixed(1)}%
                         </span>
                       </Td>
                       <Td right>

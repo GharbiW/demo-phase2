@@ -28,6 +28,7 @@ export const demoSidebarModules = [
   {
     name: "Rentabilité",
     href: "/rentabilite/synthese",
+    activeFor: "/rentabilite",
     icon: Layers,
     sections: [],
   },
@@ -36,6 +37,7 @@ export const demoSidebarModules = [
   {
     name: "Back office",
     href: "/m1/adv-contrats",
+    activeFor: ["/m1", "/m2", "/m3"],
     icon: Settings2,
     sections: [],
   },

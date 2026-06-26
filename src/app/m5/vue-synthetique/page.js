@@ -8,7 +8,7 @@ import { FinanceKpiStrip } from "@/components/finance/FinanceKpiStrip";
 import { BridgeWaterfall, buildTourneeBridgeSteps } from "@/components/finance/BridgeWaterfall";
 import { ForecastVsActual } from "@/components/finance/ForecastVsActual";
 import { SensitivityPanel } from "@/components/finance/SensitivityPanel";
-import { TrendingUp, TrendingDown, ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { AiInsightBanner } from "@/components/ui/AiInsightBanner";
 import Link from "next/link";
 import { formatEuro } from "@/components/finance/money";
@@ -64,8 +64,6 @@ export default function VueSynthetiquePage() {
       sub: "Variance GO — 30 tournées",
     },
   ];
-
-  const sortedClients = [...m4Clients].sort((a, b) => b.txMarge - a.txMarge);
 
   return (
     <PageShell
@@ -180,64 +178,8 @@ export default function VueSynthetiquePage() {
           <ForecastVsActual series={financeMonthlySeries} />
         </div>
 
-        {/* ── 6. Client ranking + 11 KPIs ──────────────────────────── */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
-          <SectionCard title="Rentabilité par client" className="xl:col-span-2">
-            <div className="space-y-1.5">
-              {sortedClients.map((c) => (
-                <div
-                  key={c.id}
-                  className={`flex items-center gap-4 rounded-lg border px-4 py-2.5 transition-colors ${
-                    c.statut === "deficit"
-                      ? "border-red-200 bg-red-50/40"
-                      : c.statut === "warn"
-                      ? "border-amber-100 bg-amber-50/30"
-                      : "border-neutral-100 bg-white hover:bg-neutral-50"
-                  }`}
-                >
-                  <div className="w-7 h-7 rounded-lg bg-neutral-100 text-neutral-700 text-[11px] font-bold flex items-center justify-center shrink-0">
-                    {c.name[0]}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-neutral-900 truncate">{c.name}</span>
-                      <Badge
-                        variant={c.statut === "deficit" ? "red" : c.statut === "warn" ? "amber" : "emerald"}
-                        size="sm"
-                      >
-                        {c.statut === "deficit" ? "Déficitaire" : c.statut === "warn" ? "Risque" : "OK"}
-                      </Badge>
-                    </div>
-                    <div className="text-[11px] text-neutral-400">{c.type} · {c.tournees} tournées</div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <div className="font-mono text-xs font-semibold text-neutral-700">{(c.ca / 1_000_000).toFixed(1)} M€</div>
-                    <div className="text-[10px] text-neutral-400">CA</div>
-                  </div>
-                  <div className="w-32 shrink-0">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1.5 bg-neutral-100 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all ${c.txMarge >= 12 ? "bg-emerald-500" : c.txMarge >= 0 ? "bg-amber-400" : "bg-red-500"}`}
-                          style={{ width: `${Math.min(100, Math.max(0, c.txMarge + 10) * 2.5)}%` }}
-                        />
-                      </div>
-                      <span className={`text-xs font-mono font-bold w-10 text-right shrink-0 ${c.txMarge >= 12 ? "text-emerald-600" : c.txMarge >= 0 ? "text-amber-600" : "text-red-600"}`}>
-                        {c.txMarge}%
-                      </span>
-                    </div>
-                  </div>
-                  {c.txMarge < 0
-                    ? <TrendingDown className="w-4 h-4 text-red-400 shrink-0" />
-                    : <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0" />
-                  }
-                </div>
-              ))}
-            </div>
-          </SectionCard>
-
-          <SectionCard
+        {/* ── 6. 11 KPIs ───────────────────────────────────────────── */}
+        <SectionCard
             title="11 KPIs cibles"
             description="Fréquences de mise à jour"
             actions={
@@ -259,7 +201,6 @@ export default function VueSynthetiquePage() {
               ))}
             </div>
           </SectionCard>
-        </div>
 
         {/* ── 7. Sensitivity (collapsible) ─────────────────────────── */}
         <div className="rounded-xl border border-neutral-200 bg-white overflow-hidden">

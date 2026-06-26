@@ -74,9 +74,16 @@ export default function ParVehiculePage() {
       noPad
     >
       <div className="px-6 pt-6 space-y-3">
-        <KpiGrid cols={4}>
+        <KpiGrid cols={5}>
           <KpiTile label="Tracteurs actifs" value={VEHICULES.length} sub="Flotte Phase 2" />
           <KpiTile label="Tx utilisation moyen" value="71%" sub="Base 22h/jour" trend="up" />
+          <KpiTile
+            label="Taux marge moyen"
+            value={`${(VEHICULES.reduce((s, v) => s + v.txMarge, 0) / VEHICULES.length).toFixed(1)}%`}
+            sub="Moyenne flotte"
+            color={VEHICULES.reduce((s, v) => s + v.txMarge, 0) / VEHICULES.length >= 10 ? "ok" : "warn"}
+            trend={VEHICULES.reduce((s, v) => s + v.txMarge, 0) / VEHICULES.length >= 10 ? "up" : "down"}
+          />
           <KpiTile label="Alertes révision" value={revisionAlert} accent={revisionAlert > 0} sub={`Seuil : ${state.assumptions.revisionThresholdKm.toLocaleString("fr-FR")} km`} />
           <KpiTile label="Conso moy. réelle" value="30,5 L/100" sub="vs théorique 28,0" trend="down" />
         </KpiGrid>
@@ -100,6 +107,7 @@ export default function ParVehiculePage() {
                 <Th right>Conso réelle</Th>
                 <Th>Trend marge</Th>
                 <Th right>Marge imputable</Th>
+                <Th right>Tx marge</Th>
                 <Th>Révision</Th>
                 <Th />
               </Tr>
@@ -123,6 +131,9 @@ export default function ParVehiculePage() {
                     </Td>
                     <Td right>
                       <span className={`tabular-nums font-medium ${v.marge < 0 ? "text-red-600" : "text-emerald-700"}`}>{fmt(v.marge, true)}</span>
+                    </Td>
+                    <Td right>
+                      <span className={`tabular-nums font-semibold ${v.txMarge < 0 ? "text-red-600" : v.txMarge < 8 ? "text-amber-600" : "text-emerald-700"}`}>{v.txMarge > 0 ? "+" : ""}{v.txMarge.toFixed(1)}%</span>
                     </Td>
                     <Td>
                       {needsRevision
