@@ -7,26 +7,24 @@ import {
   ClipboardList,
   History,
   Grid3X3,
-  Activity,
   ArrowLeftRight,
   Fuel,
-  Brain,
   AlertTriangle,
   Sigma,
   Truck,
   Users,
   Car,
-  ArrowUpDown,
   PieChart,
   Tag,
   Layers,
-  LineChart,
+  Settings2,
 } from "lucide-react";
 
 export const demoSidebarModules = [
+  // ── 1. Accueil ────────────────────────────────────────────────────
   { name: "Accueil", href: "/", icon: LayoutDashboard, sections: [] },
 
-  // ── Module principal : Rentabilité (ancien M4 + M5) ───────────────
+  // ── 2. Rentabilité ────────────────────────────────────────────────
   {
     name: "Rentabilité",
     href: "/rentabilite/synthese",
@@ -42,34 +40,20 @@ export const demoSidebarModules = [
     ],
   },
 
-  // ── Séparateur Back office ────────────────────────────────────────
-  { type: "separator", label: "Back office" },
-
-  // ── Back office : M1, M2, M3 ─────────────────────────────────────
+  // ── 3. Back office (M1 + M2 + M3 regroupés) ──────────────────────
   {
-    name: "Commercial & Tarification",
-    href: "/m1",
-    icon: BarChart3,
+    name: "Back office",
+    href: "/m1/adv-contrats",
+    icon: Settings2,
     sections: [
+      // M1 — Commercial & Tarification
       { name: "Contrats / ADV", href: "/m1/adv-contrats", icon: ClipboardList },
       { name: "Indexation carburant", href: "/m1/indexation-carburant", icon: Fuel },
       { name: "CA théorique", href: "/m1/ca-theorique", icon: Calculator },
       { name: "Chiffrage Spot", href: "/m1/chiffrage-spot", icon: Tag },
-    ],
-  },
-
-  {
-    name: "Data Cost Hub",
-    href: "/m2",
-    icon: Database,
-    sections: [{ name: "Grille 13 — données & flux", href: "/m2", icon: Grid3X3 }],
-  },
-
-  {
-    name: "Cost Engine",
-    href: "/m3",
-    icon: Calculator,
-    sections: [
+      // M2 — Data Cost Hub
+      { name: "Grille 13 — données & flux", href: "/m2", icon: Grid3X3 },
+      // M3 — Cost Engine
       { name: "Grille 13 postes", href: "/m3/grille-couts", icon: Grid3X3 },
       { name: "Coûts théoriques", href: "/m3/couts-theoriques", icon: Calculator },
       { name: "Coûts réels", href: "/m3/ingestion-couts-reels", icon: Database },

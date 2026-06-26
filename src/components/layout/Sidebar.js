@@ -38,21 +38,6 @@ export function Sidebar() {
     >
       <nav className="flex flex-col py-3 flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
         {demoSidebarModules.map((module) => {
-          // ── Group separator ─────────────────────────────────────
-          if (module.type === "separator") {
-            return (
-              <div key={module.label} className="mt-3 mb-1 mx-2 flex items-center gap-2">
-                <div className="h-px flex-1 bg-white/[0.07]" />
-                {navWide && (
-                  <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-neutral-600 shrink-0 px-1">
-                    {module.label}
-                  </span>
-                )}
-                <div className="h-px flex-1 bg-white/[0.07]" />
-              </div>
-            );
-          }
-
           const Icon = module.icon;
           const active = isModuleActive(module.href);
           const visibleSections = module.sections ?? [];
